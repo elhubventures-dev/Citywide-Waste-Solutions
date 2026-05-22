@@ -1,0 +1,178 @@
+// ─── Prisma Schema ─────────────────────────────────────────────────────────────
+// Citywide Waste Solutions — PostgreSQL via Supabase
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DATABASE_URL")
+}
+
+// ─── Enums ───────────────────────────────────────────────────────────────────
+
+enum SubmissionType {
+  QUOTE
+  CONTACT
+  NEWSLETTER
+}
+
+enum SubmissionStatus {
+  NEW
+  READ
+  REPLIED
+  ARCHIVED
+}
+
+enum ServiceType {
+  RESIDENTIAL_WASTE_COLLECTION
+  COMMERCIAL_WASTE_MANAGEMENT
+  RECYCLING_SERVICES
+  DUMPSTER_BIN_RENTAL
+  JUNK_REMOVAL
+  CONSTRUCTION_WASTE_REMOVAL
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+enum UserRole {
+  OWNER
+  ADMIN
+  EDITOR
+}
+
+// ─── Models ───────────────────────────────────────────────────────────────────
+
+model QuoteRequest {
+  id               String          @id @default(cuid())
+  fullName         String
+  email            String
+  phone            String
+  serviceType      ServiceType
+  city             String
+  pickupFrequency  String?
+  message          String?         @db.Text
+  smsOptIn         Boolean         @default(false)
+  status           SubmissionStatus @default(NEW)
+  ipAddress        String?
+  userAgent        String?
+  crmContactId     String?         // GoHighLevel contact ID
+  crmPipelineId    String?
+  notes            String?         @db.Text
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+
+  @@map("quote_requests")
+  @@index([status])
+  @@index([email])
+  @@index([createdAt])
+}
+
+model ContactSubmission {
+  id           String          @id @default(cuid())
+  fullName     String
+  email        String
+  phone        String?
+  subject      String
+  message      String          @db.Text
+  status       SubmissionStatus @default(NEW)
+  ipAddress    String?
+  userAgent    String?
+  notes        String?         @db.Text
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@map("contact_submissions")
+  @@index([status])
+  @@index([email])
+}
+
+model NewsletterSubscriber {
+  id          String    @id @default(cuid())
+  email       String    @unique
+  name        String?
+  isActive    Boolean   @default(true)
+  source      String?   // "footer", "blog", "popup"
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("newsletter_subscribers")
+  @@index([isActive])
+}
+
+model Invoice {
+  id            String        @id @default(cuid())
+  invoiceNumber String        @unique
+  customerName  String
+  customerEmail String
+  amount        Int           // in cents
+  currency      String        @default("CAD")
+  description   String?
+  status        PaymentStatus @default(PENDING)
+  stripePaymentIntentId String? @unique
+  paidAt        DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@map("invoices")
+  @@index([status])
+  @@index([invoiceNumber])
+  @@index([customerEmail])
+}
+
+model AdminUser {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  name      String
+  role      UserRole  @default(EDITOR)
+  clerkId   String?   @unique
+  isActive  Boolean   @default(true)
+  lastLogin DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("admin_users")
+}
+
+model SmsLog {
+  id          String    @id @default(cuid())
+  to          String
+  body        String    @db.Text
+  twilioSid   String?
+  status      String    // "queued" | "sent" | "delivered" | "failed"
+  refType     String?   // "quote" | "pickup_reminder" | "confirmation"
+  refId       String?
+  createdAt   DateTime  @default(now())
+
+  @@map("sms_logs")
+  @@index([to])
+  @@index([status])
+}
+
+model PickupSchedule {
+  id          String    @id @default(cuid())
+  quoteId     String
+  customerName String
+  phone        String
+  address      String
+  city         String
+  serviceType  ServiceType
+  scheduledDate DateTime
+  frequency    String?   // "weekly" | "biweekly" | "monthly" | "onetime"
+  notes        String?
+  isCompleted  Boolean   @default(false)
+  completedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("pickup_schedules")
+  @@index([scheduledDate])
+  @@index([isCompleted])
+}
