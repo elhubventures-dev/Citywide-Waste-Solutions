@@ -1,9 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
 
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "outputDirectory": ".next",
   "framework": "nextjs",
 
   "regions": ["cle1", "iad1"],
@@ -48,11 +45,6 @@
   ],
 
   "redirects": [
-    {
-      "source": "/services",
-      "destination": "/services/residential-waste-collection",
-      "permanent": false
-    },
     {
       "source": "/blog/feed",
       "destination": "/feed.xml",
