@@ -46,6 +46,13 @@ foreach ($entry in $map.GetEnumerator()) {
   }
 }
 
+# Flyer assets (homepage hero reference)
+$flyerSrc = Join-Path $base "Images\Flyers\CALL-TO-ACTION BANNERS.png"
+if (Test-Path $flyerSrc) {
+  Copy-Item $flyerSrc (Join-Path $pub "hero\cta-banner-flyer.png") -Force
+  Write-Host "OK hero\cta-banner-flyer.png <- CALL-TO-ACTION BANNERS.png"
+}
+
 # Logos (not in Mockups — use Images/Logo)
 if (Test-Path $logoSrc) {
   foreach ($name in @(

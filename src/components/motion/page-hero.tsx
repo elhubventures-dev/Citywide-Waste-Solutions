@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { heroItem, heroStagger } from "@/lib/motion-presets";
@@ -16,6 +17,8 @@ interface PageHeroProps {
   centered?: boolean;
   /** Optional alternate background (defaults to page banner truck) */
   backgroundImage?: string;
+  /** Faint image layered on top of the page banner (e.g. blog cover) */
+  overlayImageSrc?: string | null;
 }
 
 export function PageHero({
@@ -27,6 +30,7 @@ export function PageHero({
   size = "default",
   centered = false,
   backgroundImage,
+  overlayImageSrc,
 }: PageHeroProps) {
   const reduceMotion = useReducedMotion();
 
@@ -39,6 +43,17 @@ export function PageHero({
       )}
     >
       <PageHeroBackground imageSrc={backgroundImage} priority />
+      {overlayImageSrc && (
+        <div className="absolute inset-0 z-[1]" aria-hidden>
+          <Image
+            src={overlayImageSrc}
+            alt=""
+            fill
+            className="object-cover opacity-15 mix-blend-overlay"
+            sizes="100vw"
+          />
+        </div>
+      )}
       <ParallaxOrbs />
       <div
         className={cn(

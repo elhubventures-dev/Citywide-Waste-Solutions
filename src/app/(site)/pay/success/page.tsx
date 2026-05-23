@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2, ArrowRight, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PageHero } from "@/components/motion/page-hero";
 
 export const metadata: Metadata = {
   title: "Payment Successful",
@@ -13,43 +14,47 @@ export default function PaySuccessPage({
 }: {
   searchParams: { invoice?: string };
 }) {
+  const description = searchParams.invoice
+    ? `Invoice #${searchParams.invoice} has been paid successfully. A receipt has been sent to your email.`
+    : "Your payment was processed successfully. A receipt has been sent to your email.";
+
   return (
-    <section className="section min-h-[70vh] flex items-center">
-      <div className="container">
-        <div className="mx-auto max-w-md text-center space-y-6">
-          <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100 dark:bg-green-950/40">
-            <CheckCircle2 className="h-10 w-10 text-green-600" />
-          </div>
+    <>
+      <PageHero
+        centered
+        eyebrow="Payments"
+        title="Payment Confirmed!"
+        description={description}
+      />
 
-          <div>
-            <h1 className="text-3xl font-bold text-foreground">Payment Confirmed!</h1>
-            {searchParams.invoice && (
-              <p className="mt-2 text-muted-foreground">
-                Invoice <strong>#{searchParams.invoice}</strong> has been paid successfully.
-              </p>
-            )}
-            <p className="mt-2 text-sm text-muted-foreground">
-              A receipt has been sent to your email address. Thank you for choosing
-              Citywide Waste Solutions!
+      <section className="section min-h-[40vh]">
+        <div className="container pb-16 -mt-4">
+          <div className="mx-auto max-w-md text-center space-y-6">
+            <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100 dark:bg-green-950/40">
+              <CheckCircle2 className="h-10 w-10 text-green-600" />
+            </div>
+
+            <p className="text-sm text-muted-foreground">
+              Thank you for choosing Citywide Waste Solutions!
             </p>
-          </div>
 
-          <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <Button asChild variant="primary" size="lg">
-              <Link href="/">
-                <Home className="h-4 w-4" />
-                Back to Home
-              </Link>
-            </Button>
-            <Button asChild variant="outline" size="lg">
-              <Link href="/contact">
-                Contact Us
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
+            <div className="flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <Button asChild variant="primary" size="lg">
+                <Link href="/">
+                  <Home className="h-4 w-4" />
+                  Back to Home
+                </Link>
+              </Button>
+              <Button asChild variant="outline" size="lg">
+                <Link href="/contact">
+                  Contact Us
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

@@ -230,6 +230,10 @@ module.exports = {
           "0%":   { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
         },
+        "ticker-rtl": {
+          "0%":   { transform: "translateX(-50%)" },
+          "100%": { transform: "translateX(0)" },
+        },
         float: {
           "0%, 100%": { transform: "translateY(0)" },
           "50%":      { transform: "translateY(-18px)" },
@@ -249,6 +253,7 @@ module.exports = {
         "shimmer":       "shimmer 2s infinite linear",
         "pulse-green":   "pulse-green 2s infinite",
         "ticker":        "ticker 30s linear infinite",
+        "ticker-rtl":    "ticker-rtl 35s linear infinite",
         float:           "float 8s ease-in-out infinite",
         "float-slow":    "float-slow 12s ease-in-out infinite",
       },

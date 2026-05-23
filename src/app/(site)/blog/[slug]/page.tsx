@@ -6,6 +6,7 @@ import { Calendar, Clock, ArrowLeft, ArrowRight, Tag, Share2 } from "lucide-reac
 import { sanityFetch, urlFor } from "@/sanity/lib/client";
 import { blogPostBySlugQuery, allBlogSlugsQuery, relatedPostsQuery } from "@/sanity/lib/queries";
 import { PortableText }  from "@/components/blog/portable-text";
+import { PageHero }      from "@/components/motion/page-hero";
 import { formatDate }    from "@/lib/utils";
 import { BUSINESS, SITE_URL } from "@/lib/constants";
 
@@ -136,20 +137,44 @@ export default async function BlogPostPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
 
-      {/* Hero image */}
-      {coverSrc && (
-        <div className="relative h-[50vh] min-h-[320px] w-full overflow-hidden bg-green-950">
-          <Image
-            src={coverSrc}
-            alt={post.coverImage?.alt ?? post.title}
-            fill
-            priority
-            className="object-cover opacity-80"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+      <PageHero
+        eyebrow={post.categories?.[0]?.label ?? "Blog"}
+        title={post.title}
+        description={post.excerpt}
+        size="large"
+        overlayImageSrc={coverSrc}
+      >
+        <div className="flex flex-wrap items-center gap-4 text-sm text-white/85">
+          {post.author && (
+            <div className="flex items-center gap-2.5">
+              {avatarSrc ? (
+                <Image
+                  src={avatarSrc}
+                  alt={post.author.name}
+                  width={36}
+                  height={36}
+                  className="rounded-full object-cover ring-2 ring-white/20"
+                />
+              ) : (
+                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/15 text-sm font-bold text-white">
+                  {post.author.name.charAt(0)}
+                </div>
+              )}
+              <span className="font-medium">{post.author.name}</span>
+            </div>
+          )}
+          <span className="flex items-center gap-1">
+            <Calendar className="h-3.5 w-3.5" />
+            {formatDate(post.publishedAt)}
+          </span>
+          {post.readingTime && (
+            <span className="flex items-center gap-1">
+              <Clock className="h-3.5 w-3.5" />
+              {post.readingTime} min read
+            </span>
+          )}
         </div>
-      )}
+      </PageHero>
 
       {/* Article */}
       <div className="container py-12 lg:py-16">
@@ -181,51 +206,6 @@ export default async function BlogPostPage({
                 ))}
               </div>
             )}
-
-            {/* Title */}
-            <h1 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl text-balance mb-6">
-              {post.title}
-            </h1>
-
-            {/* Meta */}
-            <div className="mb-8 flex flex-wrap items-center gap-4 border-b border-border pb-6">
-              {/* Author */}
-              {post.author && (
-                <div className="flex items-center gap-2.5">
-                  {avatarSrc ? (
-                    <Image
-                      src={avatarSrc}
-                      alt={post.author.name}
-                      width={36}
-                      height={36}
-                      className="rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-green-100 text-sm font-bold text-green-700">
-                      {post.author.name.charAt(0)}
-                    </div>
-                  )}
-                  <span className="text-sm font-medium text-foreground">{post.author.name}</span>
-                </div>
-              )}
-
-              <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                <Calendar className="h-3.5 w-3.5" />
-                {formatDate(post.publishedAt)}
-              </span>
-
-              {post.readingTime && (
-                <span className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Clock className="h-3.5 w-3.5" />
-                  {post.readingTime} min read
-                </span>
-              )}
-            </div>
-
-            {/* Excerpt */}
-            <p className="mb-8 text-lg leading-relaxed text-muted-foreground border-l-4 border-green-500 pl-5 italic">
-              {post.excerpt}
-            </p>
 
             {/* Body content */}
             {post.body && <PortableText value={post.body} />}

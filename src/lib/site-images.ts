@@ -15,6 +15,8 @@ export const SITE_IMAGES = {
     main: "/images/hero/hero-main.jpg",
     /** Green truck — faded background on inner page heroes */
     pageBanner: "/images/hero/page-banner.jpg",
+    /** Flyer reference — CALL-TO-ACTION BANNERS */
+    ctaFlyer: "/images/hero/cta-banner-flyer.png",
   },
   fleet: {
     van:      "/images/fleet/branded-van.jpg",

@@ -285,6 +285,14 @@
 
   /* Aspect ratios */
   .aspect-hero    { aspect-ratio: 16/9; }
+
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
   .aspect-card    { aspect-ratio: 4/3; }
   .aspect-square  { aspect-ratio: 1/1; }
   .aspect-portrait { aspect-ratio: 3/4; }
