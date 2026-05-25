@@ -30,7 +30,7 @@ export async function generateMetadata({
     blogPostBySlugQuery,
     { slug: params.slug },
     ["blog"]
-  );
+  ).catch(() => null);
 
   if (!post) return { title: "Post Not Found" };
 
@@ -91,7 +91,7 @@ export default async function BlogPostPage({
     blogPostBySlugQuery,
     { slug: params.slug },
     ["blog"]
-  );
+  ).catch(() => null);
 
   if (!post) notFound();
 
@@ -100,7 +100,7 @@ export default async function BlogPostPage({
     relatedPostsQuery,
     { currentSlug: params.slug, categories: categorySlugs },
     ["blog"]
-  );
+  ).catch(() => []);
 
   const coverSrc = post.coverImage?.asset
     ? urlFor(post.coverImage).width(1200).height(630).url()

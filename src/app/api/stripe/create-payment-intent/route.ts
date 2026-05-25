@@ -6,10 +6,20 @@ import { formRatelimit, getClientIp, rateLimitResponse } from "@/lib/rate-limit"
 
 export const runtime = "nodejs";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2024-06-20",
-  typescript:  true,
-});
+let stripe: Stripe | null = null;
+
+function getStripeClient() {
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) {
+    throw new Error("STRIPE_SECRET_KEY is required to create payment intents.");
+  }
+
+  stripe ??= new Stripe(secretKey, {
+    apiVersion: "2024-06-20",
+    typescript:  true,
+  });
+  return stripe;
+}
 
 export async function POST(req: NextRequest) {
   // Rate limit
@@ -67,7 +77,7 @@ export async function POST(req: NextRequest) {
   // ── Create Stripe Payment Intent ───────────────────────────────────────
   let paymentIntent;
   try {
-    paymentIntent = await stripe.paymentIntents.create({
+    paymentIntent = await getStripeClient().paymentIntents.create({
       amount:      invoice.amount,
       currency:    "cad",
       description: `Citywide Waste Solutions — Invoice #${invoiceNumber}`,

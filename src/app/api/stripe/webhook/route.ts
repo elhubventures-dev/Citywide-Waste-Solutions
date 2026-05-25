@@ -9,25 +9,38 @@ export const runtime = "nodejs";
 // Must read raw body for Stripe signature verification
 export const dynamic = "force-dynamic";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: "2024-06-20",
-  typescript:  true,
-});
+let stripe: Stripe | null = null;
 
-const WEBHOOK_SECRET = process.env.STRIPE_WEBHOOK_SECRET!;
+function getStripeClient() {
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) {
+    throw new Error("STRIPE_SECRET_KEY is required to verify Stripe webhooks.");
+  }
+
+  stripe ??= new Stripe(secretKey, {
+    apiVersion: "2024-06-20",
+    typescript:  true,
+  });
+  return stripe;
+}
 
 export async function POST(req: NextRequest) {
   const body      = await req.text();
   const signature = req.headers.get("stripe-signature");
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
   if (!signature) {
     return NextResponse.json({ error: "No signature" }, { status: 400 });
   }
 
+  if (!webhookSecret) {
+    return NextResponse.json({ error: "Stripe webhook secret is not configured" }, { status: 500 });
+  }
+
   // ── Verify webhook signature ───────────────────────────────────────────
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(body, signature, WEBHOOK_SECRET);
+    event = getStripeClient().webhooks.constructEvent(body, signature, webhookSecret);
   } catch (err) {
     console.error("Webhook signature verification failed:", err);
     return NextResponse.json({ error: "Invalid signature" }, { status: 400 });

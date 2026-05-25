@@ -3,7 +3,17 @@ import type { QuoteFormData, ContactFormData } from "@/types";
 import { BUSINESS, SITE_URL } from "@/lib/business";
 import { BRAND_COLORS } from "@/lib/brand-colors";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let resend: Resend | null = null;
+
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    throw new Error("RESEND_API_KEY is required to send email.");
+  }
+
+  resend ??= new Resend(apiKey);
+  return resend;
+}
 
 const FROM    = process.env.EMAIL_FROM    ?? BUSINESS.email;
 const ADMIN   = process.env.EMAIL_ADMIN   ?? BUSINESS.email;
@@ -91,7 +101,7 @@ export async function sendQuoteConfirmationEmail(data: QuoteFormData) {
     </a>
   `;
 
-  return resend.emails.send({
+  return getResendClient().emails.send({
     from:    `${BRAND} <${FROM}>`,
     to:      data.email,
     subject: `Quote request received — we'll be in touch shortly`,
@@ -122,7 +132,7 @@ export async function sendQuoteAdminNotification(data: QuoteFormData) {
     </div>
   `;
 
-  return resend.emails.send({
+  return getResendClient().emails.send({
     from:    `${BRAND} <${FROM}>`,
     to:      ADMIN,
     subject: `🔔 New Quote: ${data.serviceType} — ${data.fullName} (${data.city})`,
@@ -148,7 +158,7 @@ export async function sendContactConfirmationEmail(data: ContactFormData) {
     </p>
   `;
 
-  return resend.emails.send({
+  return getResendClient().emails.send({
     from:    `${BRAND} <${FROM}>`,
     to:      data.email,
     subject: `We got your message — ${data.subject}`,
@@ -174,7 +184,7 @@ export async function sendContactAdminNotification(data: ContactFormData) {
     </a>
   `;
 
-  return resend.emails.send({
+  return getResendClient().emails.send({
     from:    `${BRAND} <${FROM}>`,
     to:      ADMIN,
     subject: `📬 Contact: ${data.subject} — ${data.fullName}`,
@@ -208,7 +218,7 @@ export async function sendPaymentConfirmationEmail(
     </p>
   `;
 
-  return resend.emails.send({
+  return getResendClient().emails.send({
     from:    `${BRAND} <${FROM}>`,
     to:      email,
     subject: `✅ Payment confirmed — Invoice #${invoiceNumber}`,

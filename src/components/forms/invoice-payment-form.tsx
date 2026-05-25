@@ -19,7 +19,9 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
 // ─── Stripe loader ────────────────────────────────────────────────────────────
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
+const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+  ? loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY)
+  : null;
 
 // ─── Invoice data shape returned by API ──────────────────────────────────────
 interface InvoiceData {
