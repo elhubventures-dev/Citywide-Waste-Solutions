@@ -3,8 +3,6 @@
 
   "framework": "nextjs",
 
-  "regions": ["cle1", "iad1"],
-
   "functions": {
     "src/app/api/stripe/webhook/route.ts": {
       "maxDuration": 30
