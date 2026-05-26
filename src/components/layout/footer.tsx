@@ -175,7 +175,7 @@ export function Footer() {
               © {year} {BUSINESS.name}. All rights reserved.
             </p>
             <p className="text-white/30">
-              {BUSINESS.owner} · BIN {BUSINESS.bin} · NAICS {BUSINESS.naics.full}
+              {BUSINESS.legalName} · BN {BUSINESS.businessNumber} · BIN {BUSINESS.bin} · NAICS {BUSINESS.naics.full}
             </p>
           </div>
           <div className="flex flex-wrap gap-4">

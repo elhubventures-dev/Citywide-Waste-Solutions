@@ -160,6 +160,9 @@ export default function PrivacyPage() {
                   To ask questions or make a privacy request, contact {BUSINESS.name} using the
                   details below.
                 </p>
+                <p>Legal business name: {BUSINESS.legalName}</p>
+                <p>Business Number: {BUSINESS.businessNumber}</p>
+                <p>Business Identification Number: {BUSINESS.bin}</p>
                 <p>
                   Email:{" "}
                   <a

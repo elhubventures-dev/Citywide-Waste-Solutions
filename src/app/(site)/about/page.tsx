@@ -234,12 +234,16 @@ export default function AboutPage() {
           />
           <dl className="grid gap-4 sm:grid-cols-2 rounded-2xl border border-border bg-card p-6 shadow-card text-sm">
             <div>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Business Name</dt>
-              <dd className="mt-1 font-medium text-foreground">{BUSINESS.name}</dd>
+              <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Legal Business Name</dt>
+              <dd className="mt-1 font-medium text-foreground">{BUSINESS.legalName}</dd>
             </div>
             <div>
               <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Owner / Registrant</dt>
               <dd className="mt-1 font-medium text-foreground">{BUSINESS.owner}</dd>
+            </div>
+            <div>
+              <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Business Number</dt>
+              <dd className="mt-1 font-medium text-foreground">{BUSINESS.businessNumber}</dd>
             </div>
             <div>
               <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Business Identification Number (BIN)</dt>

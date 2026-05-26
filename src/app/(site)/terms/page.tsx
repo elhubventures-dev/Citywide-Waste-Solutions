@@ -166,6 +166,9 @@ export default function TermsPage() {
                   If you have questions about these terms, contact {BUSINESS.name} using the details
                   below.
                 </p>
+                <p>Legal business name: {BUSINESS.legalName}</p>
+                <p>Business Number: {BUSINESS.businessNumber}</p>
+                <p>Business Identification Number: {BUSINESS.bin}</p>
                 <p>
                   Email:{" "}
                   <a

@@ -88,6 +88,14 @@ export default function ContactPage() {
                       <dd className="font-medium text-foreground">{BUSINESS.owner}</dd>
                     </div>
                     <div>
+                      <dt className="text-xs uppercase tracking-wide">Legal Name</dt>
+                      <dd className="font-medium text-foreground">{BUSINESS.legalName}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs uppercase tracking-wide">Business Number</dt>
+                      <dd className="font-medium text-foreground">{BUSINESS.businessNumber}</dd>
+                    </div>
+                    <div>
                       <dt className="text-xs uppercase tracking-wide">BIN</dt>
                       <dd className="font-medium text-foreground">{BUSINESS.bin}</dd>
                     </div>

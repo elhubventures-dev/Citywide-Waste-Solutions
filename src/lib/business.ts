@@ -3,10 +3,12 @@ export const SITE_URL = "https://citywidewastesolutions.ca";
 
 export const BUSINESS = {
   name:       "Citywide Waste Solutions",
+  legalName: "CITYWIDE WASTE SOLUTIONS",
   shortName:  "Citywide",
   tagline:    "Cleaner City. Better Tomorrow.",
   siteUrl:    SITE_URL,
   owner:      "Walter Quelleng",
+  businessNumber: "716988035TZ0002",
   bin:        "1001615565",
   naics: {
     code:  "562210",
