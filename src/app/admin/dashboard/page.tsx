@@ -526,23 +526,16 @@ export default function AdminDashboard() {
         {/* Quick links to Sanity */}
         <div className="rounded-xl border border-border bg-card p-5 shadow-card">
           <h2 className="mb-4 font-semibold text-foreground">Content Management</h2>
-          <div className="flex flex-wrap gap-3">
-            {[
-              { label: "Open Sanity Studio", href: "/studio", emoji: "✏️" },
-              { label: "Manage Blog Posts", href: "/studio/blogPost", emoji: "📝" },
-              { label: "Update Pricing", href: "/studio/pricingTier", emoji: "💰" },
-              { label: "Update Services", href: "/studio/service", emoji: "🗂️" },
-              { label: "Manage Testimonials", href: "/studio/testimonial", emoji: "⭐" },
-            ].map(({ label, href, emoji }) => (
-              <a
-                key={href}
-                href={href}
-                className="flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-green-300 hover:text-green-600"
-              >
-                <span>{emoji}</span> {label}
-              </a>
-            ))}
-          </div>
+          <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+            Blog posts, pricing, services, and testimonials are managed inside Sanity Studio. Open
+            Studio and choose the content type from the left sidebar.
+          </p>
+          <a
+            href="/studio"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-green-300 hover:text-green-600"
+          >
+            <span>✏️</span> Open Sanity Studio
+          </a>
         </div>
       </main>
 
