@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdminApiAccess } from "@/lib/admin-auth";
 import {
+  deleteSubmission,
   listSubmissions,
   SubmissionStoreError,
+  updateSubmission,
   updateSubmissionStatus,
 } from "@/lib/submission-store";
 
@@ -36,12 +38,12 @@ export async function GET(req: NextRequest) {
   }
 }
 
-// PATCH — update submission status
+// PATCH — update submission fields/status
 export async function PATCH(req: NextRequest) {
   const authError = await requireAdminApiAccess();
   if (authError) return authError;
 
-  let body: { id: string; type: "quote" | "contact"; status: string };
+  let body: { id: string; type: "quote" | "contact"; status?: string; [key: string]: unknown };
   try {
     body = await req.json();
   } catch {
@@ -58,7 +60,12 @@ export async function PATCH(req: NextRequest) {
   }
 
   try {
-    await updateSubmissionStatus({ id, type, status });
+    if (Object.keys(body).length <= 3 && typeof status === "string") {
+      await updateSubmissionStatus({ id, type, status });
+    } else {
+      await updateSubmission({ id, type, values: body });
+    }
+
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error("Status update error:", err);
@@ -68,5 +75,38 @@ export async function PATCH(req: NextRequest) {
     }
 
     return NextResponse.json({ error: "Update failed" }, { status: 500 });
+  }
+}
+
+export async function DELETE(req: NextRequest) {
+  const authError = await requireAdminApiAccess();
+  if (authError) return authError;
+
+  let body: { id?: string; type?: "quote" | "contact" } = {};
+  try {
+    body = await req.json();
+  } catch {
+    const { searchParams } = new URL(req.url);
+    body = {
+      id: searchParams.get("id") ?? undefined,
+      type: (searchParams.get("type") as "quote" | "contact" | null) ?? undefined,
+    };
+  }
+
+  if (!body.id || (body.type !== "quote" && body.type !== "contact")) {
+    return NextResponse.json({ error: "Missing or invalid submission id/type" }, { status: 422 });
+  }
+
+  try {
+    await deleteSubmission({ id: body.id, type: body.type });
+    return NextResponse.json({ success: true });
+  } catch (err) {
+    console.error("Delete submission error:", err);
+
+    if (err instanceof SubmissionStoreError) {
+      return NextResponse.json({ error: err.message }, { status: 503 });
+    }
+
+    return NextResponse.json({ error: "Delete failed" }, { status: 500 });
   }
 }

@@ -45,6 +45,8 @@ const SERVICE_ENUM_MAP: Record<string, string> = {
   "Construction Waste Removal": "CONSTRUCTION_WASTE_REMOVAL",
 };
 
+const SERVICE_ENUM_VALUES = new Set(Object.values(SERVICE_ENUM_MAP));
+
 let supabaseAdmin: SupabaseClient | null = null;
 
 function getSupabaseAdmin() {
@@ -75,6 +77,28 @@ function normalizeStatus(status?: string | null): SubmissionStatus | undefined {
   }
 
   return undefined;
+}
+
+function normalizeServiceType(serviceType?: string | null) {
+  if (!serviceType) return undefined;
+  if (SERVICE_ENUM_VALUES.has(serviceType)) return serviceType;
+  return SERVICE_ENUM_MAP[serviceType];
+}
+
+function cleanUpdateData<T extends Record<string, unknown>>(data: T) {
+  return Object.fromEntries(Object.entries(data).filter(([, value]) => value !== undefined));
+}
+
+function nullableString(value: unknown) {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : null;
+}
+
+function requiredString(value: unknown) {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  return trimmed.length > 0 ? trimmed : undefined;
 }
 
 export async function storeQuoteSubmission(data: QuoteFormData, meta: RequestMeta) {
@@ -248,26 +272,62 @@ export async function listSubmissions(options: ListOptions): Promise<ListResult>
   }
 }
 
-export async function updateSubmissionStatus({
+export async function updateSubmission({
   id,
   type,
-  status,
+  values,
 }: {
   id: string;
   type: SubmissionType;
-  status: string;
+  values: Record<string, unknown>;
 }) {
-  const normalizedStatus = normalizeStatus(status);
+  const normalizedStatus =
+    typeof values.status === "string" ? normalizeStatus(values.status) : undefined;
 
-  if (!normalizedStatus) {
+  if (values.status && !normalizedStatus) {
     throw new SubmissionStoreError("Invalid submission status.");
+  }
+
+  const normalizedServiceType =
+    type === "quote" && typeof values.serviceType === "string"
+      ? normalizeServiceType(values.serviceType)
+      : undefined;
+
+  if (type === "quote" && values.serviceType && !normalizedServiceType) {
+    throw new SubmissionStoreError("Invalid quote service type.");
+  }
+
+  const updateData =
+    type === "quote"
+      ? cleanUpdateData({
+          fullName: requiredString(values.fullName),
+          email: requiredString(values.email),
+          phone: requiredString(values.phone),
+          serviceType: normalizedServiceType,
+          city: requiredString(values.city),
+          pickupFrequency: nullableString(values.pickupFrequency),
+          message: nullableString(values.message),
+          smsOptIn: typeof values.smsOptIn === "boolean" ? values.smsOptIn : undefined,
+          status: normalizedStatus,
+        })
+      : cleanUpdateData({
+          fullName: requiredString(values.fullName),
+          email: requiredString(values.email),
+          phone: nullableString(values.phone),
+          subject: requiredString(values.subject),
+          message: requiredString(values.message),
+          status: normalizedStatus,
+        });
+
+  if (Object.keys(updateData).length === 0) {
+    throw new SubmissionStoreError("No valid submission fields were provided.");
   }
 
   try {
     if (type === "quote") {
-      await prisma.quoteRequest.update({ where: { id }, data: { status: normalizedStatus } });
+      await prisma.quoteRequest.update({ where: { id }, data: updateData as any });
     } else {
-      await prisma.contactSubmission.update({ where: { id }, data: { status: normalizedStatus } });
+      await prisma.contactSubmission.update({ where: { id }, data: updateData as any });
     }
 
     return { source: "prisma" as const };
@@ -278,8 +338,42 @@ export async function updateSubmissionStatus({
     const table = type === "quote" ? "quote_requests" : "contact_submissions";
     const { error } = await supabase
       .from(table)
-      .update({ status: normalizedStatus, updatedAt: new Date().toISOString() })
+      .update({ ...updateData, updatedAt: new Date().toISOString() })
       .eq("id", id);
+
+    if (error) throw toStoreError(error);
+
+    return { source: "supabase" as const };
+  }
+}
+
+export async function updateSubmissionStatus({
+  id,
+  type,
+  status,
+}: {
+  id: string;
+  type: SubmissionType;
+  status: string;
+}) {
+  return updateSubmission({ id, type, values: { status } });
+}
+
+export async function deleteSubmission({ id, type }: { id: string; type: SubmissionType }) {
+  try {
+    if (type === "quote") {
+      await prisma.quoteRequest.delete({ where: { id } });
+    } else {
+      await prisma.contactSubmission.delete({ where: { id } });
+    }
+
+    return { source: "prisma" as const };
+  } catch (prismaError) {
+    const supabase = getSupabaseAdmin();
+    if (!supabase) throw toStoreError(prismaError);
+
+    const table = type === "quote" ? "quote_requests" : "contact_submissions";
+    const { error } = await supabase.from(table).delete().eq("id", id);
 
     if (error) throw toStoreError(error);
 
