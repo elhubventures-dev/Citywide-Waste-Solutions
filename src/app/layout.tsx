@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/ui/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { GoogleAnalytics } from "@/components/layout/google-analytics";
-import { AuthProvider } from "@/components/providers/auth-provider";
 import { BUSINESS, SITE_URL } from "@/lib/constants";
 
 // ─── Font ───────────────────────────────────────────────────────────────────
@@ -166,52 +165,50 @@ const organizationSchema = {
 // ─── Root Layout ─────────────────────────────────────────────────────────────
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <AuthProvider>
-      <html lang="en-CA" suppressHydrationWarning>
-        <head>
-          {/* JSON-LD Structured Data */}
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-          />
-          {/* Preconnect to external origins */}
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link rel="preconnect" href="https://maps.googleapis.com" />
-          <link rel="dns-prefetch" href="https://cdn.sanity.io" />
-        </head>
-        <body
-          className={cn(plusJakarta.variable, "min-h-screen bg-background font-sans antialiased")}
+    <html lang="en-CA" suppressHydrationWarning>
+      <head>
+        {/* JSON-LD Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+        {/* Preconnect to external origins */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://maps.googleapis.com" />
+        <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+      </head>
+      <body
+        className={cn(plusJakarta.variable, "min-h-screen bg-background font-sans antialiased")}
+      >
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
         >
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
+          {/* Skip to main content — accessibility */}
+          <a
+            href="#main-content"
+            className="btn-primary sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[999]"
           >
-            {/* Skip to main content — accessibility */}
-            <a
-              href="#main-content"
-              className="btn-primary sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[999]"
-            >
-              Skip to main content
-            </a>
+            Skip to main content
+          </a>
 
-            {/* Main app shell */}
-            <div className="flex min-h-screen flex-col">
-              {/* Header is added per page via (site) layout */}
-              <main id="main-content" className="flex-1">
-                {children}
-              </main>
-            </div>
+          {/* Main app shell */}
+          <div className="flex min-h-screen flex-col">
+            {/* Header is added per page via (site) layout */}
+            <main id="main-content" className="flex-1">
+              {children}
+            </main>
+          </div>
 
-            <Toaster />
-          </ThemeProvider>
+          <Toaster />
+        </ThemeProvider>
 
-          {/* Google Analytics — loaded after hydration */}
-          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? ""} />
-        </body>
-      </html>
-    </AuthProvider>
+        {/* Google Analytics — loaded after hydration */}
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? ""} />
+      </body>
+    </html>
   );
 }

@@ -13,7 +13,7 @@ Production-grade website for a professional Ontario waste collection and recycli
 | Payments  | Stripe                                   |
 | SMS       | Twilio                                   |
 | Email     | Resend                                   |
-| Auth      | Clerk                                    |
+| Auth      | Supabase Auth                            |
 | Hosting   | Vercel + Cloudflare CDN                  |
 | CRM       | GoHighLevel                              |
 

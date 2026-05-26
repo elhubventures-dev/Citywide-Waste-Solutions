@@ -1,18 +1,25 @@
 export const DEFAULT_ADMIN_EMAIL = "wastesolutions80@gmail.com";
 
-export function isClerkConfigured() {
-  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-  const secretKey = process.env.CLERK_SECRET_KEY;
+function hasUsableValue(value: string | undefined): value is string {
+  return Boolean(
+    value &&
+    !value.includes("...") &&
+    !value.includes("[") &&
+    !value.toLowerCase().includes("placeholder") &&
+    !value.toLowerCase().startsWith("your_") &&
+    !value.toLowerCase().startsWith("your-")
+  );
+}
+
+export function isSupabaseAuthConfigured() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   return Boolean(
-    publishableKey &&
-    secretKey &&
-    publishableKey.startsWith("pk_") &&
-    secretKey.startsWith("sk_") &&
-    !publishableKey.includes("...") &&
-    !secretKey.includes("...") &&
-    publishableKey.length > 20 &&
-    secretKey.length > 20
+    hasUsableValue(url) &&
+    hasUsableValue(anonKey) &&
+    /^https?:\/\//.test(url) &&
+    anonKey.length > 20
   );
 }
 

@@ -41,7 +41,7 @@ const sections = [
     id: "service-providers",
     title: "4. Service Providers and Integrations",
     body: [
-      "The website may use services such as Vercel, Supabase or PostgreSQL hosting, Prisma, Stripe, Resend, Twilio, GoHighLevel, Google Analytics, Google Maps, Google reCAPTCHA, Sanity, Clerk, Upstash Redis, and related infrastructure providers.",
+      "The website may use services such as Vercel, Supabase or PostgreSQL hosting, Supabase Auth, Prisma, Stripe, Resend, Twilio, GoHighLevel, Google Analytics, Google Maps, Google reCAPTCHA, Sanity, Upstash Redis, and related infrastructure providers.",
       "These providers may process information in Canada, the United States, or other jurisdictions. Their handling of information is governed by their own agreements and privacy practices.",
     ],
   },
