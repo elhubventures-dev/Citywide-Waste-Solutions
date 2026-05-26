@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { quoteFormSchema }          from "@/lib/validations";
-import { prisma }                   from "@/lib/prisma";
-import { verifyRecaptcha }          from "@/lib/recaptcha";
+import { quoteFormSchema } from "@/lib/validations";
+import { prisma } from "@/lib/prisma";
+import { verifyRecaptcha } from "@/lib/recaptcha";
 import { formRatelimit, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 import { sendQuoteConfirmationEmail, sendQuoteAdminNotification } from "@/lib/email";
 import { sendQuoteConfirmationSms } from "@/lib/sms";
@@ -11,12 +11,12 @@ export const runtime = "nodejs";
 
 // ─── Service type → Prisma enum map ──────────────────────────────────────────
 const SERVICE_ENUM_MAP: Record<string, string> = {
-  "Residential Waste Collection":  "RESIDENTIAL_WASTE_COLLECTION",
-  "Commercial Waste Management":   "COMMERCIAL_WASTE_MANAGEMENT",
-  "Recycling Services":            "RECYCLING_SERVICES",
-  "Dumpster & Bin Rental":         "DUMPSTER_BIN_RENTAL",
-  "Junk Removal":                  "JUNK_REMOVAL",
-  "Construction Waste Removal":    "CONSTRUCTION_WASTE_REMOVAL",
+  "Residential Waste Collection": "RESIDENTIAL_WASTE_COLLECTION",
+  "Commercial Waste Management": "COMMERCIAL_WASTE_MANAGEMENT",
+  "Recycling Services": "RECYCLING_SERVICES",
+  "Dumpster & Bin Rental": "DUMPSTER_BIN_RENTAL",
+  "Junk Removal": "JUNK_REMOVAL",
+  "Construction Waste Removal": "CONSTRUCTION_WASTE_REMOVAL",
 };
 
 export async function POST(req: NextRequest) {
@@ -30,10 +30,7 @@ export async function POST(req: NextRequest) {
   try {
     body = await req.json();
   } catch {
-    return NextResponse.json(
-      { success: false, message: "Invalid request body" },
-      { status: 400 }
-    );
+    return NextResponse.json({ success: false, message: "Invalid request body" }, { status: 400 });
   }
 
   // ── 3. Validate with Zod ─────────────────────────────────────────────────
@@ -60,64 +57,84 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 5. Save to database ──────────────────────────────────────────────────
-  let submission;
+  let submissionId: string | null = null;
+  let savedToDatabase = true;
   try {
-    submission = await prisma.quoteRequest.create({
+    const submission = await prisma.quoteRequest.create({
       data: {
-        fullName:        data.fullName,
-        email:           data.email,
-        phone:           data.phone,
-        serviceType:     SERVICE_ENUM_MAP[data.serviceType] as any,
-        city:            data.city,
+        fullName: data.fullName,
+        email: data.email,
+        phone: data.phone,
+        serviceType: SERVICE_ENUM_MAP[data.serviceType] as any,
+        city: data.city,
         pickupFrequency: data.pickupFrequency,
-        message:         data.message,
-        smsOptIn:        data.smsOptIn,
-        ipAddress:       ip,
-        userAgent:       req.headers.get("user-agent") ?? undefined,
+        message: data.message,
+        smsOptIn: data.smsOptIn,
+        ipAddress: ip,
+        userAgent: req.headers.get("user-agent") ?? undefined,
       },
     });
+    submissionId = submission.id;
   } catch (err) {
+    savedToDatabase = false;
     console.error("DB error saving quote:", err);
-    return NextResponse.json(
-      { success: false, message: "Failed to save your request. Please try again." },
-      { status: 500 }
-    );
   }
 
   // ── 6. Fire async side-effects (non-blocking) ────────────────────────────
   const firstName = data.fullName.split(" ")[0];
+  const customerEmail = sendQuoteConfirmationEmail(data);
+  const adminEmail = sendQuoteAdminNotification(data);
+  const sms = data.smsOptIn
+    ? sendQuoteConfirmationSms(data.phone, firstName, data.serviceType)
+    : Promise.resolve();
+  const crm = upsertCrmContact(data).then((contactId) => {
+    if (contactId && submissionId) {
+      // Update DB record with CRM id only when the lead was saved locally.
+      return prisma.quoteRequest
+        .update({ where: { id: submissionId }, data: { crmContactId: contactId } })
+        .then(() => addToPipeline(contactId, data.serviceType, data.city));
+    }
 
-  Promise.allSettled([
-    // Email — customer confirmation
-    sendQuoteConfirmationEmail(data),
+    if (contactId) {
+      return addToPipeline(contactId, data.serviceType, data.city);
+    }
+  });
 
-    // Email — admin notification
-    sendQuoteAdminNotification(data),
+  if (!savedToDatabase) {
+    const [, adminResult] = await Promise.allSettled([customerEmail, adminEmail]);
 
-    // SMS — only if opted in
-    data.smsOptIn
-      ? sendQuoteConfirmationSms(data.phone, firstName, data.serviceType)
-      : Promise.resolve(),
+    if (adminResult.status === "rejected") {
+      console.error("Fallback quote email failed:", adminResult.reason);
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "We couldn't submit your request online. Please call or email us and we'll help right away.",
+        },
+        { status: 500 }
+      );
+    }
 
-    // CRM — upsert contact + pipeline
-    upsertCrmContact(data).then((contactId) => {
-      if (contactId) {
-        // Update DB record with CRM id
-        prisma.quoteRequest
-          .update({ where: { id: submission.id }, data: { crmContactId: contactId } })
-          .catch(console.error);
+    Promise.allSettled([sms, crm]).catch(console.error);
 
-        return addToPipeline(contactId, data.serviceType, data.city);
-      }
-    }),
-  ]).catch(console.error);
+    return NextResponse.json(
+      {
+        success: true,
+        message: "Quote request received! We'll be in touch within 2 business hours.",
+        data: { id: null, savedToDatabase: false },
+      },
+      { status: 202 }
+    );
+  }
+
+  Promise.allSettled([customerEmail, adminEmail, sms, crm]).catch(console.error);
 
   // ── 7. Respond ───────────────────────────────────────────────────────────
   return NextResponse.json(
     {
       success: true,
       message: "Quote request received! We'll be in touch within 2 business hours.",
-      data: { id: submission.id },
+      data: { id: submissionId },
     },
     { status: 201 }
   );
