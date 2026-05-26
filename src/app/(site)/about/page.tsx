@@ -1,9 +1,17 @@
 import type { Metadata } from "next";
-import Image             from "next/image";
-import Link              from "next/link";
+import Image from "next/image";
+import Link from "next/link";
 import { ArrowRight, CheckCircle2, Leaf, Shield, Clock, Heart, Star } from "lucide-react";
-import { SectionHeader }  from "@/components/ui/section-header";
-import { STATS, TRUST_POINTS, BUSINESS, WHO_WE_ARE, CLIENT_TYPES, SERVICE_PILLARS, SITE_URL } from "@/lib/constants";
+import { SectionHeader } from "@/components/ui/section-header";
+import {
+  STATS,
+  TRUST_POINTS,
+  BUSINESS,
+  WHO_WE_ARE,
+  CLIENT_TYPES,
+  SERVICE_PILLARS,
+  SITE_URL,
+} from "@/lib/constants";
 import { SITE_IMAGES } from "@/lib/site-images";
 import { PageHero } from "@/components/motion/page-hero";
 import { MotionSection } from "@/components/motion/motion-section";
@@ -13,20 +21,31 @@ import { ParallaxImageWrap } from "@/components/motion/parallax";
 
 export const metadata: Metadata = {
   title: "About Us | Ontario's Trusted Waste Partner",
-  description:
-    `Learn about ${BUSINESS.name} — our mission, environmental commitment, and values that drive our waste collection and recycling services across Ontario.`,
+  description: `Learn about ${BUSINESS.name} — our mission, environmental commitment, and values that drive our waste collection and recycling services across Ontario.`,
   alternates: { canonical: `${SITE_URL}/about` },
 };
 
 const VALUES = [
-  { icon: Leaf,   title: "Environmental Responsibility",
-    desc: "Every decision we make prioritizes reducing landfill impact. We invest in better sorting, recycling partnerships, and cleaner disposal methods." },
-  { icon: Shield, title: "Professionalism & Accountability",
-    desc: "Our crews are trained, uniformed, and insured. We show up on time, communicate proactively, and stand behind our work." },
-  { icon: Clock,  title: "Reliability Above All",
-    desc: "A missed pickup isn't a minor inconvenience — it's a broken promise. We've built our entire operation around never letting that happen." },
-  { icon: Heart,  title: "Community First",
-    desc: "We're a local Ontario business serving Ontario communities. The cleanliness and health of these neighbourhoods matters to us personally." },
+  {
+    icon: Leaf,
+    title: "Environmental Responsibility",
+    desc: "Every decision we make prioritizes reducing landfill impact. We invest in better sorting, recycling partnerships, and cleaner disposal methods.",
+  },
+  {
+    icon: Shield,
+    title: "Professionalism & Accountability",
+    desc: "Our crews are trained, uniformed, and insured. We show up on time, communicate proactively, and stand behind our work.",
+  },
+  {
+    icon: Clock,
+    title: "Reliability Above All",
+    desc: "A missed pickup isn't a minor inconvenience — it's a broken promise. We've built our entire operation around never letting that happen.",
+  },
+  {
+    icon: Heart,
+    title: "Community First",
+    desc: "We're a local Ontario business serving Ontario communities. The cleanliness and health of these neighbourhoods matters to us personally.",
+  },
 ];
 
 export default function AboutPage() {
@@ -63,7 +82,7 @@ export default function AboutPage() {
               </div>
               <Link
                 href="/contact#quote"
-                className="inline-flex items-center gap-2 rounded-lg bg-green-500 px-6 py-3 text-sm font-semibold text-white hover:bg-green-600 transition-colors"
+                className="inline-flex items-center gap-2 rounded-lg bg-green-500 px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-green-600"
               >
                 Work With Us <ArrowRight className="h-4 w-4" />
               </Link>
@@ -82,14 +101,14 @@ export default function AboutPage() {
                 </div>
               </ParallaxImageWrap>
               <StatsGrid stats={STATS} valueClassName="text-4xl mb-1" />
-              <div className="rounded-2xl bg-hero-gradient p-6 text-white text-center">
-                  <div className="flex justify-center gap-0.5 mb-2">
-                    {[1, 2, 3, 4, 5].map((s) => (
-                      <Star key={s} className="h-5 w-5 fill-amber-400 text-amber-400" />
-                    ))}
-                  </div>
-                  <p className="text-2xl font-bold">4.9 / 5</p>
-                  <p className="text-white/70 text-sm">Average customer rating</p>
+              <div className="rounded-2xl bg-hero-gradient p-6 text-center text-white">
+                <div className="mb-2 flex justify-center gap-0.5">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star key={s} className="h-5 w-5 fill-amber-400 text-amber-400" />
+                  ))}
+                </div>
+                <p className="text-2xl font-bold">4.9 / 5</p>
+                <p className="text-sm text-white/70">Average customer rating</p>
               </div>
             </div>
           </div>
@@ -105,21 +124,23 @@ export default function AboutPage() {
             centered
             className="mb-10"
           />
-          <Stagger className="grid gap-6 lg:grid-cols-2 max-w-4xl mx-auto mb-10">
+          <Stagger className="mx-auto mb-10 grid max-w-4xl gap-6 lg:grid-cols-2">
             {SERVICE_PILLARS.map((pillar) => (
               <StaggerItem key={pillar.title}>
                 <Link
                   href={pillar.href}
-                  className="block rounded-2xl border border-border bg-card p-6 shadow-card text-center transition-all duration-300 hover:-translate-y-1 hover:border-green-200 hover:shadow-card-hover"
+                  className="block rounded-2xl border border-border bg-card p-6 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-green-200 hover:shadow-card-hover"
                 >
-                  <span className="text-3xl block mb-3" aria-hidden="true">{pillar.icon}</span>
-                  <h3 className="font-bold text-foreground mb-2">{pillar.title}</h3>
+                  <span className="mb-3 block text-3xl" aria-hidden="true">
+                    {pillar.icon}
+                  </span>
+                  <h3 className="mb-2 font-bold text-foreground">{pillar.title}</h3>
                   <p className="text-sm text-muted-foreground">{pillar.desc}</p>
                 </Link>
               </StaggerItem>
             ))}
           </Stagger>
-          <Stagger className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 max-w-5xl mx-auto">
+          <Stagger className="mx-auto grid max-w-5xl gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {CLIENT_TYPES.map((client) => (
               <StaggerItem key={client}>
                 <li className="flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-3 text-sm text-foreground/80">
@@ -149,7 +170,7 @@ export default function AboutPage() {
                     <Icon className="h-6 w-6" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-foreground mb-1.5">{title}</h3>
+                    <h3 className="mb-1.5 font-bold text-foreground">{title}</h3>
                     <p className="text-sm leading-relaxed text-muted-foreground">{desc}</p>
                   </div>
                 </div>
@@ -170,10 +191,10 @@ export default function AboutPage() {
           <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {TRUST_POINTS.map((point) => (
               <StaggerItem key={point.title}>
-                <div className="h-full rounded-xl border border-border bg-card p-5 shadow-card text-center transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover">
-                  <div className="text-3xl mb-3">{point.icon}</div>
-                  <h3 className="text-sm font-bold text-foreground mb-1">{point.title}</h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{point.desc}</p>
+                <div className="h-full rounded-xl border border-border bg-card p-5 text-center shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover">
+                  <div className="mb-3 text-3xl">{point.icon}</div>
+                  <h3 className="mb-1 text-sm font-bold text-foreground">{point.title}</h3>
+                  <p className="text-xs leading-relaxed text-muted-foreground">{point.desc}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -198,24 +219,24 @@ export default function AboutPage() {
             <span className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-green-600">
               <Leaf className="h-3.5 w-3.5" /> Environmental Commitment
             </span>
-            <h2 className="text-3xl font-bold sm:text-4xl text-balance text-foreground">
+            <h2 className="text-balance text-3xl font-bold text-foreground sm:text-4xl">
               We're Not Just Removing Waste. We're Protecting Ontario.
             </h2>
-            <p className="text-muted-foreground text-lg leading-relaxed">
+            <p className="text-lg leading-relaxed text-muted-foreground">
               Over 50% of the waste we collect never reaches a landfill. Through partnerships with
-              Ontario recycling facilities, composting programs, and material recovery centres,
-              we give discarded items a second life wherever possible.
+              Ontario recycling facilities, composting programs, and material recovery centres, we
+              give discarded items a second life wherever possible.
             </p>
             <Stagger className="grid grid-cols-3 gap-4">
               {[
                 { value: "50%+", label: "Waste diverted from landfill" },
-                { value: "12T",  label: "Materials recycled monthly" },
-                { value: "3",    label: "Recycling facility partners" },
+                { value: "12T", label: "Materials recycled monthly" },
+                { value: "3", label: "Recycling facility partners" },
               ].map(({ value, label }) => (
                 <StaggerItem key={label}>
-                  <div className="rounded-xl border border-border bg-card p-4 shadow-card text-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover">
+                  <div className="rounded-xl border border-border bg-card p-4 text-center shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover">
                     <CountUp value={value} className="text-2xl font-bold text-green-600" />
-                    <div className="text-xs text-muted-foreground mt-1">{label}</div>
+                    <div className="mt-1 text-xs text-muted-foreground">{label}</div>
                   </div>
                 </StaggerItem>
               ))}
@@ -225,68 +246,93 @@ export default function AboutPage() {
       </MotionSection>
 
       <MotionSection className="bg-section-alt" containerClassName="max-w-3xl">
-          <SectionHeader
-            eyebrow="Business Information"
-            title="Registered Ontario Business"
-            subtitle="Official registration and contact details for Citywide Waste Solutions."
-            centered
-            className="mb-8"
-          />
-          <dl className="grid gap-4 sm:grid-cols-2 rounded-2xl border border-border bg-card p-6 shadow-card text-sm">
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Legal Business Name</dt>
-              <dd className="mt-1 font-medium text-foreground">{BUSINESS.legalName}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Owner / Registrant</dt>
-              <dd className="mt-1 font-medium text-foreground">{BUSINESS.owner}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Business Number</dt>
-              <dd className="mt-1 font-medium text-foreground">{BUSINESS.businessNumber}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Business Identification Number (BIN)</dt>
-              <dd className="mt-1 font-medium text-foreground">{BUSINESS.bin}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">NAICS Code</dt>
-              <dd className="mt-1 font-medium text-foreground">{BUSINESS.naics.full}</dd>
-            </div>
-            <div className="sm:col-span-2">
-              <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Registered Address</dt>
-              <dd className="mt-1 font-medium text-foreground">{BUSINESS.address.full}</dd>
-            </div>
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Email</dt>
-              <dd className="mt-1">
-                <a href={`mailto:${BUSINESS.email}`} className="font-medium text-green-600 hover:underline">
-                  {BUSINESS.email}
-                </a>
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Phone</dt>
-              <dd className="mt-1">
-                <a href={`tel:${BUSINESS.phoneRaw}`} className="font-medium text-green-600 hover:underline">
-                  {BUSINESS.phone}
-                </a>
-              </dd>
-            </div>
-          </dl>
+        <SectionHeader
+          eyebrow="Business Information"
+          title="Registered Ontario Business"
+          subtitle="Official registration and contact details for Citywide Waste Solutions."
+          centered
+          className="mb-8"
+        />
+        <dl className="grid gap-4 rounded-2xl border border-border bg-card p-6 text-sm shadow-card sm:grid-cols-2">
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Legal Business Name
+            </dt>
+            <dd className="mt-1 font-medium text-foreground">{BUSINESS.legalName}</dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Owner / Registrant
+            </dt>
+            <dd className="mt-1 font-medium text-foreground">{BUSINESS.owner}</dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Business Number
+            </dt>
+            <dd className="mt-1 font-medium text-foreground">{BUSINESS.businessNumber}</dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Business Identification Number (BIN)
+            </dt>
+            <dd className="mt-1 font-medium text-foreground">{BUSINESS.bin}</dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              NAICS Code
+            </dt>
+            <dd className="mt-1 font-medium text-foreground">{BUSINESS.naics.full}</dd>
+          </div>
+          <div className="sm:col-span-2">
+            <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Registered Address
+            </dt>
+            <dd className="mt-1 font-medium text-foreground">{BUSINESS.address.full}</dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Email
+            </dt>
+            <dd className="mt-1">
+              <a
+                href={`mailto:${BUSINESS.email}`}
+                className="font-medium text-green-600 hover:underline"
+              >
+                {BUSINESS.email}
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+              Phone
+            </dt>
+            <dd className="mt-1">
+              <a
+                href={`tel:${BUSINESS.phoneRaw}`}
+                className="font-medium text-green-600 hover:underline"
+              >
+                {BUSINESS.phone}
+              </a>
+            </dd>
+          </div>
+        </dl>
       </MotionSection>
 
-      <MotionSection className="bg-background" containerClassName="max-w-xl mx-auto text-center space-y-4">
-          <h2 className="text-2xl font-bold text-foreground">Ready to work together?</h2>
-          <p className="text-muted-foreground">
-            Get a free, no-commitment quote for your home or business in under 2 minutes.
-          </p>
-          <Link
-            href="/contact#quote"
-            className="inline-flex items-center gap-2 rounded-lg bg-green-500 px-7 py-3.5 text-sm font-bold text-white hover:bg-green-600 transition-colors shadow-green"
-          >
-            Get Free Quote <ArrowRight className="h-4 w-4" />
-          </Link>
+      <MotionSection
+        className="bg-background"
+        containerClassName="max-w-xl mx-auto text-center space-y-4"
+      >
+        <h2 className="text-2xl font-bold text-foreground">Ready to work together?</h2>
+        <p className="text-muted-foreground">
+          Get a free, no-commitment quote for your home or business in under 2 minutes.
+        </p>
+        <Link
+          href="/contact#quote"
+          className="inline-flex items-center gap-2 rounded-lg bg-green-500 px-7 py-3.5 text-sm font-bold text-white shadow-green transition-colors hover:bg-green-600"
+        >
+          Get Free Quote <ArrowRight className="h-4 w-4" />
+        </Link>
       </MotionSection>
     </>
   );

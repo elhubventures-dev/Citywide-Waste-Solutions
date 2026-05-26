@@ -12,11 +12,11 @@ export function WhatsAppFloat() {
     >
       {/* Live pulse ring */}
       <span
-        className="absolute inset-0 rounded-full bg-[#25D366] opacity-60 animate-ping"
+        className="absolute inset-0 animate-ping rounded-full bg-[#25D366] opacity-60"
         aria-hidden="true"
       />
       <span
-        className="relative flex h-full w-full items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-[#25D366]/30 transition-transform group-hover:scale-105 group-hover:shadow-xl group-hover:shadow-[#25D366]/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366]"
+        className="relative flex h-full w-full items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg shadow-[#25D366]/30 transition-transform focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#25D366] group-hover:scale-105 group-hover:shadow-xl group-hover:shadow-[#25D366]/40"
         aria-hidden="true"
       >
         <WhatsAppIcon className="h-5 w-5 sm:h-6 sm:w-6" />

@@ -75,6 +75,8 @@ function emailLayout(title: string, body: string): string {
               <a href="tel:${BUSINESS.phoneRaw}" style="color:${GREEN};text-decoration:none;">${BUSINESS.phone}</a>
               &nbsp;·&nbsp;
               <a href="mailto:${BUSINESS.email}" style="color:${GREEN};text-decoration:none;">${BUSINESS.email}</a>
+              &nbsp;·&nbsp;
+              <a href="${SITE_URL}" style="color:${GREEN};text-decoration:none;">${SITE_URL.replace("https://", "")}</a>
             </p>
             <p style="margin:12px 0 0;font-size:11px;color:#adbdb5;">© ${new Date().getFullYear()} ${BRAND}. All rights reserved.</p>
           </td>
@@ -142,7 +144,7 @@ export async function sendQuoteAdminNotification(data: QuoteFormData) {
 
     <div style="display:flex;gap:12px;">
       <a href="mailto:${data.email}" style="display:inline-block;background:${GREEN};color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:10px 20px;border-radius:8px;margin-right:8px;">Reply to ${data.fullName.split(" ")[0]} →</a>
-      <a href="${SITE_URL}/admin" style="display:inline-block;border:2px solid ${GREEN};color:${GREEN};text-decoration:none;font-size:14px;font-weight:600;padding:10px 20px;border-radius:8px;">Open Admin Panel</a>
+      <a href="${SITE_URL}/admin/dashboard" style="display:inline-block;border:2px solid ${GREEN};color:${GREEN};text-decoration:none;font-size:14px;font-weight:600;padding:10px 20px;border-radius:8px;">Open Admin Panel</a>
     </div>
   `;
 
@@ -193,9 +195,10 @@ export async function sendContactAdminNotification(data: ContactFormData) {
       <tr><td style="padding:6px 0;font-size:14px;color:#637d73;vertical-align:top;">Message</td><td style="font-size:14px;color:#141c18;line-height:1.6;">${data.message}</td></tr>
     </table>
 
-    <a href="mailto:${data.email}?subject=Re: ${encodeURIComponent(data.subject)}" style="display:inline-block;background:${GREEN};color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:10px 24px;border-radius:8px;">
+    <a href="mailto:${data.email}?subject=Re: ${encodeURIComponent(data.subject)}" style="display:inline-block;background:${GREEN};color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:10px 24px;border-radius:8px;margin-right:8px;">
       Reply Now →
     </a>
+    <a href="${SITE_URL}/admin/dashboard" style="display:inline-block;border:2px solid ${GREEN};color:${GREEN};text-decoration:none;font-size:14px;font-weight:600;padding:10px 20px;border-radius:8px;">Open Admin Panel</a>
   `;
 
   return sendEmail({

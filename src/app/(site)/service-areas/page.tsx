@@ -35,10 +35,10 @@ export default function ServiceAreasPage() {
                   <MapPin className="h-5 w-5" />
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-lg font-bold text-foreground group-hover:text-green-600 transition-colors">
+                  <h2 className="text-lg font-bold text-foreground transition-colors group-hover:text-green-600">
                     {area.name}
                   </h2>
-                  <p className="mt-1 text-sm text-muted-foreground leading-relaxed">{area.desc}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{area.desc}</p>
                   <p className="mt-2 flex items-center gap-1 text-xs text-muted-foreground">
                     <Users className="h-3 w-3" />
                     Pop. {area.pop}

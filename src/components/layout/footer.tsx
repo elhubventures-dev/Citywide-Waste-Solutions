@@ -6,30 +6,33 @@ import { Logo } from "@/components/layout/logo";
 import { WhatsAppIcon } from "@/components/icons/whatsapp-icon";
 
 const SOCIAL_LINKS = [
-  { icon: WhatsAppIcon, label: "WhatsApp",  href: BUSINESS.social.whatsapp,  brand: true },
-  { icon: Facebook,     label: "Facebook",  href: BUSINESS.social.facebook },
-  { icon: Instagram,    label: "Instagram", href: BUSINESS.social.instagram },
-  { icon: Linkedin,     label: "LinkedIn",  href: BUSINESS.social.linkedin },
+  { icon: WhatsAppIcon, label: "WhatsApp", href: BUSINESS.social.whatsapp, brand: true },
+  { icon: Facebook, label: "Facebook", href: BUSINESS.social.facebook },
+  { icon: Instagram, label: "Instagram", href: BUSINESS.social.instagram },
+  { icon: Linkedin, label: "LinkedIn", href: BUSINESS.social.linkedin },
 ] as const;
 
 const FOOTER_SERVICES = SERVICES.map((s) => ({ label: s.shortTitle, href: `/services/${s.slug}` }));
-const FOOTER_AREAS    = SERVICE_AREAS.map((a) => ({ label: a.name,        href: `/service-areas/${a.slug}` }));
+const FOOTER_AREAS = SERVICE_AREAS.map((a) => ({
+  label: a.name,
+  href: `/service-areas/${a.slug}`,
+}));
 
 const COMPANY_LINKS = [
-  { label: "About Us",       href: "/about" },
-  { label: "Our Services",   href: "/services" },
-  { label: "Pricing",        href: "/pricing" },
+  { label: "About Us", href: "/about" },
+  { label: "Our Services", href: "/services" },
+  { label: "Pricing", href: "/pricing" },
   { label: "Recycling Info", href: "/recycling" },
-  { label: "Blog",           href: "/blog" },
-  { label: "Contact",        href: "/contact" },
+  { label: "Blog", href: "/blog" },
+  { label: "Contact", href: "/contact" },
 ];
 
 const LEGAL_LINKS = [
-  { label: "Privacy Policy",    href: "/privacy" },
-  { label: "Terms of Service",  href: "/terms" },
-  { label: "Disclaimer",        href: "/terms#disclaimer" },
-  { label: "Cookie Policy",     href: "/cookies" },
-  { label: "Support",           href: "/contact" },
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
+  { label: "Disclaimer", href: "/terms#disclaimer" },
+  { label: "Cookie Policy", href: "/cookies" },
+  { label: "Support", href: "/contact" },
 ];
 
 export function Footer() {
@@ -40,12 +43,11 @@ export function Footer() {
       {/* Main footer grid */}
       <div className="container py-16">
         <div className="grid gap-12 lg:grid-cols-5">
-
           {/* Brand col */}
-          <div className="lg:col-span-2 space-y-6">
+          <div className="space-y-6 lg:col-span-2">
             <Logo variant="footer" size="xl" />
 
-            <p className="text-sm leading-relaxed text-white/60 max-w-xs">
+            <p className="max-w-xs text-sm leading-relaxed text-white/60">
               Ontario's trusted waste collection and recycling partner. Professional, eco-conscious,
               and committed to cleaner communities since 2014.
             </p>
@@ -84,8 +86,10 @@ export function Footer() {
               <li className="flex items-start gap-3 text-sm text-white/70">
                 <Clock className="mt-0.5 h-4 w-4 shrink-0 text-green-400" />
                 <span>
-                  {BUSINESS.hours.weekdays}<br />
-                  {BUSINESS.hours.saturday}<br />
+                  {BUSINESS.hours.weekdays}
+                  <br />
+                  {BUSINESS.hours.saturday}
+                  <br />
                   {BUSINESS.hours.sunday}
                 </span>
               </li>
@@ -104,7 +108,9 @@ export function Footer() {
                     aria-label={s.label}
                     className={cn(
                       "flex h-9 w-9 items-center justify-center rounded-lg border border-white/10 text-white/50 transition-all hover:border-green-500 hover:bg-green-500/10 hover:text-white",
-                      "brand" in s && s.brand && "hover:border-[#25D366] hover:bg-[#25D366]/10 hover:text-[#25D366]"
+                      "brand" in s &&
+                        s.brand &&
+                        "hover:border-[#25D366] hover:bg-[#25D366]/10 hover:text-[#25D366]"
                     )}
                   >
                     <Icon className="h-4 w-4" />
@@ -133,7 +139,9 @@ export function Footer() {
 
           {/* Links — Areas */}
           <div className="space-y-4">
-            <h3 className="text-xs font-bold uppercase tracking-widest text-white/40">Service Areas</h3>
+            <h3 className="text-xs font-bold uppercase tracking-widest text-white/40">
+              Service Areas
+            </h3>
             <ul className="space-y-2">
               {FOOTER_AREAS.map((link) => (
                 <li key={link.href}>
@@ -175,7 +183,8 @@ export function Footer() {
               © {year} {BUSINESS.name}. All rights reserved.
             </p>
             <p className="text-white/30">
-              {BUSINESS.legalName} · BN {BUSINESS.businessNumber} · BIN {BUSINESS.bin} · NAICS {BUSINESS.naics.full}
+              {BUSINESS.legalName} · BN {BUSINESS.businessNumber} · BIN {BUSINESS.bin} · NAICS{" "}
+              {BUSINESS.naics.full}
             </p>
           </div>
           <div className="flex flex-wrap gap-4">

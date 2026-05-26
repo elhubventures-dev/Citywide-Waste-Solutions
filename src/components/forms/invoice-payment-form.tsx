@@ -5,15 +5,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { loadStripe } from "@stripe/stripe-js";
-import {
-  Elements,
-  PaymentElement,
-  useStripe,
-  useElements,
-} from "@stripe/react-stripe-js";
-import {
-  Search, CreditCard, CheckCircle2, AlertCircle, Loader2, Lock,
-} from "lucide-react";
+import { Elements, PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import { Search, CreditCard, CheckCircle2, AlertCircle, Loader2, Lock } from "lucide-react";
 import { invoicePaymentSchema, type InvoicePaymentValues } from "@/lib/validations";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -25,11 +18,11 @@ const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 
 // ─── Invoice data shape returned by API ──────────────────────────────────────
 interface InvoiceData {
-  invoiceNumber:  string;
-  customerName:   string;
-  amount:         number;
+  invoiceNumber: string;
+  customerName: string;
+  amount: number;
   amountFormatted: string;
-  description?:  string;
+  description?: string;
 }
 
 // ─── Step 1: Lookup form ──────────────────────────────────────────────────────
@@ -49,10 +42,10 @@ function InvoiceLookupForm({
   const onSubmit = async (data: InvoicePaymentValues) => {
     setServerError(null);
     try {
-      const res  = await fetch("/api/stripe/create-payment-intent", {
-        method:  "POST",
+      const res = await fetch("/api/stripe/create-payment-intent", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify(data),
+        body: JSON.stringify(data),
       });
       const json = await res.json();
 
@@ -67,12 +60,13 @@ function InvoiceLookupForm({
     }
   };
 
-  const inputCls = (err?: boolean) => cn(
-    "w-full rounded-lg border bg-background px-4 py-3 text-sm text-foreground",
-    "placeholder:text-muted-foreground transition-colors",
-    "focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500",
-    err ? "border-red-300" : "border-input hover:border-green-300"
-  );
+  const inputCls = (err?: boolean) =>
+    cn(
+      "w-full rounded-lg border bg-background px-4 py-3 text-sm text-foreground",
+      "placeholder:text-muted-foreground transition-colors",
+      "focus:outline-none focus:ring-2 focus:ring-green-500/30 focus:border-green-500",
+      err ? "border-red-300" : "border-input hover:border-green-300"
+    );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
@@ -91,7 +85,9 @@ function InvoiceLookupForm({
       </AnimatePresence>
 
       <div>
-        <label className="label-base">Invoice Number <span className="text-red-500">*</span></label>
+        <label className="label-base">
+          Invoice Number <span className="text-red-500">*</span>
+        </label>
         <input
           {...register("invoiceNumber")}
           type="text"
@@ -105,7 +101,9 @@ function InvoiceLookupForm({
       </div>
 
       <div>
-        <label className="label-base">Email on Invoice <span className="text-red-500">*</span></label>
+        <label className="label-base">
+          Email on Invoice <span className="text-red-500">*</span>
+        </label>
         <input
           {...register("email")}
           type="email"
@@ -113,9 +111,7 @@ function InvoiceLookupForm({
           autoComplete="email"
           className={inputCls(!!errors.email)}
         />
-        {errors.email && (
-          <p className="mt-1.5 text-xs text-red-500">{errors.email.message}</p>
-        )}
+        {errors.email && <p className="mt-1.5 text-xs text-red-500">{errors.email.message}</p>}
       </div>
 
       <Button
@@ -133,16 +129,10 @@ function InvoiceLookupForm({
 }
 
 // ─── Step 2: Stripe checkout form ─────────────────────────────────────────────
-function CheckoutForm({
-  invoice,
-  onSuccess,
-}: {
-  invoice: InvoiceData;
-  onSuccess: () => void;
-}) {
-  const stripe   = useStripe();
+function CheckoutForm({ invoice, onSuccess }: { invoice: InvoiceData; onSuccess: () => void }) {
+  const stripe = useStripe();
   const elements = useElements();
-  const [error,   setError]   = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handlePay = async () => {
@@ -235,7 +225,8 @@ function PaymentSuccess({ invoiceNumber }: { invoiceNumber: string }) {
       <div>
         <h3 className="text-xl font-bold text-foreground">Payment Successful!</h3>
         <p className="mt-2 text-sm text-muted-foreground">
-          Invoice <strong>#{invoiceNumber}</strong> has been paid. A receipt has been sent to your email.
+          Invoice <strong>#{invoiceNumber}</strong> has been paid. A receipt has been sent to your
+          email.
         </p>
       </div>
     </motion.div>
@@ -244,9 +235,9 @@ function PaymentSuccess({ invoiceNumber }: { invoiceNumber: string }) {
 
 // ─── Root component ───────────────────────────────────────────────────────────
 export function InvoicePaymentForm() {
-  const [step,         setStep]         = useState<"lookup" | "checkout" | "done">("lookup");
+  const [step, setStep] = useState<"lookup" | "checkout" | "done">("lookup");
   const [clientSecret, setClientSecret] = useState<string>("");
-  const [invoice,      setInvoice]      = useState<InvoiceData | null>(null);
+  const [invoice, setInvoice] = useState<InvoiceData | null>(null);
 
   const handleFound = (secret: string, inv: InvoiceData) => {
     setClientSecret(secret);
@@ -266,8 +257,8 @@ export function InvoicePaymentForm() {
                 step === s || (s === "done" && step === "done")
                   ? "bg-green-500 text-white"
                   : i < ["lookup", "checkout", "done"].indexOf(step)
-                  ? "bg-green-200 text-green-700"
-                  : "bg-muted text-muted-foreground"
+                    ? "bg-green-200 text-green-700"
+                    : "bg-muted text-muted-foreground"
               )}
             >
               {i + 1}
@@ -279,13 +270,23 @@ export function InvoicePaymentForm() {
 
       <AnimatePresence mode="wait">
         {step === "lookup" && (
-          <motion.div key="lookup" initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 16 }}>
+          <motion.div
+            key="lookup"
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 16 }}
+          >
             <InvoiceLookupForm onFound={handleFound} />
           </motion.div>
         )}
 
         {step === "checkout" && clientSecret && invoice && (
-          <motion.div key="checkout" initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}>
+          <motion.div
+            key="checkout"
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0 }}
+          >
             <Elements
               stripe={stripePromise}
               options={{

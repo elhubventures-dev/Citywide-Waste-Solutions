@@ -21,13 +21,16 @@ export function SpecializedSolutionsSection() {
           {SPECIALIZED_SOLUTIONS.map((item) => (
             <StaggerItem key={item.title}>
               <article className="h-full rounded-2xl border border-border bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-card-hover">
-                <h3 className="text-lg font-bold text-foreground mb-2">{item.title}</h3>
-                <p className="text-sm leading-relaxed text-muted-foreground mb-4">{item.description}</p>
+                <h3 className="mb-2 text-lg font-bold text-foreground">{item.title}</h3>
+                <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
+                  {item.description}
+                </p>
                 <Link
                   href={item.href}
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-green-600 hover:text-green-700 transition-colors"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold text-green-600 transition-colors hover:text-green-700"
                 >
-                  Read more <ArrowRight className="h-4 w-4 transition-transform hover:translate-x-0.5" />
+                  Read more{" "}
+                  <ArrowRight className="h-4 w-4 transition-transform hover:translate-x-0.5" />
                 </Link>
               </article>
             </StaggerItem>

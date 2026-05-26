@@ -1,14 +1,14 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://citywidewastesolutions.ca",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://www.citywidewastesolutions.com",
   generateRobotsTxt: true,
   robotsTxtOptions: {
     policies: [
-      { userAgent: "*",      allow: "/" },
-      { userAgent: "*",      disallow: ["/admin", "/api", "/_next"] },
+      { userAgent: "*", allow: "/" },
+      { userAgent: "*", disallow: ["/admin", "/api", "/_next"] },
     ],
     additionalSitemaps: [
-      "https://citywidewastesolutions.ca/server-sitemap.xml", // for dynamic blog pages
+      "https://www.citywidewastesolutions.com/server-sitemap.xml", // for dynamic blog pages
     ],
   },
   exclude: ["/admin/*", "/api/*"],
@@ -28,16 +28,16 @@ module.exports = {
 
     return [
       ...services.map((s) => ({
-        loc:        `/services/${s}`,
+        loc: `/services/${s}`,
         changefreq: "monthly",
-        priority:   0.8,
-        lastmod:    new Date().toISOString(),
+        priority: 0.8,
+        lastmod: new Date().toISOString(),
       })),
       ...areas.map((a) => ({
-        loc:        `/service-areas/${a}`,
+        loc: `/service-areas/${a}`,
         changefreq: "monthly",
-        priority:   0.8,
-        lastmod:    new Date().toISOString(),
+        priority: 0.8,
+        lastmod: new Date().toISOString(),
       })),
     ];
   },

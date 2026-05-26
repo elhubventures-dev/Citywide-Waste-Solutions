@@ -5,13 +5,13 @@ export const runtime = "nodejs";
 
 // Map Sanity document types to Next.js cache tags
 const TYPE_TAG_MAP: Record<string, string[]> = {
-  blogPost:     ["blog", "blog-list"],
+  blogPost: ["blog", "blog-list"],
   blogCategory: ["blog", "categories"],
-  service:      ["services"],
-  serviceArea:  ["service-areas"],
-  pricingTier:  ["pricing"],
-  testimonial:  ["testimonials"],
-  faq:          ["faqs"],
+  service: ["services"],
+  serviceArea: ["service-areas"],
+  pricingTier: ["pricing"],
+  testimonial: ["testimonials"],
+  faq: ["faqs"],
   siteSettings: ["site-settings"],
 };
 

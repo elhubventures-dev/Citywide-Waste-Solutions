@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { prisma } from "@/lib/prisma";
 import { sendPaymentConfirmationEmail } from "@/lib/email";
-import { sendPaymentConfirmationSms }   from "@/lib/sms";
+import { sendPaymentConfirmationSms } from "@/lib/sms";
 
 export const runtime = "nodejs";
 
@@ -19,13 +19,13 @@ function getStripeClient() {
 
   stripe ??= new Stripe(secretKey, {
     apiVersion: "2024-06-20",
-    typescript:  true,
+    typescript: true,
   });
   return stripe;
 }
 
 export async function POST(req: NextRequest) {
-  const body      = await req.text();
+  const body = await req.text();
   const signature = req.headers.get("stripe-signature");
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
 
@@ -50,8 +50,8 @@ export async function POST(req: NextRequest) {
   try {
     switch (event.type) {
       case "payment_intent.succeeded": {
-        const pi       = event.data.object as Stripe.PaymentIntent;
-        const meta     = pi.metadata;
+        const pi = event.data.object as Stripe.PaymentIntent;
+        const meta = pi.metadata;
         const invoiceId = meta.invoiceId;
 
         if (!invoiceId) break;
@@ -60,13 +60,14 @@ export async function POST(req: NextRequest) {
         const invoice = await prisma.invoice.update({
           where: { id: invoiceId },
           data: {
-            status:  "COMPLETED",
-            paidAt:  new Date(),
+            status: "COMPLETED",
+            paidAt: new Date(),
           },
         });
 
         const amountFormatted = new Intl.NumberFormat("en-CA", {
-          style: "currency", currency: "CAD",
+          style: "currency",
+          currency: "CAD",
         }).format(pi.amount / 100);
 
         // Send confirmation email
@@ -80,7 +81,7 @@ export async function POST(req: NextRequest) {
         // Send confirmation SMS if we have a phone on the invoice record
         // (phone is stored via quote request — look up via email)
         const quoteRecord = await prisma.quoteRequest.findFirst({
-          where:   { email: meta.customerEmail },
+          where: { email: meta.customerEmail },
           orderBy: { createdAt: "desc" },
         });
 
@@ -100,10 +101,12 @@ export async function POST(req: NextRequest) {
       case "payment_intent.payment_failed": {
         const pi = event.data.object as Stripe.PaymentIntent;
         if (pi.metadata.invoiceId) {
-          await prisma.invoice.update({
-            where: { id: pi.metadata.invoiceId },
-            data:  { status: "FAILED" },
-          }).catch(console.error);
+          await prisma.invoice
+            .update({
+              where: { id: pi.metadata.invoiceId },
+              data: { status: "FAILED" },
+            })
+            .catch(console.error);
         }
         console.warn(`❌ Payment failed: ${pi.id}`);
         break;
@@ -112,10 +115,12 @@ export async function POST(req: NextRequest) {
       case "payment_intent.canceled": {
         const pi = event.data.object as Stripe.PaymentIntent;
         if (pi.metadata.invoiceId) {
-          await prisma.invoice.update({
-            where: { id: pi.metadata.invoiceId },
-            data:  { status: "PENDING" },
-          }).catch(console.error);
+          await prisma.invoice
+            .update({
+              where: { id: pi.metadata.invoiceId },
+              data: { status: "PENDING" },
+            })
+            .catch(console.error);
         }
         break;
       }

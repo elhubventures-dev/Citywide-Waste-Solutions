@@ -19,10 +19,7 @@ export const quoteFormSchema = z.object({
     .max(80, "Name too long")
     .regex(/^[a-zA-Z\s'-]+$/, "Name can only contain letters, spaces, hyphens, and apostrophes"),
 
-  email: z
-    .string()
-    .email("Please enter a valid email address")
-    .max(254, "Email too long"),
+  email: z.string().email("Please enter a valid email address").max(254, "Email too long"),
 
   phone: phoneSchema,
 
@@ -38,19 +35,13 @@ export const quoteFormSchema = z.object({
     { errorMap: () => ({ message: "Please select a service type" }) }
   ),
 
-  city: z.enum(
-    ["Vaughan", "Toronto", "Brampton", "Mississauga", "Courtice", "Other"],
-    { errorMap: () => ({ message: "Please select your city" }) }
-  ),
+  city: z.enum(["Vaughan", "Toronto", "Brampton", "Mississauga", "Courtice", "Other"], {
+    errorMap: () => ({ message: "Please select your city" }),
+  }),
 
-  pickupFrequency: z
-    .enum(["Weekly", "Bi-Weekly", "Monthly", "One-Time", "Custom"])
-    .optional(),
+  pickupFrequency: z.enum(["Weekly", "Bi-Weekly", "Monthly", "One-Time", "Custom"]).optional(),
 
-  message: z
-    .string()
-    .max(1000, "Message must be under 1000 characters")
-    .optional(),
+  message: z.string().max(1000, "Message must be under 1000 characters").optional(),
 
   smsOptIn: z.boolean().default(false),
 
@@ -62,21 +53,13 @@ export type QuoteFormValues = z.infer<typeof quoteFormSchema>;
 // ─── Contact Form ─────────────────────────────────────────────────────────────
 
 export const contactFormSchema = z.object({
-  fullName: z
-    .string()
-    .min(2, "Full name must be at least 2 characters")
-    .max(80, "Name too long"),
+  fullName: z.string().min(2, "Full name must be at least 2 characters").max(80, "Name too long"),
 
-  email: z
-    .string()
-    .email("Please enter a valid email address"),
+  email: z.string().email("Please enter a valid email address"),
 
   phone: phoneSchema.optional().or(z.literal("")),
 
-  subject: z
-    .string()
-    .min(3, "Subject must be at least 3 characters")
-    .max(120, "Subject too long"),
+  subject: z.string().min(3, "Subject must be at least 3 characters").max(120, "Subject too long"),
 
   message: z
     .string()
@@ -92,7 +75,7 @@ export type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export const newsletterSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
-  name:  z.string().max(80).optional(),
+  name: z.string().max(80).optional(),
 });
 
 export type NewsletterValues = z.infer<typeof newsletterSchema>;
@@ -106,9 +89,7 @@ export const invoicePaymentSchema = z.object({
     .max(30, "Invoice number too long")
     .regex(/^[A-Z0-9\-]+$/i, "Invalid invoice number format"),
 
-  email: z
-    .string()
-    .email("Please enter the email address on the invoice"),
+  email: z.string().email("Please enter the email address on the invoice"),
 });
 
 export type InvoicePaymentValues = z.infer<typeof invoicePaymentSchema>;

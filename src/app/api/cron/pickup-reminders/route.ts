@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { sendPickupReminderSms }  from "@/lib/sms";
+import { sendPickupReminderSms } from "@/lib/sms";
 import { sendPaymentReminderSms } from "@/lib/sms";
 import { sendContactAdminNotification } from "@/lib/email";
 
@@ -19,21 +19,23 @@ export async function GET(req: NextRequest) {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const tomorrowStart = new Date(tomorrow.setHours(0, 0, 0, 0));
-  const tomorrowEnd   = new Date(tomorrow.setHours(23, 59, 59, 999));
+  const tomorrowEnd = new Date(tomorrow.setHours(23, 59, 59, 999));
 
   // Find all pickups scheduled for tomorrow
   const pickups = await prisma.pickupSchedule.findMany({
     where: {
       scheduledDate: { gte: tomorrowStart, lte: tomorrowEnd },
-      isCompleted:   false,
+      isCompleted: false,
     },
   });
 
   const results = await Promise.allSettled(
     pickups.map(async (pickup) => {
       const firstName = pickup.customerName.split(" ")[0];
-      const dateStr   = tomorrowStart.toLocaleDateString("en-CA", {
-        weekday: "long", month: "long", day: "numeric",
+      const dateStr = tomorrowStart.toLocaleDateString("en-CA", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
       });
 
       await sendPickupReminderSms(
@@ -45,7 +47,7 @@ export async function GET(req: NextRequest) {
     })
   );
 
-  const sent   = results.filter((r) => r.status === "fulfilled").length;
+  const sent = results.filter((r) => r.status === "fulfilled").length;
   const failed = results.filter((r) => r.status === "rejected").length;
 
   console.log(`Pickup reminders: ${sent} sent, ${failed} failed`);

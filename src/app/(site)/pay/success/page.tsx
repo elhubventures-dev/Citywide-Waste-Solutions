@@ -9,27 +9,18 @@ export const metadata: Metadata = {
   robots: { index: false },
 };
 
-export default function PaySuccessPage({
-  searchParams,
-}: {
-  searchParams: { invoice?: string };
-}) {
+export default function PaySuccessPage({ searchParams }: { searchParams: { invoice?: string } }) {
   const description = searchParams.invoice
     ? `Invoice #${searchParams.invoice} has been paid successfully. A receipt has been sent to your email.`
     : "Your payment was processed successfully. A receipt has been sent to your email.";
 
   return (
     <>
-      <PageHero
-        centered
-        eyebrow="Payments"
-        title="Payment Confirmed!"
-        description={description}
-      />
+      <PageHero centered eyebrow="Payments" title="Payment Confirmed!" description={description} />
 
       <section className="section min-h-[40vh]">
-        <div className="container pb-16 -mt-4">
-          <div className="mx-auto max-w-md text-center space-y-6">
+        <div className="container -mt-4 pb-16">
+          <div className="mx-auto max-w-md space-y-6 text-center">
             <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-green-100 dark:bg-green-950/40">
               <CheckCircle2 className="h-10 w-10 text-green-600" />
             </div>

@@ -3,6 +3,7 @@
 ## Phase A — Pre-Launch Setup
 
 ### 1. Environment & Secrets
+
 - [ ] Create Vercel project → link GitHub repo
 - [ ] Add all `.env.example` variables to Vercel Environment Variables
   - [ ] `NEXT_PUBLIC_SITE_URL`
@@ -21,6 +22,7 @@
   - [ ] `CRON_SECRET` (random 32-char string for cron auth)
 
 ### 2. Database (Supabase)
+
 - [ ] Create Supabase project in `ca-central-1` region (Canada)
 - [ ] Run `npm run db:push` to apply Prisma schema
 - [ ] Enable Row Level Security on all tables
@@ -28,6 +30,7 @@
 - [ ] Test connection string from local env
 
 ### 3. Sanity CMS
+
 - [ ] Create Sanity project at sanity.io
 - [ ] Copy Project ID → `NEXT_PUBLIC_SANITY_PROJECT_ID`
 - [ ] Run `npm run sanity:build` to verify Studio compiles
@@ -45,6 +48,7 @@
   - [ ] 1–3 initial blog posts
 
 ### 4. Third-Party Services
+
 - [ ] **Stripe:**
   - [ ] Activate live mode account
   - [ ] Add webhook endpoint: `https://citywidewastesolutions.ca/api/stripe/webhook`
@@ -73,6 +77,7 @@
   - [ ] Copy REST URL + token → env vars
 
 ### 5. Cloudflare
+
 - [ ] Add site to Cloudflare (change nameservers at registrar)
 - [ ] Wait for propagation (up to 48h, usually < 2h)
 - [ ] Set SSL mode: Full (Strict)
@@ -86,6 +91,7 @@
 ## Phase B — Launch Day
 
 ### Build & Deploy
+
 - [ ] Run `npm run type-check` — 0 TypeScript errors
 - [ ] Run `npm run lint` — 0 ESLint errors
 - [ ] Run `npm run build` locally — builds successfully
@@ -95,11 +101,13 @@
 - [ ] Check Vercel Function logs — no runtime errors
 
 ### Domain Setup
+
 - [ ] Add custom domain `citywidewastesolutions.ca` in Vercel project settings
 - [ ] Add `www.citywidewastesolutions.ca` → redirect to apex
 - [ ] Verify SSL certificate provisioned in Vercel
 
 ### Smoke Testing (manual, every page)
+
 - [ ] Homepage loads, all sections render, stats show
 - [ ] Navigation: all links work on desktop + mobile drawer
 - [ ] Each of 6 service pages: loads, FAQ accordion works, quote form visible
@@ -117,6 +125,7 @@
 - [ ] /feed.xml: valid RSS output
 
 ### Form & Integration Tests
+
 - [ ] Submit quote form → confirm DB record created
 - [ ] Submit quote form → confirm customer email received
 - [ ] Submit quote form → confirm admin notification email received
@@ -127,6 +136,7 @@
 - [ ] Revalidation webhook: publish a Sanity post → confirm blog page updates
 
 ### Performance Audit
+
 - [ ] Run Lighthouse on homepage (target: 90+/90+/100/100)
 - [ ] Run Lighthouse on /services/residential-waste-collection
 - [ ] Run Lighthouse on /blog (or a blog post)
@@ -138,6 +148,7 @@
 ## Phase C — Post-Launch (Week 1)
 
 ### SEO & Analytics
+
 - [ ] Verify site in Google Search Console
 - [ ] Submit sitemap.xml to Google Search Console
 - [ ] Submit sitemap.xml to Bing Webmaster Tools
@@ -147,6 +158,7 @@
 - [ ] Test GBP click-to-call and direction links
 
 ### Monitoring
+
 - [ ] Set up Vercel Analytics (enable in project settings)
 - [ ] Set up Vercel Speed Insights
 - [ ] Configure uptime monitoring (e.g. Better Uptime, UptimeRobot) for:
@@ -156,6 +168,7 @@
 - [ ] Set alert thresholds: > 5 errors/hour → email + Slack notification
 
 ### Content
+
 - [ ] Publish first 2 blog posts in Sanity Studio
 - [ ] Update pricing tiers if different from placeholders
 - [ ] Add real phone number and business hours
@@ -166,13 +179,13 @@
 
 ## Maintenance Schedule
 
-| Frequency | Task                                              |
-|-----------|---------------------------------------------------|
-| Daily     | Review new form submissions in /admin/dashboard   |
-| Weekly    | Publish 1–2 blog posts via Sanity Studio          |
-| Weekly    | Monitor Google Search Console for crawl errors    |
-| Monthly   | Run PageSpeed audit and fix regressions           |
-| Monthly   | Review Vercel function error logs                 |
-| Monthly   | Rotate Stripe webhook secret if any breach        |
-| Quarterly | Update npm dependencies (`npm audit fix`)         |
-| Quarterly | Review and refresh GBP photos and posts           |
+| Frequency | Task                                            |
+| --------- | ----------------------------------------------- |
+| Daily     | Review new form submissions in /admin/dashboard |
+| Weekly    | Publish 1–2 blog posts via Sanity Studio        |
+| Weekly    | Monitor Google Search Console for crawl errors  |
+| Monthly   | Run PageSpeed audit and fix regressions         |
+| Monthly   | Review Vercel function error logs               |
+| Monthly   | Rotate Stripe webhook secret if any breach      |
+| Quarterly | Update npm dependencies (`npm audit fix`)       |
+| Quarterly | Review and refresh GBP photos and posts         |

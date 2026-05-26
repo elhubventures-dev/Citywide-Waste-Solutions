@@ -1,23 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { quoteFormSchema } from "@/lib/validations";
-import { prisma } from "@/lib/prisma";
 import { verifyRecaptcha } from "@/lib/recaptcha";
 import { formRatelimit, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 import { sendQuoteConfirmationEmail, sendQuoteAdminNotification } from "@/lib/email";
 import { sendQuoteConfirmationSms } from "@/lib/sms";
 import { upsertCrmContact, addToPipeline } from "@/lib/crm";
+import { storeQuoteSubmission } from "@/lib/submission-store";
 
 export const runtime = "nodejs";
-
-// ─── Service type → Prisma enum map ──────────────────────────────────────────
-const SERVICE_ENUM_MAP: Record<string, string> = {
-  "Residential Waste Collection": "RESIDENTIAL_WASTE_COLLECTION",
-  "Commercial Waste Management": "COMMERCIAL_WASTE_MANAGEMENT",
-  "Recycling Services": "RECYCLING_SERVICES",
-  "Dumpster & Bin Rental": "DUMPSTER_BIN_RENTAL",
-  "Junk Removal": "JUNK_REMOVAL",
-  "Construction Waste Removal": "CONSTRUCTION_WASTE_REMOVAL",
-};
 
 export async function POST(req: NextRequest) {
   // ── 1. Rate limit ────────────────────────────────────────────────────────
@@ -57,27 +47,29 @@ export async function POST(req: NextRequest) {
   }
 
   // ── 5. Save to database ──────────────────────────────────────────────────
-  let submissionId: string | null = null;
-  let savedToDatabase = true;
+  let submissionId: string;
   try {
-    const submission = await prisma.quoteRequest.create({
-      data: {
-        fullName: data.fullName,
-        email: data.email,
-        phone: data.phone,
-        serviceType: SERVICE_ENUM_MAP[data.serviceType] as any,
-        city: data.city,
-        pickupFrequency: data.pickupFrequency,
-        message: data.message,
-        smsOptIn: data.smsOptIn,
-        ipAddress: ip,
-        userAgent: req.headers.get("user-agent") ?? undefined,
-      },
+    const submission = await storeQuoteSubmission(data, {
+      ipAddress: ip,
+      userAgent: req.headers.get("user-agent") ?? undefined,
     });
     submissionId = submission.id;
   } catch (err) {
-    savedToDatabase = false;
-    console.error("DB error saving quote:", err);
+    console.error("Quote storage error:", err);
+
+    await Promise.allSettled([
+      sendQuoteConfirmationEmail(data),
+      sendQuoteAdminNotification(data),
+    ]).catch(console.error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          "We received your request by email, but could not save it to the admin dashboard. Please call us if this is urgent.",
+      },
+      { status: 503 }
+    );
   }
 
   // ── 6. Send required emails ───────────────────────────────────────────────
@@ -104,30 +96,10 @@ export async function POST(req: NextRequest) {
     ? sendQuoteConfirmationSms(data.phone, firstName, data.serviceType)
     : Promise.resolve();
   const crm = upsertCrmContact(data).then((contactId) => {
-    if (contactId && submissionId) {
-      // Update DB record with CRM id only when the lead was saved locally.
-      return prisma.quoteRequest
-        .update({ where: { id: submissionId }, data: { crmContactId: contactId } })
-        .then(() => addToPipeline(contactId, data.serviceType, data.city));
-    }
-
     if (contactId) {
       return addToPipeline(contactId, data.serviceType, data.city);
     }
   });
-
-  if (!savedToDatabase) {
-    Promise.allSettled([sms, crm]).catch(console.error);
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Quote request received! We'll be in touch within 2 business hours.",
-        data: { id: null, savedToDatabase: false },
-      },
-      { status: 202 }
-    );
-  }
 
   Promise.allSettled([sms, crm]).catch(console.error);
 
@@ -136,7 +108,7 @@ export async function POST(req: NextRequest) {
     {
       success: true,
       message: "Quote request received! We'll be in touch within 2 business hours.",
-      data: { id: submissionId },
+      data: { id: submissionId, savedToDatabase: true },
     },
     { status: 201 }
   );

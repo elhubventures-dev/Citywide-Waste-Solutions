@@ -9,34 +9,34 @@
 @layer base {
   :root {
     /* Brand — from logo (navy + green) */
-    --brand-green:      #2E9B4A;
-    --brand-blue:       #1E3A5C;
-    --brand-earth:      #6B4226;
-    --brand-white:      #FFFFFF;
-    --brand-off-white:  #F5F8F6;
-    --brand-light-gray: #E8EDEA;
+    --brand-green: #2e9b4a;
+    --brand-blue: #1e3a5c;
+    --brand-earth: #6b4226;
+    --brand-white: #ffffff;
+    --brand-off-white: #f5f8f6;
+    --brand-light-gray: #e8edea;
 
     /* shadcn/ui tokens (light mode) */
-    --background:             0 0% 100%;
-    --foreground:             160 15% 10%;
-    --card:                   0 0% 100%;
-    --card-foreground:        160 15% 10%;
-    --popover:                0 0% 100%;
-    --popover-foreground:     160 15% 10%;
-    --primary:                136 54% 39%;    /* #2E9B4A */
-    --primary-foreground:     0 0% 100%;
-    --secondary:              155 8% 90%;
-    --secondary-foreground:   160 15% 20%;
-    --muted:                  155 8% 95%;
-    --muted-foreground:       155 8% 45%;
-    --accent:                 155 8% 93%;
-    --accent-foreground:      160 15% 20%;
-    --destructive:            0 84% 60%;
+    --background: 0 0% 100%;
+    --foreground: 160 15% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 160 15% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 160 15% 10%;
+    --primary: 136 54% 39%; /* #2E9B4A */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 155 8% 90%;
+    --secondary-foreground: 160 15% 20%;
+    --muted: 155 8% 95%;
+    --muted-foreground: 155 8% 45%;
+    --accent: 155 8% 93%;
+    --accent-foreground: 160 15% 20%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border:                 155 10% 88%;
-    --input:                  155 10% 88%;
-    --ring:                   136 54% 39%;
-    --radius:                 0.5rem;
+    --border: 155 10% 88%;
+    --input: 155 10% 88%;
+    --ring: 136 54% 39%;
+    --radius: 0.5rem;
 
     /* Charts */
     --chart-1: 136 54% 39%;
@@ -51,25 +51,25 @@
   }
 
   .dark {
-    --background:             160 15% 7%;
-    --foreground:             155 8% 95%;
-    --card:                   160 15% 10%;
-    --card-foreground:        155 8% 95%;
-    --popover:                160 15% 10%;
-    --popover-foreground:     155 8% 95%;
-    --primary:                136 54% 45%;
-    --primary-foreground:     0 0% 100%;
-    --secondary:              160 15% 15%;
-    --secondary-foreground:   155 8% 85%;
-    --muted:                  160 15% 13%;
-    --muted-foreground:       155 8% 55%;
-    --accent:                 160 15% 17%;
-    --accent-foreground:      155 8% 90%;
-    --destructive:            0 62% 40%;
+    --background: 160 15% 7%;
+    --foreground: 155 8% 95%;
+    --card: 160 15% 10%;
+    --card-foreground: 155 8% 95%;
+    --popover: 160 15% 10%;
+    --popover-foreground: 155 8% 95%;
+    --primary: 136 54% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 160 15% 15%;
+    --secondary-foreground: 155 8% 85%;
+    --muted: 160 15% 13%;
+    --muted-foreground: 155 8% 55%;
+    --accent: 160 15% 17%;
+    --accent-foreground: 155 8% 90%;
+    --destructive: 0 62% 40%;
     --destructive-foreground: 0 0% 100%;
-    --border:                 160 15% 18%;
-    --input:                  160 15% 18%;
-    --ring:                   136 54% 45%;
+    --border: 160 15% 18%;
+    --input: 160 15% 18%;
+    --ring: 136 54% 45%;
   }
 }
 
@@ -88,7 +88,7 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background font-sans text-foreground;
     font-size: 16px;
     line-height: 1.625;
   }
@@ -99,16 +99,33 @@
   }
 
   /* Headings */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-heading font-bold tracking-tight text-foreground;
   }
 
-  h1 { @apply text-4xl sm:text-5xl lg:text-6xl; }
-  h2 { @apply text-3xl sm:text-4xl; }
-  h3 { @apply text-2xl sm:text-3xl; }
-  h4 { @apply text-xl sm:text-2xl; }
-  h5 { @apply text-lg sm:text-xl; }
-  h6 { @apply text-base sm:text-lg; }
+  h1 {
+    @apply text-4xl sm:text-5xl lg:text-6xl;
+  }
+  h2 {
+    @apply text-3xl sm:text-4xl;
+  }
+  h3 {
+    @apply text-2xl sm:text-3xl;
+  }
+  h4 {
+    @apply text-xl sm:text-2xl;
+  }
+  h5 {
+    @apply text-lg sm:text-xl;
+  }
+  h6 {
+    @apply text-base sm:text-lg;
+  }
 
   p {
     @apply text-base leading-relaxed text-foreground/80;
@@ -129,10 +146,19 @@
   }
 
   /* Scrollbar */
-  ::-webkit-scrollbar        { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track  { background: transparent; }
-  ::-webkit-scrollbar-thumb  { @apply bg-green-500/30 rounded-full; }
-  ::-webkit-scrollbar-thumb:hover { @apply bg-green-500/60; }
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-green-500/30;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-green-500/60;
+  }
 }
 
 /* ─── Component Utilities ───────────────────────────────────────────── */
@@ -161,41 +187,38 @@
     @apply inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-green-600;
   }
   .section-title {
-    @apply text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-foreground;
+    @apply text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl;
   }
   .section-subtitle {
-    @apply text-lg text-muted-foreground max-w-2xl;
+    @apply max-w-2xl text-lg text-muted-foreground;
   }
 
   /* Cards */
   .card-base {
-    @apply bg-card rounded-xl border border-border shadow-card transition-all duration-300;
+    @apply rounded-xl border border-border bg-card shadow-card transition-all duration-300;
   }
   .card-hover {
-    @apply hover:shadow-card-hover hover:-translate-y-0.5;
+    @apply hover:-translate-y-0.5 hover:shadow-card-hover;
   }
   .card-green {
-    @apply bg-green-500 text-white rounded-xl;
+    @apply rounded-xl bg-green-500 text-white;
   }
 
   /* Buttons (base – use Button component for full variants) */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg font-semibold text-sm
-           transition-all duration-250 ease-smooth focus-visible:outline-none
-           focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2
-           disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98];
+    @apply inline-flex items-center justify-center gap-2 rounded-lg text-sm font-semibold transition-all duration-250 ease-smooth focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-50;
   }
   .btn-primary {
-    @apply btn bg-green-500 text-white px-6 py-3 hover:bg-green-600 shadow-green;
+    @apply btn bg-green-500 px-6 py-3 text-white shadow-green hover:bg-green-600;
   }
   .btn-secondary {
-    @apply btn bg-blue-500 text-white px-6 py-3 hover:bg-blue-600 shadow-blue;
+    @apply btn bg-blue-500 px-6 py-3 text-white shadow-blue hover:bg-blue-600;
   }
   .btn-outline {
-    @apply btn border-2 border-green-500 text-green-500 px-6 py-3 hover:bg-green-50 dark:hover:bg-green-500/10;
+    @apply btn border-2 border-green-500 px-6 py-3 text-green-500 hover:bg-green-50 dark:hover:bg-green-500/10;
   }
   .btn-ghost {
-    @apply btn text-foreground px-4 py-2 hover:bg-muted;
+    @apply btn px-4 py-2 text-foreground hover:bg-muted;
   }
   .btn-lg {
     @apply px-8 py-4 text-base;
@@ -209,13 +232,10 @@
 
   /* Form inputs */
   .input-base {
-    @apply w-full rounded-lg border border-input bg-background px-4 py-3 text-sm
-           text-foreground placeholder:text-muted-foreground
-           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring
-           transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground transition-colors duration-200 placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50;
   }
   .label-base {
-    @apply block text-sm font-medium text-foreground mb-1.5;
+    @apply mb-1.5 block text-sm font-medium text-foreground;
   }
 
   /* Badges */
@@ -242,20 +262,15 @@
 
   /* Gradient text */
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-hero-gradient;
+    @apply bg-hero-gradient bg-clip-text text-transparent;
   }
   .text-gradient-green {
-    @apply bg-clip-text text-transparent bg-green-gradient;
+    @apply bg-green-gradient bg-clip-text text-transparent;
   }
 
   /* Prose content */
   .prose-brand {
-    @apply prose prose-neutral max-w-none
-           prose-headings:font-heading prose-headings:font-bold prose-headings:tracking-tight
-           prose-a:text-green-500 prose-a:no-underline prose-a:font-medium hover:prose-a:text-green-600
-           prose-strong:text-foreground
-           prose-code:text-green-600 prose-code:bg-green-50 prose-code:rounded prose-code:px-1.5 prose-code:py-0.5
-           prose-blockquote:border-l-green-500 prose-blockquote:text-muted-foreground;
+    @apply prose prose-neutral prose-headings:font-heading prose-headings:font-bold prose-headings:tracking-tight prose-a:text-green-500 prose-a:no-underline prose-a:font-medium hover:prose-a:text-green-600 prose-strong:text-foreground prose-code:text-green-600 prose-code:bg-green-50 prose-code:rounded prose-code:px-1.5 prose-code:py-0.5 prose-blockquote:border-l-green-500 prose-blockquote:text-muted-foreground max-w-none;
   }
 
   /* Backgrounds */
@@ -272,7 +287,7 @@
 
   /* Skeleton loading */
   .skeleton {
-    @apply animate-pulse bg-muted rounded;
+    @apply animate-pulse rounded bg-muted;
   }
 }
 
@@ -284,7 +299,9 @@
   }
 
   /* Aspect ratios */
-  .aspect-hero    { aspect-ratio: 16/9; }
+  .aspect-hero {
+    aspect-ratio: 16/9;
+  }
 
   .scrollbar-none {
     -ms-overflow-style: none;
@@ -293,27 +310,57 @@
   .scrollbar-none::-webkit-scrollbar {
     display: none;
   }
-  .aspect-card    { aspect-ratio: 4/3; }
-  .aspect-square  { aspect-ratio: 1/1; }
-  .aspect-portrait { aspect-ratio: 3/4; }
+  .aspect-card {
+    aspect-ratio: 4/3;
+  }
+  .aspect-square {
+    aspect-ratio: 1/1;
+  }
+  .aspect-portrait {
+    aspect-ratio: 3/4;
+  }
 
   /* Text balance */
-  .text-balance   { text-wrap: balance; }
-  .text-pretty    { text-wrap: pretty; }
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
 
   /* Safe area insets (mobile) */
-  .safe-bottom    { padding-bottom: env(safe-area-inset-bottom); }
-  .safe-top       { padding-top: env(safe-area-inset-top); }
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
 
   /* Animation delays */
-  .delay-100  { animation-delay: 100ms; }
-  .delay-200  { animation-delay: 200ms; }
-  .delay-300  { animation-delay: 300ms; }
-  .delay-400  { animation-delay: 400ms; }
-  .delay-500  { animation-delay: 500ms; }
-  .delay-600  { animation-delay: 600ms; }
-  .delay-700  { animation-delay: 700ms; }
-  .delay-800  { animation-delay: 800ms; }
+  .delay-100 {
+    animation-delay: 100ms;
+  }
+  .delay-200 {
+    animation-delay: 200ms;
+  }
+  .delay-300 {
+    animation-delay: 300ms;
+  }
+  .delay-400 {
+    animation-delay: 400ms;
+  }
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+  .delay-600 {
+    animation-delay: 600ms;
+  }
+  .delay-700 {
+    animation-delay: 700ms;
+  }
+  .delay-800 {
+    animation-delay: 800ms;
+  }
 
   /* Glass effect */
   .glass {

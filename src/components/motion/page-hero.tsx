@@ -58,7 +58,7 @@ export function PageHero({
       <div
         className={cn(
           "container relative z-10",
-          centered ? "max-w-2xl mx-auto text-center" : "max-w-3xl"
+          centered ? "mx-auto max-w-2xl text-center" : "max-w-3xl"
         )}
       >
         <motion.div
@@ -76,10 +76,8 @@ export function PageHero({
           <motion.h1
             variants={reduceMotion ? undefined : heroItem}
             className={cn(
-              "font-bold text-white text-balance drop-shadow-sm",
-              size === "large"
-                ? "text-4xl sm:text-5xl lg:text-6xl"
-                : "text-4xl sm:text-5xl"
+              "text-balance font-bold text-white drop-shadow-sm",
+              size === "large" ? "text-4xl sm:text-5xl lg:text-6xl" : "text-4xl sm:text-5xl"
             )}
           >
             {title}
@@ -87,15 +85,13 @@ export function PageHero({
           {description && (
             <motion.p
               variants={reduceMotion ? undefined : heroItem}
-              className="max-w-2xl text-lg text-white/85 leading-relaxed sm:text-xl drop-shadow-sm"
+              className="max-w-2xl text-lg leading-relaxed text-white/85 drop-shadow-sm sm:text-xl"
             >
               {description}
             </motion.p>
           )}
           {children && (
-            <motion.div variants={reduceMotion ? undefined : heroItem}>
-              {children}
-            </motion.div>
+            <motion.div variants={reduceMotion ? undefined : heroItem}>{children}</motion.div>
           )}
         </motion.div>
       </div>

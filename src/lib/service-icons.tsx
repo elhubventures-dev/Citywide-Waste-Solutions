@@ -10,11 +10,11 @@ import {
 
 export const SERVICE_ICON_MAP: Record<string, LucideIcon> = {
   "residential-waste-collection": Trash2,
-  "commercial-waste-management":  Building2,
-  "recycling-services":           Recycle,
-  "dumpster-bin-rental":          Container,
-  "junk-removal":                 PackageX,
-  "construction-waste-removal":   HardHat,
+  "commercial-waste-management": Building2,
+  "recycling-services": Recycle,
+  "dumpster-bin-rental": Container,
+  "junk-removal": PackageX,
+  "construction-waste-removal": HardHat,
 };
 
 export function getServiceIcon(slug: string): LucideIcon {

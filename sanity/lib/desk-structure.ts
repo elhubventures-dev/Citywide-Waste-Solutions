@@ -1,6 +1,13 @@
 import { StructureBuilder } from "sanity/desk";
 import {
-  FileText, Settings, Newspaper, Briefcase, MapPin, DollarSign, Users, Tag,
+  FileText,
+  Settings,
+  Newspaper,
+  Briefcase,
+  MapPin,
+  DollarSign,
+  Users,
+  Tag,
 } from "lucide-react";
 
 export const deskStructure = (S: StructureBuilder) =>
@@ -11,11 +18,7 @@ export const deskStructure = (S: StructureBuilder) =>
       S.listItem()
         .title("Site Settings")
         .icon(Settings)
-        .child(
-          S.document()
-            .schemaType("siteSettings")
-            .documentId("siteSettings")
-        ),
+        .child(S.document().schemaType("siteSettings").documentId("siteSettings")),
 
       S.divider(),
 
@@ -58,10 +61,7 @@ export const deskStructure = (S: StructureBuilder) =>
       S.divider(),
 
       // ── FAQs ────────────────────────────────────────────────────────
-      S.listItem()
-        .title("FAQs")
-        .icon(FileText)
-        .child(S.documentTypeList("faq").title("All FAQs")),
+      S.listItem().title("FAQs").icon(FileText).child(S.documentTypeList("faq").title("All FAQs")),
 
       // ── Testimonials ────────────────────────────────────────────────
       S.listItem()

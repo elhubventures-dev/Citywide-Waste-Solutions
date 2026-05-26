@@ -36,13 +36,13 @@ export function ParallaxOrbs() {
     <>
       <ParallaxLayer
         speed={36}
-        className="absolute -right-32 -top-32 h-[600px] w-[600px] rounded-full bg-white/5 blur-3xl animate-float"
+        className="absolute -right-32 -top-32 h-[600px] w-[600px] animate-float rounded-full bg-white/5 blur-3xl"
       >
         <div className="h-full w-full rounded-full bg-white/5" />
       </ParallaxLayer>
       <ParallaxLayer
         speed={-28}
-        className="absolute -bottom-24 -left-24 h-[400px] w-[400px] rounded-full bg-green-400/10 blur-3xl animate-float-slow"
+        className="absolute -bottom-24 -left-24 h-[400px] w-[400px] animate-float-slow rounded-full bg-green-400/10 blur-3xl"
       >
         <div className="h-full w-full rounded-full bg-green-400/10" />
       </ParallaxLayer>
@@ -67,10 +67,7 @@ export function ParallaxImageWrap({ children, className, speed = 18 }: ParallaxI
 
   return (
     <div ref={ref} className={cn("overflow-hidden", className)}>
-      <motion.div
-        className="h-full w-full"
-        style={reduceMotion ? undefined : { y, scale: 1.04 }}
-      >
+      <motion.div className="h-full w-full" style={reduceMotion ? undefined : { y, scale: 1.04 }}>
         {children}
       </motion.div>
     </div>

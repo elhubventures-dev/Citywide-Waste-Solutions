@@ -6,8 +6,7 @@ import { BUSINESS } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Pay Invoice | Secure Online Payment",
-  description:
-    `Pay your ${BUSINESS.name} invoice securely online. Accepts Visa, Mastercard, Apple Pay, and Google Pay.`,
+  description: `Pay your ${BUSINESS.name} invoice securely online. Accepts Visa, Mastercard, Apple Pay, and Google Pay.`,
   robots: { index: false }, // don't index payment page
 };
 
@@ -45,8 +44,8 @@ export default function PayPage() {
         </div>
       </PageHero>
 
-      <section className="section-sm bg-background min-h-[50vh]">
-        <div className="container pb-16 -mt-4">
+      <section className="section-sm min-h-[50vh] bg-background">
+        <div className="container -mt-4 pb-16">
           <div className="mx-auto max-w-lg">
             <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-green-100 dark:bg-green-950/40">
               <CreditCard className="h-7 w-7 text-green-600" />
@@ -57,7 +56,7 @@ export default function PayPage() {
             </div>
 
             <div className="mt-6 text-center">
-              <p className="text-xs text-muted-foreground mb-2">We accept</p>
+              <p className="mb-2 text-xs text-muted-foreground">We accept</p>
               <div className="flex flex-wrap items-center justify-center gap-3">
                 {ACCEPTED.map(({ label }) => (
                   <span

@@ -28,7 +28,7 @@ export function ServiceAreasSection() {
                       <MapPin className="h-4 w-4" />
                     </div>
                     <div>
-                      <div className="font-semibold text-foreground group-hover:text-green-600 transition-colors">
+                      <div className="font-semibold text-foreground transition-colors group-hover:text-green-600">
                         {area.name}
                       </div>
                       <div className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
@@ -36,7 +36,7 @@ export function ServiceAreasSection() {
                         Pop. {area.pop}
                       </div>
                     </div>
-                    <ArrowRight className="ml-auto h-4 w-4 self-center text-muted-foreground opacity-0 transition-all group-hover:opacity-100 group-hover:translate-x-0.5" />
+                    <ArrowRight className="ml-auto h-4 w-4 self-center text-muted-foreground opacity-0 transition-all group-hover:translate-x-0.5 group-hover:opacity-100" />
                   </Link>
                 </StaggerItem>
               ))}
@@ -66,11 +66,13 @@ export function ServiceAreasSection() {
             <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-xl border border-border bg-white/95 p-3 shadow-lg backdrop-blur-sm dark:bg-gray-950/95">
               <div>
                 <div className="text-sm font-semibold text-foreground">2246 Prestonvale Road</div>
-                <div className="text-xs text-muted-foreground">Courtice, Ontario L1E 3H8 — Our home base</div>
+                <div className="text-xs text-muted-foreground">
+                  Courtice, Ontario L1E 3H8 — Our home base
+                </div>
               </div>
               <Link
                 href="/contact"
-                className="rounded-lg bg-green-500 px-3 py-1.5 text-xs font-semibold text-white hover:bg-green-600 transition-colors"
+                className="rounded-lg bg-green-500 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-green-600"
               >
                 Get Directions
               </Link>

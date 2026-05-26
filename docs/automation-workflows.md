@@ -3,6 +3,7 @@
 ## Overview
 
 All automation is split across two layers:
+
 1. **In-app** — runs directly in Next.js API routes (Twilio SMS, Resend email, Prisma DB, GHL CRM sync)
 2. **External** — Zapier or Make.com for more complex multi-step flows
 

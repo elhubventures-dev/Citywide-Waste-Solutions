@@ -2,11 +2,11 @@ const RECAPTCHA_VERIFY_URL = "https://www.google.com/recaptcha/api/siteverify";
 const MIN_SCORE = 0.5;
 
 interface RecaptchaResponse {
-  success:      boolean;
-  score:        number;
-  action:       string;
+  success: boolean;
+  score: number;
+  action: string;
   challenge_ts: string;
-  hostname:     string;
+  hostname: string;
   "error-codes"?: string[];
 }
 
@@ -26,7 +26,7 @@ export async function verifyRecaptcha(token: string): Promise<{
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
       body: new URLSearchParams({
-        secret:   process.env.RECAPTCHA_SECRET_KEY,
+        secret: process.env.RECAPTCHA_SECRET_KEY,
         response: token,
       }),
     });
@@ -34,7 +34,11 @@ export async function verifyRecaptcha(token: string): Promise<{
     const data = (await res.json()) as RecaptchaResponse;
 
     if (!data.success) {
-      return { valid: false, score: 0, error: `reCAPTCHA failed: ${data["error-codes"]?.join(", ")}` };
+      return {
+        valid: false,
+        score: 0,
+        error: `reCAPTCHA failed: ${data["error-codes"]?.join(", ")}`,
+      };
     }
 
     if (data.score < MIN_SCORE) {

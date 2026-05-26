@@ -7,14 +7,14 @@ const SITE_NAME = BUSINESS.name;
 export { SITE_URL };
 
 interface PageMetaOptions {
-  title:       string;
+  title: string;
   description: string;
-  path?:       string;
-  image?:      string;
-  noIndex?:    boolean;
-  type?:       "website" | "article";
+  path?: string;
+  image?: string;
+  noIndex?: boolean;
+  type?: "website" | "article";
   publishedAt?: string;
-  author?:     string;
+  author?: string;
 }
 
 export function buildMetadata({
@@ -27,17 +27,19 @@ export function buildMetadata({
   publishedAt,
   author,
 }: PageMetaOptions): Metadata {
-  const url       = `${SITE_URL}${path}`;
-  const imageUrl  = image.startsWith("http") ? image : `${SITE_URL}${image}`;
+  const url = `${SITE_URL}${path}`;
+  const imageUrl = image.startsWith("http") ? image : `${SITE_URL}${image}`;
 
   return {
     title,
     description,
     robots: noIndex
       ? { index: false, follow: false }
-      : { index: true,  follow: true,
-          googleBot: { index: true, follow: true,
-            "max-image-preview": "large", "max-snippet": -1 } },
+      : {
+          index: true,
+          follow: true,
+          googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1 },
+        },
     alternates: { canonical: url },
     openGraph: {
       type,
@@ -52,10 +54,10 @@ export function buildMetadata({
         : {}),
     },
     twitter: {
-      card:        "summary_large_image",
+      card: "summary_large_image",
       title,
       description,
-      images:      [imageUrl],
+      images: [imageUrl],
     },
   };
 }
@@ -63,21 +65,24 @@ export function buildMetadata({
 // ─── Page-specific metadata presets ──────────────────────────────────────────
 
 export const homeMetadata: Metadata = buildMetadata({
-  title:       `${SITE_NAME} | Reliable Waste Collection in Ontario`,
-  description: "Professional waste collection, recycling, junk removal & dumpster rental across Ontario — Vaughan, Toronto, Brampton, Mississauga, Courtice. Get a free quote today.",
-  path:        "/",
+  title: `${SITE_NAME} | Reliable Waste Collection in Ontario`,
+  description:
+    "Professional waste collection, recycling, junk removal & dumpster rental across Ontario — Vaughan, Toronto, Brampton, Mississauga, Courtice. Get a free quote today.",
+  path: "/",
 });
 
 export const servicesMetadata: Metadata = buildMetadata({
-  title:       "Waste Management Services | Ontario",
-  description: "Residential, commercial, recycling, dumpster rental, junk removal, and construction waste services across Ontario. Transparent pricing, reliable crews.",
-  path:        "/services",
+  title: "Waste Management Services | Ontario",
+  description:
+    "Residential, commercial, recycling, dumpster rental, junk removal, and construction waste services across Ontario. Transparent pricing, reliable crews.",
+  path: "/services",
 });
 
 export const areasMetadata: Metadata = buildMetadata({
-  title:       "Service Areas | Ontario Waste Collection",
-  description: "We serve Vaughan, Toronto, Brampton, Mississauga, and Courtice. Local crews, on-time pickups, and eco-conscious disposal.",
-  path:        "/service-areas",
+  title: "Service Areas | Ontario Waste Collection",
+  description:
+    "We serve Vaughan, Toronto, Brampton, Mississauga, and Courtice. Local crews, on-time pickups, and eco-conscious disposal.",
+  path: "/service-areas",
 });
 
 // ─── JSON-LD schema builders ─────────────────────────────────────────────────
@@ -85,26 +90,24 @@ export const areasMetadata: Metadata = buildMetadata({
 export function buildFaqSchema(faqs: { question: string; answer: string }[]) {
   return {
     "@context": "https://schema.org",
-    "@type":    "FAQPage",
+    "@type": "FAQPage",
     mainEntity: faqs.map(({ question, answer }) => ({
-      "@type":          "Question",
-      name:             question,
+      "@type": "Question",
+      name: question,
       acceptedAnswer: { "@type": "Answer", text: answer },
     })),
   };
 }
 
-export function buildBreadcrumbSchema(
-  items: { name: string; href: string }[]
-) {
+export function buildBreadcrumbSchema(items: { name: string; href: string }[]) {
   return {
-    "@context":        "https://schema.org",
-    "@type":           "BreadcrumbList",
-    itemListElement:   items.map(({ name, href }, i) => ({
-      "@type":    "ListItem",
-      position:   i + 1,
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map(({ name, href }, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
       name,
-      item:       `${SITE_URL}${href}`,
+      item: `${SITE_URL}${href}`,
     })),
   };
 }
@@ -117,31 +120,31 @@ export function buildServiceSchema(
 ) {
   return {
     "@context": "https://schema.org",
-    "@type":    "Service",
+    "@type": "Service",
     name,
     description,
-    url:        `${SITE_URL}/services/${slug}`,
+    url: `${SITE_URL}/services/${slug}`,
     provider: {
       "@type": "LocalBusiness",
-      name:    SITE_NAME,
-      url:     SITE_URL,
+      name: SITE_NAME,
+      url: SITE_URL,
       telephone: BUSINESS.phoneRaw,
-      email:       BUSINESS.email,
+      email: BUSINESS.email,
       address: {
-        "@type":           "PostalAddress",
-        streetAddress:     BUSINESS.address.street,
-        addressLocality:   BUSINESS.address.city,
-        addressRegion:     "ON",
-        postalCode:        BUSINESS.address.postal,
-        addressCountry:    "CA",
+        "@type": "PostalAddress",
+        streetAddress: BUSINESS.address.street,
+        addressLocality: BUSINESS.address.city,
+        addressRegion: "ON",
+        postalCode: BUSINESS.address.postal,
+        addressCountry: "CA",
       },
     },
     areaServed: [
-      { "@type": "City", name: "Vaughan",     addressRegion: "ON" },
-      { "@type": "City", name: "Toronto",     addressRegion: "ON" },
-      { "@type": "City", name: "Brampton",    addressRegion: "ON" },
+      { "@type": "City", name: "Vaughan", addressRegion: "ON" },
+      { "@type": "City", name: "Toronto", addressRegion: "ON" },
+      { "@type": "City", name: "Brampton", addressRegion: "ON" },
       { "@type": "City", name: "Mississauga", addressRegion: "ON" },
-      { "@type": "City", name: "Courtice",    addressRegion: "ON" },
+      { "@type": "City", name: "Courtice", addressRegion: "ON" },
     ],
     ...(price ? { offers: { "@type": "Offer", price, priceCurrency: "CAD" } } : {}),
   };

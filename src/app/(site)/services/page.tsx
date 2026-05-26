@@ -18,9 +18,24 @@ export const metadata: Metadata = {
 };
 
 const colorMap = {
-  green: { iconBg: "bg-green-100 dark:bg-green-950/40", iconText: "text-green-600", badge: "bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400", hover: "hover:border-green-200 dark:hover:border-green-800" },
-  blue:  { iconBg: "bg-blue-100 dark:bg-blue-950/40", iconText: "text-blue-600", badge: "bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400", hover: "hover:border-blue-200 dark:hover:border-blue-800" },
-  earth: { iconBg: "bg-earth-100 dark:bg-earth-950/40", iconText: "text-earth-600", badge: "bg-earth-50 text-earth-700 dark:bg-earth-950/30 dark:text-earth-400", hover: "hover:border-earth-200 dark:hover:border-earth-800" },
+  green: {
+    iconBg: "bg-green-100 dark:bg-green-950/40",
+    iconText: "text-green-600",
+    badge: "bg-green-50 text-green-700 dark:bg-green-950/30 dark:text-green-400",
+    hover: "hover:border-green-200 dark:hover:border-green-800",
+  },
+  blue: {
+    iconBg: "bg-blue-100 dark:bg-blue-950/40",
+    iconText: "text-blue-600",
+    badge: "bg-blue-50 text-blue-700 dark:bg-blue-950/30 dark:text-blue-400",
+    hover: "hover:border-blue-200 dark:hover:border-blue-800",
+  },
+  earth: {
+    iconBg: "bg-earth-100 dark:bg-earth-950/40",
+    iconText: "text-earth-600",
+    badge: "bg-earth-50 text-earth-700 dark:bg-earth-950/30 dark:text-earth-400",
+    hover: "hover:border-earth-200 dark:hover:border-earth-800",
+  },
 } as const;
 
 export default function ServicesPage() {
@@ -34,32 +49,37 @@ export default function ServicesPage() {
       />
 
       <MotionSection className="bg-background">
-          <SectionHeader
-            eyebrow="What We Offer"
-            title="Choose the Right Service for Your Property or Project"
-            subtitle="Select a service below to learn more, see pricing guidance, and request a free quote."
-            className="mb-12"
-          />
+        <SectionHeader
+          eyebrow="What We Offer"
+          title="Choose the Right Service for Your Property or Project"
+          subtitle="Select a service below to learn more, see pricing guidance, and request a free quote."
+          className="mb-12"
+        />
 
-          <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((service) => {
-              const Icon = getServiceIcon(service.slug);
-              const colors = colorMap[service.color];
+        <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {SERVICES.map((service) => {
+            const Icon = getServiceIcon(service.slug);
+            const colors = colorMap[service.color];
 
-              return (
-                <StaggerItem key={service.slug}>
+            return (
+              <StaggerItem key={service.slug}>
                 <Link
                   href={`/services/${service.slug}`}
                   className={cn(
                     "group flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-card transition-all duration-300",
-                    "hover:shadow-card-hover hover:-translate-y-1.5",
+                    "hover:-translate-y-1.5 hover:shadow-card-hover",
                     colors.hover
                   )}
                 >
-                  <div className={cn("mb-5 flex h-12 w-12 items-center justify-center rounded-xl", colors.iconBg)}>
+                  <div
+                    className={cn(
+                      "mb-5 flex h-12 w-12 items-center justify-center rounded-xl",
+                      colors.iconBg
+                    )}
+                  >
                     <Icon className={cn("h-6 w-6", colors.iconText)} />
                   </div>
-                  <h2 className="text-lg font-bold text-foreground group-hover:text-green-600 transition-colors">
+                  <h2 className="text-lg font-bold text-foreground transition-colors group-hover:text-green-600">
                     {service.title}
                   </h2>
                   <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">
@@ -74,7 +94,9 @@ export default function ServicesPage() {
                     ))}
                   </ul>
                   <div className="mt-5 flex items-center justify-between border-t border-border pt-4">
-                    <span className={cn("rounded-full px-3 py-1 text-xs font-semibold", colors.badge)}>
+                    <span
+                      className={cn("rounded-full px-3 py-1 text-xs font-semibold", colors.badge)}
+                    >
                       {service.price}
                     </span>
                     <span className="flex items-center gap-1 text-xs font-semibold text-green-600">
@@ -82,19 +104,19 @@ export default function ServicesPage() {
                     </span>
                   </div>
                 </Link>
-                </StaggerItem>
-              );
-            })}
-          </Stagger>
+              </StaggerItem>
+            );
+          })}
+        </Stagger>
 
-          <div className="mt-14 text-center">
-            <Button asChild size="lg" variant="primary">
-              <Link href="/contact#quote">
-                Get a Free Quote
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
+        <div className="mt-14 text-center">
+          <Button asChild size="lg" variant="primary">
+            <Link href="/contact#quote">
+              Get a Free Quote
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
       </MotionSection>
     </>
   );

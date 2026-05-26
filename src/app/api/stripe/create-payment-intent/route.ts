@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { invoicePaymentSchema } from "@/lib/validations";
-import { prisma }               from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { formRatelimit, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
@@ -16,7 +16,7 @@ function getStripeClient() {
 
   stripe ??= new Stripe(secretKey, {
     apiVersion: "2024-06-20",
-    typescript:  true,
+    typescript: true,
   });
   return stripe;
 }
@@ -28,8 +28,11 @@ export async function POST(req: NextRequest) {
   if (!success) return rateLimitResponse(reset);
 
   let body: unknown;
-  try { body = await req.json(); }
-  catch { return NextResponse.json({ success: false, message: "Invalid body" }, { status: 400 }); }
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ success: false, message: "Invalid body" }, { status: 400 });
+  }
 
   const parsed = invoicePaymentSchema.safeParse(body);
   if (!parsed.success) {
@@ -78,14 +81,14 @@ export async function POST(req: NextRequest) {
   let paymentIntent;
   try {
     paymentIntent = await getStripeClient().paymentIntents.create({
-      amount:      invoice.amount,
-      currency:    "cad",
+      amount: invoice.amount,
+      currency: "cad",
       description: `Citywide Waste Solutions — Invoice #${invoiceNumber}`,
       metadata: {
         invoiceNumber,
-        invoiceId:     invoice.id,
+        invoiceId: invoice.id,
         customerEmail: email,
-        customerName:  invoice.customerName,
+        customerName: invoice.customerName,
       },
       receipt_email: email,
       automatic_payment_methods: { enabled: true },
@@ -99,24 +102,27 @@ export async function POST(req: NextRequest) {
   }
 
   // Update invoice with payment intent ID
-  await prisma.invoice.update({
-    where: { id: invoice.id },
-    data:  { stripePaymentIntentId: paymentIntent.id, status: "PENDING" },
-  }).catch(console.error);
+  await prisma.invoice
+    .update({
+      where: { id: invoice.id },
+      data: { stripePaymentIntentId: paymentIntent.id, status: "PENDING" },
+    })
+    .catch(console.error);
 
   const amountFormatted = new Intl.NumberFormat("en-CA", {
-    style: "currency", currency: "CAD",
+    style: "currency",
+    currency: "CAD",
   }).format(invoice.amount / 100);
 
   return NextResponse.json({
-    success:      true,
+    success: true,
     clientSecret: paymentIntent.client_secret,
     invoice: {
       invoiceNumber,
       customerName: invoice.customerName,
-      amount:       invoice.amount,
+      amount: invoice.amount,
       amountFormatted,
-      description:  invoice.description,
+      description: invoice.description,
     },
   });
 }

@@ -4,44 +4,49 @@ Production-grade website for a professional Ontario waste collection and recycli
 
 ## Tech Stack
 
-| Layer       | Technology                              |
-|-------------|-----------------------------------------|
-| Framework   | Next.js 14 (App Router) + TypeScript    |
-| Styling     | Tailwind CSS + shadcn/ui + Framer Motion|
-| Database    | PostgreSQL via Supabase + Prisma ORM    |
-| CMS         | Sanity v3                               |
-| Payments    | Stripe                                  |
-| SMS         | Twilio                                  |
-| Email       | Resend                                  |
-| Auth        | Clerk                                   |
-| Hosting     | Vercel + Cloudflare CDN                 |
-| CRM         | GoHighLevel                             |
+| Layer     | Technology                               |
+| --------- | ---------------------------------------- |
+| Framework | Next.js 14 (App Router) + TypeScript     |
+| Styling   | Tailwind CSS + shadcn/ui + Framer Motion |
+| Database  | PostgreSQL via Supabase + Prisma ORM     |
+| CMS       | Sanity v3                                |
+| Payments  | Stripe                                   |
+| SMS       | Twilio                                   |
+| Email     | Resend                                   |
+| Auth      | Clerk                                    |
+| Hosting   | Vercel + Cloudflare CDN                  |
+| CRM       | GoHighLevel                              |
 
 ## Setup
 
 ### 1. Install dependencies
+
 ```bash
 npm install
 ```
 
 ### 2. Configure environment
+
 ```bash
 cp .env.example .env.local
 # Fill in all values in .env.local
 ```
 
 ### 3. Set up the database
+
 ```bash
 npm run db:generate    # Generate Prisma client
 npm run db:push        # Push schema to Supabase
 ```
 
 ### 4. Run development server
+
 ```bash
 npm run dev
 ```
 
 ### 5. Run Sanity Studio (separate terminal)
+
 ```bash
 npm run sanity:dev
 ```
@@ -98,7 +103,7 @@ sanity/
 ## Brand Colors
 
 | Name         | Hex       |
-|--------------|-----------|
+| ------------ | --------- |
 | Forest Green | `#1B6B3A` |
 | Deep Blue    | `#1A4A7A` |
 | Earth Tone   | `#6B4226` |

@@ -36,9 +36,9 @@ const Toast = React.forwardRef<
       "data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none",
       "data-[state=open]:animate-fade-in-up data-[state=closed]:opacity-0",
       {
-        "bg-card border-border":         variant === "default",
-        "bg-green-50 border-green-200":  variant === "success",
-        "bg-red-50 border-red-200":      variant === "error",
+        "border-border bg-card": variant === "default",
+        "border-green-200 bg-green-50": variant === "success",
+        "border-red-200 bg-red-50": variant === "error",
       },
       className
     )}
@@ -51,11 +51,7 @@ const ToastTitle = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Title>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>
 >(({ className, ...props }, ref) => (
-  <ToastPrimitives.Title
-    ref={ref}
-    className={cn("text-sm font-semibold", className)}
-    {...props}
-  />
+  <ToastPrimitives.Title ref={ref} className={cn("text-sm font-semibold", className)} {...props} />
 ));
 ToastTitle.displayName = ToastPrimitives.Title.displayName;
 
@@ -92,10 +88,10 @@ ToastClose.displayName = ToastPrimitives.Close.displayName;
 // ─── useToast hook ────────────────────────────────────────────────────────────
 
 type ToastOptions = {
-  title?:       string;
+  title?: string;
   description?: string;
-  variant?:     "default" | "success" | "error";
-  duration?:    number;
+  variant?: "default" | "success" | "error";
+  duration?: number;
 };
 
 const listeners: Array<(toast: ToastOptions) => void> = [];

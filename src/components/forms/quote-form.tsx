@@ -23,7 +23,7 @@ function FieldError({ message }: { message?: string }) {
 
 function Label({ children, required }: { children: React.ReactNode; required?: boolean }) {
   return (
-    <label className="block text-sm font-medium text-foreground mb-1.5">
+    <label className="mb-1.5 block text-sm font-medium text-foreground">
       {children}
       {required && <span className="ml-1 text-red-500">*</span>}
     </label>
@@ -45,8 +45,8 @@ const inputClass = (hasError?: boolean) =>
 
 interface QuoteFormProps {
   defaultService?: string;
-  compact?:        boolean;
-  className?:      string;
+  compact?: boolean;
+  className?: string;
 }
 
 export function QuoteForm({ defaultService, compact = false, className }: QuoteFormProps) {
@@ -62,7 +62,7 @@ export function QuoteForm({ defaultService, compact = false, className }: QuoteF
     resolver: zodResolver(quoteFormSchema),
     defaultValues: {
       serviceType: (defaultService as any) ?? undefined,
-      smsOptIn:    false,
+      smsOptIn: false,
     },
   });
 
@@ -70,9 +70,9 @@ export function QuoteForm({ defaultService, compact = false, className }: QuoteF
     setServerError(null);
     try {
       const res = await fetch("/api/quote", {
-        method:  "POST",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify(data),
+        body: JSON.stringify(data),
       });
 
       const json = await res.json();
@@ -105,8 +105,8 @@ export function QuoteForm({ defaultService, compact = false, className }: QuoteF
         <div>
           <h3 className="text-lg font-bold text-foreground">Quote Request Received!</h3>
           <p className="mt-1.5 text-sm text-muted-foreground">
-            We'll review your request and respond within <strong>2 business hours</strong>.
-            Check your email for a confirmation.
+            We'll review your request and respond within <strong>2 business hours</strong>. Check
+            your email for a confirmation.
           </p>
         </div>
         <button
@@ -120,11 +120,7 @@ export function QuoteForm({ defaultService, compact = false, className }: QuoteF
   }
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      noValidate
-      className={cn("space-y-5", className)}
-    >
+    <form onSubmit={handleSubmit(onSubmit)} noValidate className={cn("space-y-5", className)}>
       {/* Server error */}
       <AnimatePresence>
         {serverError && (
@@ -186,7 +182,10 @@ export function QuoteForm({ defaultService, compact = false, className }: QuoteF
           <div className="relative">
             <select
               {...register("serviceType")}
-              className={cn(inputClass(!!errors.serviceType), "appearance-none pr-10 cursor-pointer")}
+              className={cn(
+                inputClass(!!errors.serviceType),
+                "cursor-pointer appearance-none pr-10"
+              )}
             >
               <option value="">Select a service…</option>
               <option>Residential Waste Collection</option>
@@ -206,7 +205,7 @@ export function QuoteForm({ defaultService, compact = false, className }: QuoteF
           <div className="relative">
             <select
               {...register("city")}
-              className={cn(inputClass(!!errors.city), "appearance-none pr-10 cursor-pointer")}
+              className={cn(inputClass(!!errors.city), "cursor-pointer appearance-none pr-10")}
             >
               <option value="">Select your city…</option>
               <option>Vaughan</option>
@@ -225,11 +224,13 @@ export function QuoteForm({ defaultService, compact = false, className }: QuoteF
       {/* Row 4 — Frequency (optional) */}
       {!compact && (
         <div>
-          <Label>Pickup Frequency <span className="text-muted-foreground text-xs">(optional)</span></Label>
+          <Label>
+            Pickup Frequency <span className="text-xs text-muted-foreground">(optional)</span>
+          </Label>
           <div className="relative">
             <select
               {...register("pickupFrequency")}
-              className={cn(inputClass(), "appearance-none pr-10 cursor-pointer")}
+              className={cn(inputClass(), "cursor-pointer appearance-none pr-10")}
             >
               <option value="">Select frequency…</option>
               <option>Weekly</option>
@@ -245,7 +246,9 @@ export function QuoteForm({ defaultService, compact = false, className }: QuoteF
 
       {/* Row 5 — Message */}
       <div>
-        <Label>Additional Details <span className="text-muted-foreground text-xs">(optional)</span></Label>
+        <Label>
+          Additional Details <span className="text-xs text-muted-foreground">(optional)</span>
+        </Label>
         <textarea
           {...register("message")}
           rows={compact ? 3 : 4}
@@ -262,7 +265,7 @@ export function QuoteForm({ defaultService, compact = false, className }: QuoteF
           type="checkbox"
           className="mt-0.5 h-4 w-4 rounded border-input accent-green-600"
         />
-        <span className="text-sm text-muted-foreground leading-snug">
+        <span className="text-sm leading-snug text-muted-foreground">
           Send me SMS updates about my pickup schedule and service confirmations.{" "}
           <span className="text-xs">(Message &amp; data rates may apply.)</span>
         </span>

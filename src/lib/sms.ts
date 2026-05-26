@@ -5,10 +5,7 @@ let client: twilio.Twilio | null = null;
 
 function getTwilio(): twilio.Twilio {
   if (!client) {
-    client = twilio(
-      process.env.TWILIO_ACCOUNT_SID!,
-      process.env.TWILIO_AUTH_TOKEN!
-    );
+    client = twilio(process.env.TWILIO_ACCOUNT_SID!, process.env.TWILIO_AUTH_TOKEN!);
   }
   return client;
 }
@@ -37,7 +34,11 @@ async function sendSms(to: string, body: string): Promise<{ sid: string } | null
 /**
  * Sent immediately when a quote form is submitted
  */
-export async function sendQuoteConfirmationSms(phone: string, firstName: string, serviceType: string) {
+export async function sendQuoteConfirmationSms(
+  phone: string,
+  firstName: string,
+  serviceType: string
+) {
   const body =
     `Hi ${firstName}! ✅ ${BRAND} received your ${serviceType} quote request. ` +
     `We'll contact you within 2 business hours. Questions? Call ${BUSINESS.phone}.`;

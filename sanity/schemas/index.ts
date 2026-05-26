@@ -1,4 +1,4 @@
-import { blogPostSchema }    from "./blog-post";
+import { blogPostSchema } from "./blog-post";
 import {
   authorSchema,
   blogCategorySchema,

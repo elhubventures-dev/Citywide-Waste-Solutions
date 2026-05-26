@@ -18,8 +18,8 @@ export function WhoWeAreSection() {
               id="who-we-are-heading"
             />
             <p className="text-lg font-semibold text-green-600">{WHO_WE_ARE.sustainability}</p>
-            <p className="text-muted-foreground leading-relaxed">{WHO_WE_ARE.intro}</p>
-            <p className="text-muted-foreground leading-relaxed">{WHO_WE_ARE.mission}</p>
+            <p className="leading-relaxed text-muted-foreground">{WHO_WE_ARE.intro}</p>
+            <p className="leading-relaxed text-muted-foreground">{WHO_WE_ARE.mission}</p>
             <Button asChild variant="primary" size="lg">
               <Link href="/about">
                 Learn More About Us
@@ -35,18 +35,23 @@ export function WhoWeAreSection() {
                     href={pillar.href}
                     className="flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-green-200 hover:shadow-card-hover"
                   >
-                    <span className="text-3xl mb-3" aria-hidden="true">{pillar.icon}</span>
-                    <h3 className="font-bold text-foreground mb-2">{pillar.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed flex-1">{pillar.desc}</p>
+                    <span className="mb-3 text-3xl" aria-hidden="true">
+                      {pillar.icon}
+                    </span>
+                    <h3 className="mb-2 font-bold text-foreground">{pillar.title}</h3>
+                    <p className="flex-1 text-sm leading-relaxed text-muted-foreground">
+                      {pillar.desc}
+                    </p>
                     <span className="mt-4 inline-flex items-center gap-1 text-xs font-semibold text-green-600">
-                      Read more <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+                      Read more{" "}
+                      <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
                     </span>
                   </Link>
                 </StaggerItem>
               ))}
             </Stagger>
-            <div className="rounded-2xl border border-border bg-section-alt p-6">
-              <h3 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-4">
+            <div className="bg-section-alt rounded-2xl border border-border p-6">
+              <h3 className="mb-4 text-sm font-bold uppercase tracking-widest text-muted-foreground">
                 Who We Serve
               </h3>
               <ul className="grid gap-2 sm:grid-cols-2">

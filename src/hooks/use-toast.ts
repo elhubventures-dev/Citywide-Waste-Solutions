@@ -3,10 +3,10 @@
 import { toast as toastFn } from "@/components/ui/toaster";
 
 interface ToastOptions {
-  title?:       string;
+  title?: string;
   description?: string;
-  variant?:     "default" | "success" | "error";
-  duration?:    number;
+  variant?: "default" | "success" | "error";
+  duration?: number;
 }
 
 export function useToast() {

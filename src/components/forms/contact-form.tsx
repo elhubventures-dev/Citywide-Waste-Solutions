@@ -39,7 +39,7 @@ const SUBJECTS = [
 ];
 
 export function ContactForm({ className }: { className?: string }) {
-  const [submitted,  setSubmitted]  = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
   const {
@@ -51,10 +51,10 @@ export function ContactForm({ className }: { className?: string }) {
   const onSubmit = async (data: ContactFormValues) => {
     setServerError(null);
     try {
-      const res  = await fetch("/api/contact", {
-        method:  "POST",
+      const res = await fetch("/api/contact", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify(data),
+        body: JSON.stringify(data),
       });
       const json = await res.json();
       if (!res.ok || !json.success) {
@@ -86,7 +86,10 @@ export function ContactForm({ className }: { className?: string }) {
             Thanks for reaching out. We'll respond within <strong>2 business hours</strong>.
           </p>
         </div>
-        <button onClick={() => setSubmitted(false)} className="text-xs text-green-600 hover:underline">
+        <button
+          onClick={() => setSubmitted(false)}
+          className="text-xs text-green-600 hover:underline"
+        >
           Send another message
         </button>
       </motion.div>
@@ -111,33 +114,60 @@ export function ContactForm({ className }: { className?: string }) {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="label-base">Full Name <span className="text-red-500">*</span></label>
-          <input {...register("fullName")} type="text" placeholder="Jane Smith"
-            autoComplete="name" className={inputClass(!!errors.fullName)} />
+          <label className="label-base">
+            Full Name <span className="text-red-500">*</span>
+          </label>
+          <input
+            {...register("fullName")}
+            type="text"
+            placeholder="Jane Smith"
+            autoComplete="name"
+            className={inputClass(!!errors.fullName)}
+          />
           <FieldError message={errors.fullName?.message} />
         </div>
         <div>
-          <label className="label-base">Email Address <span className="text-red-500">*</span></label>
-          <input {...register("email")} type="email" placeholder="jane@example.com"
-            autoComplete="email" className={inputClass(!!errors.email)} />
+          <label className="label-base">
+            Email Address <span className="text-red-500">*</span>
+          </label>
+          <input
+            {...register("email")}
+            type="email"
+            placeholder="jane@example.com"
+            autoComplete="email"
+            className={inputClass(!!errors.email)}
+          />
           <FieldError message={errors.email?.message} />
         </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="label-base">Phone <span className="text-muted-foreground text-xs">(optional)</span></label>
-          <input {...register("phone")} type="tel" placeholder="(905) 555-0100"
-            autoComplete="tel" className={inputClass(!!errors.phone)} />
+          <label className="label-base">
+            Phone <span className="text-xs text-muted-foreground">(optional)</span>
+          </label>
+          <input
+            {...register("phone")}
+            type="tel"
+            placeholder="(905) 555-0100"
+            autoComplete="tel"
+            className={inputClass(!!errors.phone)}
+          />
           <FieldError message={errors.phone?.message} />
         </div>
         <div>
-          <label className="label-base">Subject <span className="text-red-500">*</span></label>
+          <label className="label-base">
+            Subject <span className="text-red-500">*</span>
+          </label>
           <div className="relative">
-            <select {...register("subject")}
-              className={cn(inputClass(!!errors.subject), "appearance-none pr-10 cursor-pointer")}>
+            <select
+              {...register("subject")}
+              className={cn(inputClass(!!errors.subject), "cursor-pointer appearance-none pr-10")}
+            >
               <option value="">Select a subject…</option>
-              {SUBJECTS.map((s) => <option key={s}>{s}</option>)}
+              {SUBJECTS.map((s) => (
+                <option key={s}>{s}</option>
+              ))}
             </select>
             <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           </div>
@@ -146,15 +176,26 @@ export function ContactForm({ className }: { className?: string }) {
       </div>
 
       <div>
-        <label className="label-base">Message <span className="text-red-500">*</span></label>
-        <textarea {...register("message")} rows={5}
+        <label className="label-base">
+          Message <span className="text-red-500">*</span>
+        </label>
+        <textarea
+          {...register("message")}
+          rows={5}
           placeholder="How can we help you today?"
-          className={cn(inputClass(!!errors.message), "resize-none")} />
+          className={cn(inputClass(!!errors.message), "resize-none")}
+        />
         <FieldError message={errors.message?.message} />
       </div>
 
-      <Button type="submit" variant="primary" size="lg" loading={isSubmitting}
-        className="w-full" leftIcon={!isSubmitting ? <Send className="h-4 w-4" /> : undefined}>
+      <Button
+        type="submit"
+        variant="primary"
+        size="lg"
+        loading={isSubmitting}
+        className="w-full"
+        leftIcon={!isSubmitting ? <Send className="h-4 w-4" /> : undefined}
+      >
         {isSubmitting ? "Sending…" : "Send Message"}
       </Button>
     </form>

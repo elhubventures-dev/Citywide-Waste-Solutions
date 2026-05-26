@@ -1,19 +1,22 @@
 import { NextResponse } from "next/server";
-import { sanityFetch }  from "@/sanity/lib/client";
+import { sanityFetch } from "@/sanity/lib/client";
 import { allBlogPostsQuery } from "@/sanity/lib/queries";
-import { BUSINESS } from "@/lib/constants";
+import { BUSINESS, SITE_URL } from "@/lib/constants";
+import { fallbackBlogPosts } from "@/lib/fallback-blog-posts";
 
-export const dynamic    = "force-dynamic";
+export const dynamic = "force-dynamic";
 export const revalidate = 3600; // 1 hour
 
 export async function GET() {
-  const posts = await sanityFetch<any[]>(allBlogPostsQuery).catch(() => []);
+  const sanityPosts = await sanityFetch<any[]>(allBlogPostsQuery).catch(() => []);
+  const posts = sanityPosts.length > 0 ? sanityPosts : fallbackBlogPosts;
 
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://citywidewastesolutions.ca";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? SITE_URL;
 
   const items = posts
     .slice(0, 20)
-    .map((post) => `
+    .map(
+      (post) => `
     <item>
       <title><![CDATA[${post.title}]]></title>
       <link>${siteUrl}/blog/${post.slug}</link>
@@ -22,7 +25,8 @@ export async function GET() {
       <pubDate>${new Date(post.publishedAt).toUTCString()}</pubDate>
       ${post.categories?.map((c: any) => `<category><![CDATA[${c.label}]]></category>`).join("\n      ") ?? ""}
       ${post.author?.name ? `<author>${post.author.name}</author>` : ""}
-    </item>`)
+    </item>`
+    )
     .join("\n");
 
   const rss = `<?xml version="1.0" encoding="UTF-8"?>
@@ -37,7 +41,7 @@ export async function GET() {
     <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
     <atom:link href="${siteUrl}/feed.xml" rel="self" type="application/rss+xml"/>
     <image>
-      <url>${siteUrl}/og-image.jpg</url>
+      <url>${siteUrl}/og-image.png</url>
       <title>${BUSINESS.name}</title>
       <link>${siteUrl}</link>
     </image>

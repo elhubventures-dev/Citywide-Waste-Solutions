@@ -22,22 +22,26 @@
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin",  "value": "https://citywidewastesolutions.ca" },
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://www.citywidewastesolutions.com"
+        },
         { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PATCH, OPTIONS" },
         { "key": "Access-Control-Allow-Headers", "value": "Content-Type, Authorization" }
       ]
     },
     {
       "source": "/studio/(.*)",
-      "headers": [
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
-      ]
+      "headers": [{ "key": "X-Frame-Options", "value": "SAMEORIGIN" }]
     },
     {
       "source": "/(.*)",
       "headers": [
         { "key": "X-DNS-Prefetch-Control", "value": "on" },
-        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" }
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        }
       ]
     }
   ],
@@ -84,6 +88,6 @@
   ],
 
   "env": {
-    "NEXT_PUBLIC_SITE_URL": "https://citywidewastesolutions.ca"
+    "NEXT_PUBLIC_SITE_URL": "https://www.citywidewastesolutions.com"
   }
 }

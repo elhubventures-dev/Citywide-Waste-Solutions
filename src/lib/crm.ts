@@ -1,17 +1,17 @@
 import type { QuoteFormData } from "@/types";
 
 const GHL_BASE = "https://rest.gohighlevel.com/v1";
-const API_KEY  = process.env.GHL_API_KEY;
-const LOC_ID   = process.env.GHL_LOCATION_ID;
+const API_KEY = process.env.GHL_API_KEY;
+const LOC_ID = process.env.GHL_LOCATION_ID;
 
 // ─── Service → Tag mapping ────────────────────────────────────────────────────
 const SERVICE_TAGS: Record<string, string> = {
-  "Residential Waste Collection":  "residential",
-  "Commercial Waste Management":   "commercial",
-  "Recycling Services":            "recycling",
-  "Dumpster & Bin Rental":         "dumpster-rental",
-  "Junk Removal":                  "junk-removal",
-  "Construction Waste Removal":    "construction",
+  "Residential Waste Collection": "residential",
+  "Commercial Waste Management": "commercial",
+  "Recycling Services": "recycling",
+  "Dumpster & Bin Rental": "dumpster-rental",
+  "Junk Removal": "junk-removal",
+  "Construction Waste Removal": "construction",
 };
 
 // ─── Create or update contact ─────────────────────────────────────────────────
@@ -27,21 +27,21 @@ export async function upsertCrmContact(data: QuoteFormData): Promise<string | nu
   const payload = {
     firstName,
     lastName,
-    email:       data.email,
-    phone:       data.phone,
-    locationId:  LOC_ID,
-    tags:        [
+    email: data.email,
+    phone: data.phone,
+    locationId: LOC_ID,
+    tags: [
       "website-lead",
       SERVICE_TAGS[data.serviceType] ?? "general",
       `city-${data.city.toLowerCase()}`,
     ],
     customField: [
-      { id: "service_type",       value: data.serviceType },
-      { id: "city",               value: data.city },
-      { id: "pickup_frequency",   value: data.pickupFrequency ?? "" },
-      { id: "sms_opt_in",         value: data.smsOptIn ? "yes" : "no" },
-      { id: "message",            value: data.message ?? "" },
-      { id: "lead_source",        value: "website-quote-form" },
+      { id: "service_type", value: data.serviceType },
+      { id: "city", value: data.city },
+      { id: "pickup_frequency", value: data.pickupFrequency ?? "" },
+      { id: "sms_opt_in", value: data.smsOptIn ? "yes" : "no" },
+      { id: "message", value: data.message ?? "" },
+      { id: "lead_source", value: "website-quote-form" },
     ],
   };
 
@@ -59,17 +59,17 @@ export async function upsertCrmContact(data: QuoteFormData): Promise<string | nu
     if (existingId) {
       // Update existing contact
       await fetch(`${GHL_BASE}/contacts/${existingId}`, {
-        method:  "PUT",
+        method: "PUT",
         headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
-        body:    JSON.stringify(payload),
+        body: JSON.stringify(payload),
       });
       contactId = existingId;
     } else {
       // Create new contact
       const createRes = await fetch(`${GHL_BASE}/contacts/`, {
-        method:  "POST",
+        method: "POST",
         headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
-        body:    JSON.stringify(payload),
+        body: JSON.stringify(payload),
       });
       const created = await createRes.json();
       contactId = created?.contact?.id;
@@ -92,15 +92,15 @@ export async function addToPipeline(
 
   try {
     await fetch(`${GHL_BASE}/pipelines/${process.env.GHL_PIPELINE_ID}/opportunities`, {
-      method:  "POST",
+      method: "POST",
       headers: { Authorization: `Bearer ${API_KEY}`, "Content-Type": "application/json" },
       body: JSON.stringify({
-        title:      `${serviceType} — ${city}`,
+        title: `${serviceType} — ${city}`,
         contactId,
         locationId: LOC_ID,
-        stageId:    process.env.GHL_STAGE_NEW_LEAD_ID ?? "new",
-        status:     "open",
-        source:     "website",
+        stageId: process.env.GHL_STAGE_NEW_LEAD_ID ?? "new",
+        status: "open",
+        source: "website",
       }),
     });
   } catch (err) {

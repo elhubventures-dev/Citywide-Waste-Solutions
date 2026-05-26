@@ -27,7 +27,10 @@ export function TrustSection() {
               <ul className="grid gap-2 sm:grid-cols-2">
                 {WHY_US_HIGHLIGHTS.map((point) => (
                   <li key={point} className="flex items-start gap-2 text-sm text-foreground/80">
-                    <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-green-500" aria-hidden="true" />
+                    <span
+                      className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-green-500"
+                      aria-hidden="true"
+                    />
                     {point}
                   </li>
                 ))}
@@ -52,7 +55,9 @@ export function TrustSection() {
                     </div>
                     <div>
                       <h3 className="font-semibold text-foreground">{point.title}</h3>
-                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{point.desc}</p>
+                      <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                        {point.desc}
+                      </p>
                     </div>
                   </div>
                 </StaggerItem>

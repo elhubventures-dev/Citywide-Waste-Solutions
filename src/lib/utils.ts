@@ -42,11 +42,11 @@ export function formatRelativeTime(date: string | Date): string {
 
   const intervals: [number, Intl.RelativeTimeFormatUnit][] = [
     [31536000, "year"],
-    [2592000,  "month"],
-    [604800,   "week"],
-    [86400,    "day"],
-    [3600,     "hour"],
-    [60,       "minute"],
+    [2592000, "month"],
+    [604800, "week"],
+    [86400, "day"],
+    [3600, "hour"],
+    [60, "minute"],
   ];
 
   const rtf = new Intl.RelativeTimeFormat("en-CA", { numeric: "auto" });
@@ -138,7 +138,7 @@ export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 // ─── Environment helpers ──────────────────────────────────────────────────────
 
-export const isProduction  = process.env.NODE_ENV === "production";
+export const isProduction = process.env.NODE_ENV === "production";
 export const isDevelopment = process.env.NODE_ENV === "development";
-export const isServer      = typeof window === "undefined";
-export const isClient      = !isServer;
+export const isServer = typeof window === "undefined";
+export const isClient = !isServer;

@@ -27,8 +27,7 @@ export function parseStatValue(raw: string): ParsedStat {
 }
 
 function formatStat(n: number, parsed: ParsedStat): string {
-  const rounded =
-    parsed.decimals > 0 ? n.toFixed(parsed.decimals) : String(Math.round(n));
+  const rounded = parsed.decimals > 0 ? n.toFixed(parsed.decimals) : String(Math.round(n));
   return `${parsed.prefix}${rounded}${parsed.suffix}`;
 }
 
@@ -88,7 +87,12 @@ export function StatsGrid({
 }: StatsGridProps) {
   if (variant === "hero") {
     return (
-      <div className={cn("flex flex-wrap items-center justify-center gap-8 sm:justify-between", className)}>
+      <div
+        className={cn(
+          "flex flex-wrap items-center justify-center gap-8 sm:justify-between",
+          className
+        )}
+      >
         {stats.map(({ value, label }) => (
           <div key={label} className="text-center">
             <CountUp
@@ -107,7 +111,7 @@ export function StatsGrid({
       {stats.map(({ value, label }) => (
         <div
           key={label}
-          className="rounded-xl border border-border bg-card p-5 shadow-card text-center transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover"
+          className="rounded-xl border border-border bg-card p-5 text-center shadow-card transition-all duration-300 hover:-translate-y-0.5 hover:shadow-card-hover"
         >
           <CountUp
             value={value}

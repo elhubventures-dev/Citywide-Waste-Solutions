@@ -26,12 +26,12 @@ export function PageHeroBackground({
       />
       {/* Dark base so bright areas of the photo don't wash out text */}
       <div className="absolute inset-0 bg-green-950/60" />
-      <div className="absolute inset-0 bg-black/22" />
+      <div className="bg-black/22 absolute inset-0" />
       {/* Brand tint + extra weight on the left where headings sit */}
       <div className="absolute inset-0 bg-gradient-to-r from-green-950/85 via-green-950/65 to-green-900/50" />
-      <div className="absolute inset-0 bg-gradient-to-t from-green-950/32 via-transparent to-transparent" />
+      <div className="from-green-950/32 absolute inset-0 bg-gradient-to-t via-transparent to-transparent" />
       <div
-        className="absolute inset-0 bg-dots opacity-[0.04]"
+        className="bg-dots absolute inset-0 opacity-[0.04]"
         style={{ backgroundSize: "24px 24px" }}
       />
     </div>

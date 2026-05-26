@@ -17,12 +17,7 @@ interface ServicePageHeroProps {
   heroSrc?: string | null;
 }
 
-export function ServicePageHero({
-  title,
-  description,
-  slug,
-  heroSrc,
-}: ServicePageHeroProps) {
+export function ServicePageHero({ title, description, slug, heroSrc }: ServicePageHeroProps) {
   const reduceMotion = useReducedMotion();
   const Icon = getServiceIcon(slug);
 
@@ -38,7 +33,13 @@ export function ServicePageHero({
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           aria-hidden
         >
-          <Image src={heroSrc} alt="" fill className="object-cover opacity-15 mix-blend-overlay" sizes="100vw" />
+          <Image
+            src={heroSrc}
+            alt=""
+            fill
+            className="object-cover opacity-15 mix-blend-overlay"
+            sizes="100vw"
+          />
         </motion.div>
       )}
       <div className="container relative z-10">
@@ -63,18 +64,21 @@ export function ServicePageHero({
             </motion.span>
             <motion.h1
               variants={reduceMotion ? undefined : heroItem}
-              className="mt-2 text-4xl font-bold text-white sm:text-5xl text-balance drop-shadow-sm"
+              className="mt-2 text-balance text-4xl font-bold text-white drop-shadow-sm sm:text-5xl"
             >
               {title}
             </motion.h1>
           </div>
           <motion.p
             variants={reduceMotion ? undefined : heroItem}
-            className="text-lg text-white/85 leading-relaxed drop-shadow-sm"
+            className="text-lg leading-relaxed text-white/85 drop-shadow-sm"
           >
             {description}
           </motion.p>
-          <motion.div variants={reduceMotion ? undefined : heroItem} className="flex flex-wrap gap-3 pt-2">
+          <motion.div
+            variants={reduceMotion ? undefined : heroItem}
+            className="flex flex-wrap gap-3 pt-2"
+          >
             <Link
               href="#quote"
               className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-bold text-green-700 transition-colors hover:bg-green-50"

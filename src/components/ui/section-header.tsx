@@ -3,12 +3,12 @@
 import { cn } from "@/lib/utils";
 
 interface SectionHeaderProps {
-  eyebrow?:   string;
-  title:      string;
-  subtitle?:  string;
-  centered?:  boolean;
-  light?:     boolean;     // for dark backgrounds
-  id?:        string;
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  centered?: boolean;
+  light?: boolean; // for dark backgrounds
+  id?: string;
   className?: string;
 }
 
@@ -22,15 +22,12 @@ export function SectionHeader({
   className,
 }: SectionHeaderProps) {
   return (
-    <div
-      className={cn(
-        "space-y-4",
-        centered && "text-center mx-auto",
-        className
-      )}
-    >
+    <div className={cn("space-y-4", centered && "mx-auto text-center", className)}>
       {eyebrow && (
-        <div className="flex items-center gap-2" style={centered ? { justifyContent: "center" } : {}}>
+        <div
+          className="flex items-center gap-2"
+          style={centered ? { justifyContent: "center" } : {}}
+        >
           <span
             className={cn(
               "inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.15em]",
@@ -47,7 +44,7 @@ export function SectionHeader({
       <h2
         id={id}
         className={cn(
-          "font-bold tracking-tight text-balance",
+          "text-balance font-bold tracking-tight",
           centered ? "text-3xl sm:text-4xl lg:text-5xl" : "text-3xl sm:text-4xl",
           light ? "text-white" : "text-foreground"
         )}

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 export function useScrollPosition(threshold = 0) {
   const [scrolled, setScrolled] = useState(false);
-  const [y,        setY]        = useState(0);
+  const [y, setY] = useState(0);
 
   useEffect(() => {
     const handler = () => {

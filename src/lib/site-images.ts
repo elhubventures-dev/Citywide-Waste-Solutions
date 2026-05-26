@@ -4,10 +4,10 @@
  */
 export const SITE_IMAGES = {
   logos: {
-    header:  "/images/logos/logo-header.png",
-    light:   "/images/logos/logo-light.png",
-    dark:    "/images/logos/logo-dark.png",
-    footer:  "/images/logos/logo-footer.png",
+    header: "/images/logos/logo-header.png",
+    light: "/images/logos/logo-light.png",
+    dark: "/images/logos/logo-dark.png",
+    footer: "/images/logos/logo-footer.png",
     onGreen: "/images/logos/logo-on-green.png",
   },
   hero: {
@@ -19,19 +19,19 @@ export const SITE_IMAGES = {
     ctaFlyer: "/images/hero/cta-banner-flyer.png",
   },
   fleet: {
-    van:      "/images/fleet/branded-van.jpg",
-    truck:    "/images/fleet/branded-truck.jpg",
-    wrap:     "/images/fleet/fleet-wrap-mockup.png",
+    van: "/images/fleet/branded-van.jpg",
+    truck: "/images/fleet/branded-truck.jpg",
+    wrap: "/images/fleet/fleet-wrap-mockup.png",
     dumpster: "/images/fleet/branded-dumpster.jpg",
-    bin:      "/images/fleet/branded-bin.jpg",
+    bin: "/images/fleet/branded-bin.jpg",
   },
   about: {
     beforeAfter: "/images/about/before-after-cleanup.jpg",
   },
   blog: {
-    recycling:  "/images/blog/recycling-toronto.jpg",
+    recycling: "/images/blog/recycling-toronto.jpg",
     commercial: "/images/blog/commercial-fleet.jpg",
-    community:  "/images/blog/community-cleanup.jpg",
+    community: "/images/blog/community-cleanup.jpg",
   },
 } as const;
 

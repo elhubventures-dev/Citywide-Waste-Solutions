@@ -8,25 +8,25 @@ import { Info, Lightbulb, AlertTriangle, CheckCircle2 } from "lucide-react";
 // ─── Callout block component ─────────────────────────────────────────────────
 const CALLOUT_STYLES = {
   info: {
-    bg:   "bg-blue-50 border-blue-200 dark:bg-blue-950/20 dark:border-blue-800",
+    bg: "bg-blue-50 border-blue-200 dark:bg-blue-950/20 dark:border-blue-800",
     icon: Info,
     iconColor: "text-blue-600",
     textColor: "text-blue-900 dark:text-blue-100",
   },
   tip: {
-    bg:   "bg-green-50 border-green-200 dark:bg-green-950/20 dark:border-green-800",
+    bg: "bg-green-50 border-green-200 dark:bg-green-950/20 dark:border-green-800",
     icon: Lightbulb,
     iconColor: "text-green-600",
     textColor: "text-green-900 dark:text-green-100",
   },
   warning: {
-    bg:   "bg-amber-50 border-amber-200 dark:bg-amber-950/20 dark:border-amber-800",
+    bg: "bg-amber-50 border-amber-200 dark:bg-amber-950/20 dark:border-amber-800",
     icon: AlertTriangle,
     iconColor: "text-amber-600",
     textColor: "text-amber-900 dark:text-amber-100",
   },
   success: {
-    bg:   "bg-green-50 border-green-300 dark:bg-green-950/20 dark:border-green-700",
+    bg: "bg-green-50 border-green-300 dark:bg-green-950/20 dark:border-green-700",
     icon: CheckCircle2,
     iconColor: "text-green-600",
     textColor: "text-green-900 dark:text-green-100",
@@ -52,7 +52,7 @@ const components = {
             />
           </div>
           {value.caption && (
-            <figcaption className="mt-2 text-center text-sm text-muted-foreground italic">
+            <figcaption className="mt-2 text-center text-sm italic text-muted-foreground">
               {value.caption}
             </figcaption>
           )}
@@ -63,23 +63,33 @@ const components = {
     // Callout block
     callout: ({ value }: any) => {
       const style = CALLOUT_STYLES[(value.type as keyof typeof CALLOUT_STYLES) ?? "tip"];
-      const Icon  = style.icon;
+      const Icon = style.icon;
       return (
         <div className={cn("my-6 flex gap-3 rounded-xl border p-4", style.bg)}>
           <Icon className={cn("mt-0.5 h-5 w-5 shrink-0", style.iconColor)} />
-          <p className={cn("text-sm leading-relaxed", style.textColor)}>
-            {value.text}
-          </p>
+          <p className={cn("text-sm leading-relaxed", style.textColor)}>{value.text}</p>
         </div>
       );
     },
   },
 
   block: {
-    normal:     ({ children }: any) => <p className="mb-4 leading-relaxed text-foreground/80">{children}</p>,
-    h2:         ({ children }: any) => <h2 className="mb-3 mt-10 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">{children}</h2>,
-    h3:         ({ children }: any) => <h3 className="mb-3 mt-8 text-xl font-bold tracking-tight text-foreground sm:text-2xl">{children}</h3>,
-    h4:         ({ children }: any) => <h4 className="mb-2 mt-6 text-lg font-semibold text-foreground">{children}</h4>,
+    normal: ({ children }: any) => (
+      <p className="mb-4 leading-relaxed text-foreground/80">{children}</p>
+    ),
+    h2: ({ children }: any) => (
+      <h2 className="mb-3 mt-10 text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+        {children}
+      </h2>
+    ),
+    h3: ({ children }: any) => (
+      <h3 className="mb-3 mt-8 text-xl font-bold tracking-tight text-foreground sm:text-2xl">
+        {children}
+      </h3>
+    ),
+    h4: ({ children }: any) => (
+      <h4 className="mb-2 mt-6 text-lg font-semibold text-foreground">{children}</h4>
+    ),
     blockquote: ({ children }: any) => (
       <blockquote className="my-6 border-l-4 border-green-500 pl-5 italic text-muted-foreground">
         {children}
@@ -88,8 +98,12 @@ const components = {
   },
 
   list: {
-    bullet:   ({ children }: any) => <ul className="mb-4 ml-5 list-disc space-y-1.5 text-foreground/80">{children}</ul>,
-    number:   ({ children }: any) => <ol className="mb-4 ml-5 list-decimal space-y-1.5 text-foreground/80">{children}</ol>,
+    bullet: ({ children }: any) => (
+      <ul className="mb-4 ml-5 list-disc space-y-1.5 text-foreground/80">{children}</ul>
+    ),
+    number: ({ children }: any) => (
+      <ol className="mb-4 ml-5 list-decimal space-y-1.5 text-foreground/80">{children}</ol>
+    ),
   },
 
   listItem: {
@@ -98,11 +112,17 @@ const components = {
   },
 
   marks: {
-    strong:       ({ children }: any) => <strong className="font-semibold text-foreground">{children}</strong>,
-    em:           ({ children }: any) => <em className="italic">{children}</em>,
-    underline:    ({ children }: any) => <span className="underline underline-offset-2">{children}</span>,
-    "strike-through": ({ children }: any) => <del className="line-through text-muted-foreground">{children}</del>,
-    code:         ({ children }: any) => (
+    strong: ({ children }: any) => (
+      <strong className="font-semibold text-foreground">{children}</strong>
+    ),
+    em: ({ children }: any) => <em className="italic">{children}</em>,
+    underline: ({ children }: any) => (
+      <span className="underline underline-offset-2">{children}</span>
+    ),
+    "strike-through": ({ children }: any) => (
+      <del className="text-muted-foreground line-through">{children}</del>
+    ),
+    code: ({ children }: any) => (
       <code className="rounded bg-green-50 px-1.5 py-0.5 font-mono text-sm text-green-700 dark:bg-green-950/30 dark:text-green-300">
         {children}
       </code>
@@ -112,7 +132,7 @@ const components = {
         href={value?.href}
         target={value?.blank ? "_blank" : "_self"}
         rel={value?.blank ? "noopener noreferrer" : undefined}
-        className="font-medium text-green-600 underline underline-offset-2 hover:text-green-700 transition-colors"
+        className="font-medium text-green-600 underline underline-offset-2 transition-colors hover:text-green-700"
       >
         {children}
       </a>

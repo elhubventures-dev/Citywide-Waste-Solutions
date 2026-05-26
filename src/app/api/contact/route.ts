@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { contactFormSchema } from "@/lib/validations";
-import { prisma } from "@/lib/prisma";
 import { verifyRecaptcha } from "@/lib/recaptcha";
 import { formRatelimit, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
 import { sendContactConfirmationEmail, sendContactAdminNotification } from "@/lib/email";
+import { storeContactSubmission } from "@/lib/submission-store";
 
 export const runtime = "nodejs";
 
@@ -41,22 +41,29 @@ export async function POST(req: NextRequest) {
   }
 
   // ── Save ───────────────────────────────────────────────────────────────
-  let savedToDatabase = true;
+  let submissionId: string;
   try {
-    await prisma.contactSubmission.create({
-      data: {
-        fullName: data.fullName,
-        email: data.email,
-        phone: data.phone ?? null,
-        subject: data.subject,
-        message: data.message,
-        ipAddress: ip,
-        userAgent: req.headers.get("user-agent") ?? undefined,
-      },
+    const submission = await storeContactSubmission(data, {
+      ipAddress: ip,
+      userAgent: req.headers.get("user-agent") ?? undefined,
     });
+    submissionId = submission.id;
   } catch (err) {
-    savedToDatabase = false;
-    console.error("DB error saving contact:", err);
+    console.error("Contact storage error:", err);
+
+    await Promise.allSettled([
+      sendContactConfirmationEmail(data),
+      sendContactAdminNotification(data),
+    ]).catch(console.error);
+
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          "We received your message by email, but could not save it to the admin dashboard. Please call us if this is urgent.",
+      },
+      { status: 503 }
+    );
   }
 
   // ── Emails ──────────────────────────────────────────────────────────────
@@ -77,19 +84,12 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  if (!savedToDatabase) {
-    return NextResponse.json(
-      {
-        success: true,
-        message: "Message sent! We'll respond within 2 business hours.",
-        data: { savedToDatabase: false },
-      },
-      { status: 202 }
-    );
-  }
-
   return NextResponse.json(
-    { success: true, message: "Message sent! We'll respond within 2 business hours." },
+    {
+      success: true,
+      message: "Message sent! We'll respond within 2 business hours.",
+      data: { id: submissionId, savedToDatabase: true },
+    },
     { status: 201 }
   );
 }

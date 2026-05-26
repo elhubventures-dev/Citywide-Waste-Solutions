@@ -8,10 +8,10 @@ import { SITE_IMAGES } from "@/lib/site-images";
 type LogoVariant = "header" | "light" | "dark" | "footer" | "on-green";
 
 const LOGO_SRC: Record<LogoVariant, { src: string; width: number; height: number }> = {
-  header:     { src: SITE_IMAGES.logos.header,   width: 300, height: 78 },
-  light:      { src: SITE_IMAGES.logos.light,    width: 280, height: 72 },
-  dark:       { src: SITE_IMAGES.logos.dark,     width: 280, height: 72 },
-  footer:     { src: SITE_IMAGES.logos.footer,   width: 300, height: 78 },
+  header: { src: SITE_IMAGES.logos.header, width: 300, height: 78 },
+  light: { src: SITE_IMAGES.logos.light, width: 280, height: 72 },
+  dark: { src: SITE_IMAGES.logos.dark, width: 280, height: 72 },
+  footer: { src: SITE_IMAGES.logos.footer, width: 300, height: 78 },
   "on-green": { src: SITE_IMAGES.logos.onGreen, width: 260, height: 68 },
 };
 
@@ -29,12 +29,7 @@ interface LogoProps {
   priority?: boolean;
 }
 
-export function Logo({
-  variant = "light",
-  size = "md",
-  className,
-  priority = false,
-}: LogoProps) {
+export function Logo({ variant = "light", size = "md", className, priority = false }: LogoProps) {
   const { src, width, height } = LOGO_SRC[variant];
 
   return (

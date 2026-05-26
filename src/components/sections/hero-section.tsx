@@ -86,7 +86,7 @@ function HeroFeatureTicker({ reduceMotion }: { reduceMotion: boolean | null }) {
 function HeroWave() {
   return (
     <svg
-      className="absolute -top-[1px] left-0 w-full h-10 sm:h-12 text-green-800"
+      className="absolute -top-[1px] left-0 h-10 w-full text-green-800 sm:h-12"
       viewBox="0 0 1440 48"
       preserveAspectRatio="none"
       aria-hidden
@@ -104,7 +104,7 @@ function HeroTruckImage({ className }: { className?: string }) {
     <div
       className={
         className ??
-        "relative mx-auto aspect-[4/3] w-full max-w-lg sm:aspect-[5/4] lg:aspect-auto lg:mx-0 lg:h-[min(52vh,480px)] lg:max-w-none"
+        "relative mx-auto aspect-[4/3] w-full max-w-lg sm:aspect-[5/4] lg:mx-0 lg:aspect-auto lg:h-[min(52vh,480px)] lg:max-w-none"
       }
     >
       <Image
@@ -162,7 +162,7 @@ function HeroQuoteCard({ className }: { className?: string }) {
           className="inline-flex items-center justify-center gap-2 rounded-full bg-green-600 px-4 py-2 text-sm font-bold text-white hover:bg-green-700"
         >
           <Globe className="h-4 w-4" />
-          citywidewastesolutions.ca
+          www.citywidewastesolutions.com
         </a>
       </div>
       <Link
@@ -221,7 +221,7 @@ export function HeroSection() {
 
             <motion.h1
               variants={reduceMotion ? undefined : heroItem}
-              className="max-w-2xl text-3xl font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-4xl lg:text-[2.65rem] lg:leading-[1.08] text-balance"
+              className="max-w-2xl text-balance text-3xl font-extrabold leading-[1.1] tracking-tight text-slate-900 sm:text-4xl lg:text-[2.65rem] lg:leading-[1.08]"
             >
               Reliable Waste Solutions For A{" "}
               <span className="text-green-600">Greener Tomorrow</span>

@@ -1,9 +1,9 @@
-import { createClient }  from "@sanity/client";
-import imageUrlBuilder   from "@sanity/image-url";
+import { createClient } from "@sanity/client";
+import imageUrlBuilder from "@sanity/image-url";
 import type { SanityImageSource } from "@sanity/image-url/lib/types/types";
 
-const projectId  = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
-const dataset    = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!;
+const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
 const apiVersion = "2024-01-01";
 export const isSanityConfigured = Boolean(projectId);
 
@@ -24,8 +24,8 @@ export const sanityWriteClient = isSanityConfigured
       projectId,
       dataset,
       apiVersion,
-      useCdn:  false,
-      token:   process.env.SANITY_API_TOKEN,
+      useCdn: false,
+      token: process.env.SANITY_API_TOKEN,
     })
   : null;
 

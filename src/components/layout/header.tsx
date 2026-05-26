@@ -4,9 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Menu, X, ChevronDown, ArrowRight, Phone, Mail,
-} from "lucide-react";
+import { Menu, X, ChevronDown, ArrowRight, Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_LINKS, NAV_CTA } from "@/lib/constants";
 import { BUSINESS } from "@/lib/business";
@@ -19,7 +17,7 @@ function ServicesDropdown({
   items,
   onNavigate,
 }: {
-  items: typeof NAV_LINKS[0]["children"];
+  items: (typeof NAV_LINKS)[0]["children"];
   onNavigate?: () => void;
 }) {
   return (
@@ -68,9 +66,9 @@ function ServicesDropdown({
 
 // ─── Header ───────────────────────────────────────────────────────────────────
 export function Header() {
-  const [scrolled,       setScrolled]       = useState(false);
-  const [mobileOpen,     setMobileOpen]     = useState(false);
-  const [servicesOpen,   setServicesOpen]   = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const servicesRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
@@ -103,7 +101,9 @@ export function Header() {
       {/* Top bar — phone & email only here */}
       <div className="bg-brand-navy py-2 text-xs text-white/90">
         <div className="container flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <span className="text-center sm:text-left">Serving Vaughan · Toronto · Brampton · Mississauga · Courtice</span>
+          <span className="text-center sm:text-left">
+            Serving Vaughan · Toronto · Brampton · Mississauga · Courtice
+          </span>
           <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-end sm:gap-4">
             <a
               href={`tel:${BUSINESS.phoneRaw}`}
@@ -191,7 +191,7 @@ export function Header() {
           </div>
 
           {/* Desktop CTAs */}
-          <div className="hidden items-center gap-3 lg:flex ml-auto">
+          <div className="ml-auto hidden items-center gap-3 lg:flex">
             <Button asChild size="md" variant="primary">
               <Link href={NAV_CTA.href}>
                 {NAV_CTA.label}
@@ -274,9 +274,7 @@ export function Header() {
                         href={link.href}
                         className={cn(
                           "block px-5 py-3 text-sm font-medium transition-colors hover:bg-muted",
-                          pathname.startsWith(link.href)
-                            ? "text-green-600"
-                            : "text-foreground"
+                          pathname.startsWith(link.href) ? "text-green-600" : "text-foreground"
                         )}
                       >
                         {link.label}

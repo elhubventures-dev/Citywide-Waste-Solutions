@@ -31,18 +31,21 @@ export function RecyclingHero() {
           </motion.span>
           <motion.h1
             variants={reduceMotion ? undefined : heroItem}
-            className="text-4xl font-bold text-white sm:text-5xl text-balance"
+            className="text-balance text-4xl font-bold text-white sm:text-5xl"
           >
             What Can Be Recycled in Ontario?
           </motion.h1>
           <motion.p
             variants={reduceMotion ? undefined : heroItem}
-            className="text-lg text-white/75 leading-relaxed"
+            className="text-lg leading-relaxed text-white/75"
           >
-            Everything you need to know about recycling pickup in Ontario — what we accept,
-            how to sort it, and when we collect it. Let&apos;s keep more out of the landfill, together.
+            Everything you need to know about recycling pickup in Ontario — what we accept, how to
+            sort it, and when we collect it. Let&apos;s keep more out of the landfill, together.
           </motion.p>
-          <motion.div variants={reduceMotion ? undefined : heroItem} className="flex flex-wrap gap-3">
+          <motion.div
+            variants={reduceMotion ? undefined : heroItem}
+            className="flex flex-wrap gap-3"
+          >
             <Link
               href="#materials"
               className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-sm font-bold text-green-700 transition-colors hover:bg-green-50"
@@ -69,7 +72,7 @@ export function RecyclingHero() {
                 src={SITE_IMAGES.fleet.bin}
                 alt="Citywide Waste Solutions branded recycling bin"
                 fill
-                className="object-contain bg-white/95 p-6"
+                className="bg-white/95 object-contain p-6"
                 sizes="(max-width: 1024px) 80vw, 40vw"
                 priority
               />
