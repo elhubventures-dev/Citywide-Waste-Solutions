@@ -3,12 +3,10 @@
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { AlertCircle, Loader2, LogIn } from "lucide-react";
-import { DEFAULT_ADMIN_EMAIL } from "@/lib/auth";
-import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 
 export function AdminSignInForm() {
   const router = useRouter();
-  const [email, setEmail] = useState(DEFAULT_ADMIN_EMAIL);
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -19,14 +17,15 @@ export function AdminSignInForm() {
     setLoading(true);
 
     try {
-      const supabase = createSupabaseBrowserClient();
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const res = await fetch("/api/admin/sign-in", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
       });
+      const data = await res.json().catch(() => ({}));
 
-      if (signInError) {
-        setError(signInError.message);
+      if (!res.ok) {
+        setError(data.error ?? "Unable to sign in.");
         return;
       }
 
@@ -46,9 +45,6 @@ export function AdminSignInForm() {
     >
       <div className="mb-6 text-center">
         <h1 className="text-xl font-bold text-foreground">Admin Sign In</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Use the Supabase admin account for {DEFAULT_ADMIN_EMAIL}.
-        </p>
       </div>
 
       {error && (
@@ -67,6 +63,7 @@ export function AdminSignInForm() {
             id="email"
             type="email"
             autoComplete="email"
+            placeholder="Email address"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-green-500 focus:ring-2 focus:ring-green-500/30"
