@@ -4,7 +4,7 @@ import { visionTool } from "@sanity/vision";
 import { schemaTypes } from "./sanity/schemas";
 import { deskStructure } from "./sanity/lib/desk-structure";
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ?? "placeholder";
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "20wusg3o";
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production";
 
 export default defineConfig({
