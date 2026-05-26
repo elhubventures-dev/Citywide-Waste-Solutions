@@ -80,10 +80,26 @@ export async function POST(req: NextRequest) {
     console.error("DB error saving quote:", err);
   }
 
-  // ── 6. Fire async side-effects (non-blocking) ────────────────────────────
-  const firstName = data.fullName.split(" ")[0];
+  // ── 6. Send required emails ───────────────────────────────────────────────
   const customerEmail = sendQuoteConfirmationEmail(data);
   const adminEmail = sendQuoteAdminNotification(data);
+  const emailResults = await Promise.allSettled([customerEmail, adminEmail]);
+  const failedEmail = emailResults.find((result) => result.status === "rejected");
+
+  if (failedEmail?.status === "rejected") {
+    console.error("Quote email failed:", failedEmail.reason);
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          "We couldn't send the quote emails. Please call or email us and we'll help right away.",
+      },
+      { status: 502 }
+    );
+  }
+
+  // ── 7. Fire optional side-effects (non-blocking) ──────────────────────────
+  const firstName = data.fullName.split(" ")[0];
   const sms = data.smsOptIn
     ? sendQuoteConfirmationSms(data.phone, firstName, data.serviceType)
     : Promise.resolve();
@@ -101,20 +117,6 @@ export async function POST(req: NextRequest) {
   });
 
   if (!savedToDatabase) {
-    const [, adminResult] = await Promise.allSettled([customerEmail, adminEmail]);
-
-    if (adminResult.status === "rejected") {
-      console.error("Fallback quote email failed:", adminResult.reason);
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "We couldn't submit your request online. Please call or email us and we'll help right away.",
-        },
-        { status: 500 }
-      );
-    }
-
     Promise.allSettled([sms, crm]).catch(console.error);
 
     return NextResponse.json(
@@ -127,9 +129,9 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  Promise.allSettled([customerEmail, adminEmail, sms, crm]).catch(console.error);
+  Promise.allSettled([sms, crm]).catch(console.error);
 
-  // ── 7. Respond ───────────────────────────────────────────────────────────
+  // ── 8. Respond ───────────────────────────────────────────────────────────
   return NextResponse.json(
     {
       success: true,

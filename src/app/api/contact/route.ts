@@ -59,25 +59,25 @@ export async function POST(req: NextRequest) {
     console.error("DB error saving contact:", err);
   }
 
-  // ── Emails (non-blocking) ──────────────────────────────────────────────
+  // ── Emails ──────────────────────────────────────────────────────────────
   const customerEmail = sendContactConfirmationEmail(data);
   const adminEmail = sendContactAdminNotification(data);
+  const emailResults = await Promise.allSettled([customerEmail, adminEmail]);
+  const failedEmail = emailResults.find((result) => result.status === "rejected");
+
+  if (failedEmail?.status === "rejected") {
+    console.error("Contact email failed:", failedEmail.reason);
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          "We couldn't send the contact emails. Please call or email us and we'll help right away.",
+      },
+      { status: 502 }
+    );
+  }
 
   if (!savedToDatabase) {
-    const [, adminResult] = await Promise.allSettled([customerEmail, adminEmail]);
-
-    if (adminResult.status === "rejected") {
-      console.error("Fallback contact email failed:", adminResult.reason);
-      return NextResponse.json(
-        {
-          success: false,
-          message:
-            "We couldn't submit your message online. Please call or email us and we'll help right away.",
-        },
-        { status: 500 }
-      );
-    }
-
     return NextResponse.json(
       {
         success: true,
@@ -87,8 +87,6 @@ export async function POST(req: NextRequest) {
       { status: 202 }
     );
   }
-
-  Promise.allSettled([customerEmail, adminEmail]).catch(console.error);
 
   return NextResponse.json(
     { success: true, message: "Message sent! We'll respond within 2 business hours." },

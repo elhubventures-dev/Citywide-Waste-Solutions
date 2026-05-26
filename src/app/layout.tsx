@@ -59,7 +59,7 @@ export const metadata: Metadata = {
       "Professional waste collection, recycling, junk removal & dumpster rental across Ontario. Serving Vaughan, Toronto, Brampton, Mississauga & Courtice.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: `${BUSINESS.name} — Ontario Waste Management`,
@@ -71,7 +71,7 @@ export const metadata: Metadata = {
     title: `${BUSINESS.name} | Ontario Waste Collection`,
     description:
       "Professional waste collection, recycling & junk removal across Ontario. Get your free quote today.",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.png"],
   },
   icons: {
     icon: [

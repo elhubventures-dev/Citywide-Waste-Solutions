@@ -15,12 +15,26 @@ function getResendClient() {
   return resend;
 }
 
-const FROM    = process.env.EMAIL_FROM    ?? BUSINESS.email;
-const ADMIN   = process.env.EMAIL_ADMIN   ?? BUSINESS.email;
-const BRAND   = BUSINESS.name;
-const GREEN   = BRAND_COLORS.green;
-const NAVY    = BRAND_COLORS.navy;
-const BG      = BRAND_COLORS.offWhite;
+const FROM = process.env.EMAIL_FROM ?? BUSINESS.email;
+const ADMIN = process.env.EMAIL_ADMIN ?? BUSINESS.email;
+const BRAND = BUSINESS.name;
+const GREEN = BRAND_COLORS.green;
+const NAVY = BRAND_COLORS.navy;
+const BG = BRAND_COLORS.offWhite;
+
+function getSender() {
+  return FROM.includes("<") ? FROM : `${BRAND} <${FROM}>`;
+}
+
+async function sendEmail(args: Parameters<Resend["emails"]["send"]>[0]) {
+  const result = await getResendClient().emails.send(args);
+
+  if (result.error) {
+    throw new Error(result.error.message);
+  }
+
+  return result.data;
+}
 
 // ─── Shared layout wrapper ─────────────────────────────────────────────────────
 function emailLayout(title: string, body: string): string {
@@ -101,11 +115,11 @@ export async function sendQuoteConfirmationEmail(data: QuoteFormData) {
     </a>
   `;
 
-  return getResendClient().emails.send({
-    from:    `${BRAND} <${FROM}>`,
-    to:      data.email,
+  return sendEmail({
+    from: getSender(),
+    to: data.email,
     subject: `Quote request received — we'll be in touch shortly`,
-    html:    emailLayout("Quote Request Received", body),
+    html: emailLayout("Quote Request Received", body),
   });
 }
 
@@ -132,11 +146,11 @@ export async function sendQuoteAdminNotification(data: QuoteFormData) {
     </div>
   `;
 
-  return getResendClient().emails.send({
-    from:    `${BRAND} <${FROM}>`,
-    to:      ADMIN,
+  return sendEmail({
+    from: getSender(),
+    to: ADMIN,
     subject: `🔔 New Quote: ${data.serviceType} — ${data.fullName} (${data.city})`,
-    html:    emailLayout("New Quote Request", body),
+    html: emailLayout("New Quote Request", body),
   });
 }
 
@@ -158,11 +172,11 @@ export async function sendContactConfirmationEmail(data: ContactFormData) {
     </p>
   `;
 
-  return getResendClient().emails.send({
-    from:    `${BRAND} <${FROM}>`,
-    to:      data.email,
+  return sendEmail({
+    from: getSender(),
+    to: data.email,
     subject: `We got your message — ${data.subject}`,
-    html:    emailLayout("Message Received", body),
+    html: emailLayout("Message Received", body),
   });
 }
 
@@ -184,11 +198,11 @@ export async function sendContactAdminNotification(data: ContactFormData) {
     </a>
   `;
 
-  return getResendClient().emails.send({
-    from:    `${BRAND} <${FROM}>`,
-    to:      ADMIN,
+  return sendEmail({
+    from: getSender(),
+    to: ADMIN,
     subject: `📬 Contact: ${data.subject} — ${data.fullName}`,
-    html:    emailLayout("New Contact Message", body),
+    html: emailLayout("New Contact Message", body),
   });
 }
 
@@ -199,7 +213,9 @@ export async function sendPaymentConfirmationEmail(
   invoiceNumber: string,
   amount: number
 ) {
-  const formatted = new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD" }).format(amount / 100);
+  const formatted = new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD" }).format(
+    amount / 100
+  );
 
   const body = `
     <h1 style="margin:0 0 8px;font-size:24px;color:#141c18;">✅ Payment Confirmed!</h1>
@@ -218,10 +234,10 @@ export async function sendPaymentConfirmationEmail(
     </p>
   `;
 
-  return getResendClient().emails.send({
-    from:    `${BRAND} <${FROM}>`,
-    to:      email,
+  return sendEmail({
+    from: getSender(),
+    to: email,
     subject: `✅ Payment confirmed — Invoice #${invoiceNumber}`,
-    html:    emailLayout("Payment Confirmed", body),
+    html: emailLayout("Payment Confirmed", body),
   });
 }

@@ -18,7 +18,8 @@
     "sanity:dev": "sanity dev",
     "sanity:build": "sanity build",
     "analyze": "ANALYZE=true next build",
-    "images:sync": "powershell -ExecutionPolicy Bypass -File scripts/sync-images.ps1"
+    "images:sync": "powershell -ExecutionPolicy Bypass -File scripts/sync-images.ps1",
+    "icons:generate": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
