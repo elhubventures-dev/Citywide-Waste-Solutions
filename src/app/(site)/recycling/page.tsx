@@ -111,10 +111,9 @@ const TIPS = [
 ];
 
 const SCHEDULE = [
-  { area: "Courtice", day: "Monday", freq: "Weekly" },
-  { area: "Oshawa", day: "Tuesday", freq: "Bi-Weekly" },
-  { area: "Brampton", day: "Wednesday", freq: "Weekly" },
-  { area: "Mississauga", day: "Thursday", freq: "Weekly" },
+    { area: "Oshawa", day: "Tuesday", freq: "Bi-Weekly" },
+  { area: "Durham", day: "Wednesday", freq: "Weekly" },
+  { area: "Scarborough", day: "Thursday", freq: "Weekly" },
   { area: "Vaughan", day: "Thursday", freq: "Weekly" },
   { area: "Toronto", day: "Friday", freq: "Weekly" },
 ];

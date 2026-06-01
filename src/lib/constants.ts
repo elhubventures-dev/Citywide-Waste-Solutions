@@ -334,21 +334,21 @@ export const TESTIMONIALS = [
   {
     id: 3,
     name: "James R.",
-    role: "General Contractor, Brampton",
+    role: "General Contractor, Durham",
     rating: 5,
     text: "We use them for construction site cleanups on every project. Fast, competitive on price, and the crews work hard. My go-to recommendation for any contractor in the GTA.",
   },
   {
     id: 4,
     name: "Linda P.",
-    role: "Property Manager, Mississauga",
+    role: "Property Manager, Scarborough",
     rating: 5,
     text: "Managing multiple properties means I need vendors I can trust. Citywide handles three of my buildings without a single complaint from tenants.",
   },
   {
     id: 5,
     name: "Mike T.",
-    role: "Homeowner, Courtice",
+    role: "Homeowner, Durham",
     rating: 5,
     text: "Had a big basement cleanout — called on Monday, they were there Tuesday morning. Three guys, done in two hours. Honestly impressive.",
   },
@@ -362,7 +362,7 @@ export const TESTIMONIALS = [
   {
     id: 7,
     name: "Priya S.",
-    role: "Residential Client, Mississauga",
+    role: "Residential Client, Scarborough",
     rating: 5,
     text: "Reliable service with excellent customer support. Scheduling was easy and the crew was friendly. Highly recommended for any household.",
   },

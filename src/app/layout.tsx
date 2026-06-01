@@ -29,10 +29,9 @@ export const metadata: Metadata = {
     "waste collection Ontario",
     "junk removal Toronto",
     "dumpster rental Vaughan",
-    "recycling services Brampton",
-    "waste management Mississauga",
+    "recycling services Durham",
+    "waste management Scarborough",
     "construction waste removal Ontario",
-    "residential waste pickup Courtice",
     "commercial waste management Ontario",
   ],
   authors: [{ name: BUSINESS.name }],
@@ -129,10 +128,7 @@ const organizationSchema = {
   areaServed: [
     { "@type": "City", name: "Vaughan" },
     { "@type": "City", name: "Toronto" },
-    { "@type": "City", name: "Brampton" },
-    { "@type": "City", name: "Mississauga" },
-    { "@type": "City", name: "Courtice" },
-  ],
+    ],
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",

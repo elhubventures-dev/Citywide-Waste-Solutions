@@ -176,7 +176,7 @@ export const fallbackBlogPosts = [
   },
   {
     _id: "fallback-community-cleanup",
-    title: "How Courtice & Brampton Led Ontario's Cleanest Community Initiative",
+    title: "How Durham and Scarborough Led Ontario's Cleanest Community Initiative",
     slug: "courtice-brampton-community-cleanup-2024",
     excerpt:
       "Community cleanups work best when local residents, businesses, and waste teams coordinate. See how organized collection can divert material and improve neighbourhood pride.",
@@ -190,7 +190,7 @@ export const fallbackBlogPosts = [
     author: fallbackAuthor,
     categories: [fallbackBlogCategories[2]],
     seo: {
-      metaTitle: "Community Cleanup Lessons from Courtice and Brampton",
+      metaTitle: "Community Cleanup Lessons from Durham and Scarborough",
       metaDescription:
         "How Ontario communities can organize cleaner neighbourhood events with better waste sorting, pickup coordination, and diversion planning.",
     },
@@ -203,7 +203,7 @@ export const fallbackBlogPosts = [
       block(
         "community-local",
         "normal",
-        "Courtice and Brampton show how neighbourhood pride can turn into practical environmental action. When residents understand what to collect, where to place it, and how materials will be handled, participation increases and contamination decreases."
+        "Durham and Scarborough show how neighbourhood pride can turn into practical environmental action. When residents understand what to collect, where to place it, and how materials will be handled, participation increases and contamination decreases."
       ),
       block("community-planning-title", "h2", "Start with zones and collection points"),
       block(
