@@ -15,8 +15,8 @@ export const BUSINESS = {
     label: "Waste Treatment and Disposal",
     full: "562210 — Waste Treatment and Disposal",
   },
-  phone: "437-457-3432",
-  phoneRaw: "+14374573432",
+  phone: "437-580-6054",
+  phoneRaw: "+14375806054",
   email: "wastesolutions80@gmail.com",
   address: {
     street: "Prestonvale Road",
@@ -35,7 +35,7 @@ export const BUSINESS = {
     facebook: "https://www.facebook.com/citywidewastesolutions",
     instagram: "https://www.instagram.com/citywidewastesolutions",
     linkedin: "https://www.linkedin.com/company/citywide-waste-solutions",
-    whatsapp: "https://wa.me/14374573432",
+    whatsapp: "https://wa.me/14375806054",
   },
   coords: { lat: 43.9167, lng: -78.7667 },
 } as const;
