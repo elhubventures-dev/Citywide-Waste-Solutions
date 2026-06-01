@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: `%s | ${BUSINESS.name}`,
   },
   description:
-    "Professional waste collection, recycling, junk removal & dumpster rental across Ontario — Vaughan, Toronto, Brampton, Mississauga, Courtice. Get a free quote today.",
+    "Professional waste collection, recycling, junk removal & dumpster rental across Ontario — Durham, Scarborough, Vaughan & Toronto. Get a free quote today.",
   keywords: [
     "waste collection Ontario",
     "junk removal Toronto",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     siteName: BUSINESS.name,
     title: "Reliable Waste Collection & Recycling Services in Ontario",
     description:
-      "Professional waste collection, recycling, junk removal & dumpster rental across Ontario. Serving Vaughan, Toronto, Brampton, Mississauga & Courtice.",
+      "Professional waste collection, recycling, junk removal & dumpster rental across Ontario. Serving Durham, Scarborough, Vaughan & Toronto.",
     images: [
       {
         url: "/og-image.png",

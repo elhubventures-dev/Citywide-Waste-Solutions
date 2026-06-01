@@ -52,11 +52,11 @@ function ServicesDropdown({
       </div>
       <div className="border-t border-border bg-gray-50 p-3 dark:bg-gray-900/50">
         <Link
-          href="/contact#quote"
+          href="/services"
           onClick={onNavigate}
           className="flex items-center justify-between rounded-xl bg-green-500 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-green-600"
         >
-          Get a free quote for any service
+          View all services
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
@@ -102,7 +102,7 @@ export function Header() {
       <div className="bg-brand-navy py-2 text-xs text-white/90">
         <div className="container flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <span className="text-center sm:text-left">
-            Serving Vaughan · Toronto · Brampton · Mississauga · Courtice
+            Serving Durham · Scarborough · Vaughan · Toronto
           </span>
           <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-end sm:gap-4">
             <a

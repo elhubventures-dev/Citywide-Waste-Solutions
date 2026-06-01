@@ -523,20 +523,6 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Quick links to Sanity */}
-        <div className="rounded-xl border border-border bg-card p-5 shadow-card">
-          <h2 className="mb-4 font-semibold text-foreground">Content Management</h2>
-          <p className="mb-4 text-sm leading-relaxed text-muted-foreground">
-            Blog posts, pricing, services, and testimonials are managed inside Sanity Studio. Open
-            Studio and choose the content type from the left sidebar.
-          </p>
-          <a
-            href="/studio"
-            className="inline-flex items-center gap-2 rounded-lg border border-border bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:border-green-300 hover:text-green-600"
-          >
-            <span>✏️</span> Open Sanity Studio
-          </a>
-        </div>
       </main>
 
       {selected && (

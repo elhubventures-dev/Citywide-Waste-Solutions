@@ -19,12 +19,12 @@ export const BUSINESS = {
   phoneRaw: "+14165586718",
   email: "wastesolutions80@gmail.com",
   address: {
-    street: "2246 Prestonvale Road",
+    street: "Prestonvale Road",
     city: "Courtice",
     province: "Ontario",
     postal: "L1E 3H8",
     country: "Canada",
-    full: "2246 Prestonvale Road, Courtice, Ontario L1E 3H8, Canada",
+    full: "Prestonvale Road, Courtice, Ontario L1E 3H8, Canada",
   },
   hours: {
     weekdays: "Mon – Fri: 7:00 AM – 6:00 PM",

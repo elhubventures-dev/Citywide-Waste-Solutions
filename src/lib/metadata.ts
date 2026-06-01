@@ -67,7 +67,7 @@ export function buildMetadata({
 export const homeMetadata: Metadata = buildMetadata({
   title: `${SITE_NAME} | Reliable Waste Collection in Ontario`,
   description:
-    "Professional waste collection, recycling, junk removal & dumpster rental across Ontario — Vaughan, Toronto, Brampton, Mississauga, Courtice. Get a free quote today.",
+    "Professional waste collection, recycling, junk removal & dumpster rental across Ontario — Durham, Scarborough, Vaughan & Toronto. Get a free quote today.",
   path: "/",
 });
 
@@ -81,7 +81,7 @@ export const servicesMetadata: Metadata = buildMetadata({
 export const areasMetadata: Metadata = buildMetadata({
   title: "Service Areas | Ontario Waste Collection",
   description:
-    "We serve Vaughan, Toronto, Brampton, Mississauga, and Courtice. Local crews, on-time pickups, and eco-conscious disposal.",
+    "We serve Durham, Scarborough, Vaughan, and Toronto. Local crews, on-time pickups, and eco-conscious disposal.",
   path: "/service-areas",
 });
 

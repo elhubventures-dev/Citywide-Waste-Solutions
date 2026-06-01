@@ -65,7 +65,7 @@ export function ServiceAreasSection() {
             </div>
             <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between rounded-xl border border-border bg-white/95 p-3 shadow-lg backdrop-blur-sm dark:bg-gray-950/95">
               <div>
-                <div className="text-sm font-semibold text-foreground">2246 Prestonvale Road</div>
+                <div className="text-sm font-semibold text-foreground">Prestonvale Road</div>
                 <div className="text-xs text-muted-foreground">
                   Courtice, Ontario L1E 3H8 — Our home base
                 </div>

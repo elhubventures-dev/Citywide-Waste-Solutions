@@ -94,7 +94,7 @@ export default async function ServicePage({ params }: { params: { slug: string }
       name: BUSINESS.name,
       url: SITE_URL,
     },
-    areaServed: ["Vaughan", "Toronto", "Brampton", "Mississauga", "Courtice"],
+    areaServed: ["Durham", "Scarborough", "Vaughan", "Toronto"],
     url: `${SITE_URL}/services/${params.slug}`,
   };
 

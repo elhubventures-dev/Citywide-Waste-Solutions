@@ -44,7 +44,7 @@
 
 ### Service Page Meta Description Template
 
-`Professional {service} across {city/Ontario}. {Key benefit}. Serving Vaughan, Toronto, Brampton, Mississauga & Courtice. Get your free quote today.`
+`Professional {service} across {city/Ontario}. {Key benefit}. Serving Durham, Scarborough, Vaughan & Toronto. Get your free quote today.`
 
 ### City Page Title Template
 
@@ -73,7 +73,7 @@
 ### NAP Consistency (must match exactly across all platforms)
 
 - **Name:** Citywide Waste Solutions
-- **Address:** 2246 Prestonvale Road, Courtice, Ontario L1E 0A1
+- **Address:** Prestonvale Road, Courtice, Ontario L1E 0A1
 - **Phone:** +1 (905) 000-0000
 
 ### GBP Checklist

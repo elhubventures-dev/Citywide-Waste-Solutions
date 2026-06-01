@@ -120,4 +120,4 @@ sanity/
 
 ## Service Areas
 
-Vaughan · Toronto · Brampton · Mississauga · Courtice
+Durham · Scarborough · Vaughan · Toronto

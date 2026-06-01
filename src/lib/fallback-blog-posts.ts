@@ -32,7 +32,7 @@ export const fallbackBlogCategories = [
 export const fallbackAuthor = {
   _id: "fallback-author-citywide",
   name: "Citywide Waste Solutions",
-  bio: "Ontario waste collection and recycling specialists serving Vaughan, Toronto, Brampton, Mississauga, Courtice, and surrounding communities.",
+  bio: "Ontario waste collection and recycling specialists serving Durham, Scarborough, Vaughan & Toronto, and surrounding communities.",
 };
 
 export const fallbackBlogPosts = [
