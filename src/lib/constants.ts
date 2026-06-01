@@ -124,6 +124,20 @@ export const SERVICES = [
 // ─── Service Areas ─────────────────────────────────────────────────────────────
 export const SERVICE_AREAS = [
   {
+    slug: "durham",
+    name: "Durham",
+    desc: "Providing reliable waste collection, recycling, and dumpster rental services across Durham Region.",
+    pop: "700,000+",
+    coords: { lat: 43.8975, lng: -78.8658 },
+  },
+  {
+    slug: "scarborough",
+    name: "Scarborough",
+    desc: "Comprehensive waste and recycling solutions for Scarborough homes, businesses, and construction sites.",
+    pop: "632,000+",
+    coords: { lat: 43.7731, lng: -79.2577 },
+  },
+  {
     slug: "vaughan",
     name: "Vaughan",
     desc: "Comprehensive waste collection, recycling, and junk removal across all Vaughan neighbourhoods.",
@@ -133,30 +147,9 @@ export const SERVICE_AREAS = [
   {
     slug: "toronto",
     name: "Toronto",
-    desc: "Serving Toronto homes and businesses from Etobicoke to Scarborough with reliable waste solutions.",
+    desc: "Serving Toronto homes and businesses with prompt, eco-friendly waste management solutions.",
     pop: "2.9 million+",
     coords: { lat: 43.6532, lng: -79.3832 },
-  },
-  {
-    slug: "brampton",
-    name: "Brampton",
-    desc: "Fast, affordable waste and recycling services for Brampton's growing residential and commercial base.",
-    pop: "640,000+",
-    coords: { lat: 43.7315, lng: -79.7624 },
-  },
-  {
-    slug: "mississauga",
-    name: "Mississauga",
-    desc: "Full-service waste management for Mississauga — from Port Credit to Malton and everywhere between.",
-    pop: "720,000+",
-    coords: { lat: 43.589, lng: -79.6441 },
-  },
-  {
-    slug: "courtice",
-    name: "Courtice",
-    desc: "Our home base. We know Courtice like the back of our hand — fast local service, no surprises.",
-    pop: "35,000+",
-    coords: { lat: 43.9167, lng: -78.7667 },
   },
 ] as const;
 
