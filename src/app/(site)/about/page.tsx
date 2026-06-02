@@ -60,7 +60,7 @@ export default function AboutPage() {
 
       <MotionSection className="bg-background">
         <div className="container">
-          <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
+          <div className="grid gap-16 lg:grid-cols-2 lg:items-start">
             <div className="space-y-6">
               <SectionHeader
                 eyebrow="Our Mission"
