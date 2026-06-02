@@ -53,8 +53,7 @@ export function CtaBannerSection() {
           </motion.h2>
 
           <motion.p variants={fadeInUp} className="text-lg text-white/70">
-            No contracts required to start. Transparent pricing — residential from $30/month, junk
-            removal from $80, dumpster rental from $150/day.
+            No contracts required to start. Tell us what you need and we’ll send a fast, custom quote.
           </motion.p>
 
           <motion.div

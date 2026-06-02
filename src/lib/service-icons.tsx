@@ -5,6 +5,7 @@ import {
   Container,
   PackageX,
   HardHat,
+  Biohazard,
   type LucideIcon,
 } from "lucide-react";
 
@@ -15,6 +16,7 @@ export const SERVICE_ICON_MAP: Record<string, LucideIcon> = {
   "dumpster-bin-rental": Container,
   "junk-removal": PackageX,
   "construction-waste-removal": HardHat,
+  "hazardous-materials": Biohazard,
 };
 
 export function getServiceIcon(slug: string): LucideIcon {

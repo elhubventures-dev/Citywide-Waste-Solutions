@@ -258,12 +258,6 @@ export default function AboutPage() {
           </div>
           <div>
             <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Owner / Registrant
-            </dt>
-            <dd className="mt-1 font-medium text-foreground">{BUSINESS.owner}</dd>
-          </div>
-          <div>
-            <dt className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
               Business Number
             </dt>
             <dd className="mt-1 font-medium text-foreground">{BUSINESS.businessNumber}</dd>

@@ -12,7 +12,7 @@ import { Stagger, StaggerItem } from "@/components/motion/reveal";
 export const metadata: Metadata = {
   title: "Pricing | Transparent Waste Collection Rates",
   description:
-    "Honest, upfront pricing for residential waste collection from $30/month, junk removal from $80, and dumpster rental from $150/day. No hidden fees. Serving Ontario.",
+    "Request a custom quote for residential waste collection, junk removal, and dumpster rental. Fast response, transparent service, and no hidden fees. Serving Ontario.",
   alternates: { canonical: `${SITE_URL}/pricing` },
 };
 
@@ -74,8 +74,7 @@ export default async function PricingPage() {
       <MotionSection className="bg-background">
         {/* Popular badge note */}
         <p className="mb-10 text-center text-sm text-muted-foreground">
-          All prices in <strong>CAD</strong>. Custom quotes available for commercial and large-scale
-          projects.
+          All services are quoted based on your needs. Contact us for a fast, accurate estimate.
         </p>
 
         <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:items-start">
@@ -114,8 +113,7 @@ export default async function PricingPage() {
 
                     {/* Price */}
                     <div className="flex items-baseline gap-1">
-                      <span className="text-4xl font-bold text-foreground">${tier.price}</span>
-                      <span className="text-sm text-muted-foreground">{tier.period}</span>
+                      <span className="text-3xl font-bold text-foreground">Custom Quote</span>
                     </div>
 
                     {/* Features */}

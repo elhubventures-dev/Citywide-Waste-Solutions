@@ -79,6 +79,7 @@ export default async function ServicePage({ params }: { params: { slug: string }
   const features = sanityService?.features ?? staticService.features;
   const price = sanityService?.price ?? staticService.price;
   const faqs = sanityService?.faqs ?? [];
+  const details = sanityService?.longDescription ? null : (staticService as any).details;
   const heroSrc = sanityService?.heroImage?.asset
     ? urlFor(sanityService.heroImage).width(1200).height(600).url()
     : null;
@@ -136,11 +137,17 @@ export default async function ServicePage({ params }: { params: { slug: string }
               </Stagger>
             </div>
 
-            {/* Sanity long description */}
+            {/* Long description (Sanity if available, else static details) */}
             {sanityService?.longDescription && (
               <div>
                 <h2 className="mb-6 text-2xl font-bold text-foreground">About This Service</h2>
                 <PortableText value={sanityService.longDescription} />
+              </div>
+            )}
+            {!sanityService?.longDescription && typeof details === "string" && details.trim() && (
+              <div>
+                <h2 className="mb-6 text-2xl font-bold text-foreground">About This Service</h2>
+                <p className="text-sm leading-relaxed text-muted-foreground">{details}</p>
               </div>
             )}
 

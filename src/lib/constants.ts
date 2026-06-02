@@ -13,6 +13,7 @@ export const NAV_LINKS = [
       { label: "Dumpster & Bin Rental", href: "/services/dumpster-bin-rental" },
       { label: "Junk Removal", href: "/services/junk-removal" },
       { label: "Construction Waste Removal", href: "/services/construction-waste-removal" },
+      { label: "Hazardous Materials", href: "/services/hazardous-materials" },
     ],
   },
   { label: "Service Areas", href: "/service-areas" },
@@ -36,7 +37,7 @@ export const SERVICES = [
     description:
       "Reliable curbside and bin pickup for homes across Ontario. Weekly, bi-weekly, or custom schedules tailored to your household needs.",
     color: "green",
-    price: "From $30/month",
+    price: "Custom Quote",
     features: [
       "Weekly & bi-weekly pickup options",
       "Oversized item collection",
@@ -66,7 +67,7 @@ export const SERVICES = [
     description:
       "Comprehensive recycling programs for paper, plastics, metals, electronics, and organics. We make sustainability simple.",
     color: "earth",
-    price: "From $25/month",
+    price: "Custom Quote",
     features: [
       "Multi-stream recycling",
       "Electronics recycling (e-waste)",
@@ -81,7 +82,7 @@ export const SERVICES = [
     description:
       "Available in multiple sizes for home renovations, cleanouts, and construction. Fast delivery and flexible rental periods.",
     color: "green",
-    price: "From $150/day",
+    price: "Custom Quote",
     features: [
       "10, 14, 20 & 30 yard bins",
       "Next-day delivery available",
@@ -96,7 +97,7 @@ export const SERVICES = [
     description:
       "Full-service junk hauling for homes and businesses. Our crew does all the heavy lifting — you just point to what goes.",
     color: "blue",
-    price: "From $80",
+    price: "Custom Quote",
     features: [
       "Same-day availability",
       "Full interior removal",
@@ -117,6 +118,23 @@ export const SERVICES = [
       "Renovation debris hauling",
       "Site cleanup crews",
       "LEED-compliant disposal",
+    ],
+  },
+  {
+    slug: "hazardous-materials",
+    title: "Hazardous Materials",
+    shortTitle: "HazMat",
+    description:
+      "Safe pickup, transport, and compliant disposal coordination for approved hazardous materials. Ideal for facilities, job sites, and property cleanouts that require careful handling and documentation.",
+    details:
+      "At Citywide Waste Solutions, we provide reliable and professional waste management services for residential, commercial, and industrial clients. One of our specialized services is the safe handling, transportation, and disposal of hazardous materials, ensuring compliance with environmental and safety regulations.",
+    color: "blue",
+    price: "Custom Quote",
+    features: [
+      "Safe handling & packaging guidance",
+      "Compliance-focused documentation support",
+      "Scheduled pickups for approved materials",
+      "Coordination with certified disposal partners",
     ],
   },
 ] as const;
@@ -158,8 +176,8 @@ export const PRICING_TIERS = [
   {
     id: "residential",
     name: "Residential",
-    price: 30,
-    period: "/month",
+    price: null,
+    period: "",
     description: "Perfect for homeowners wanting reliable, scheduled collection.",
     features: [
       "Weekly or bi-weekly pickup",
@@ -176,8 +194,8 @@ export const PRICING_TIERS = [
   {
     id: "junk",
     name: "Junk Removal",
-    price: 80,
-    period: " starting",
+    price: null,
+    period: "",
     description: "One-time or recurring junk hauling for any size job.",
     features: [
       "Same-day options available",
@@ -194,8 +212,8 @@ export const PRICING_TIERS = [
   {
     id: "dumpster",
     name: "Dumpster Rental",
-    price: 150,
-    period: "/day",
+    price: null,
+    period: "",
     description: "Flexible bin rental for renovations, cleanouts, and construction.",
     features: [
       "10, 14, 20 & 30 yard bins",
@@ -271,6 +289,12 @@ export const SPECIALIZED_SOLUTIONS = [
     description:
       "Safe collection and recycling of rubble, concrete, lumber, drywall, and mixed construction debris — helping contractors maintain clean, compliant sites.",
     href: "/services/construction-waste-removal",
+  },
+  {
+    title: "Hazardous Materials Handling",
+    description:
+      "Specialized pickup and compliant disposal coordination for approved hazardous materials — with safety-first processes and documentation support for businesses and job sites.",
+    href: "/services/hazardous-materials",
   },
   {
     title: "Wood Waste Recycling",
