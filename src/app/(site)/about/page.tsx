@@ -100,17 +100,13 @@ export default function AboutPage() {
                   />
                 </div>
               </ParallaxImageWrap>
-              <StatsGrid stats={STATS} valueClassName="text-4xl mb-1" />
-              <div className="rounded-2xl bg-hero-gradient p-6 text-center text-white">
-                <div className="mb-2 flex justify-center gap-0.5">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} className="h-5 w-5 fill-amber-400 text-amber-400" />
-                  ))}
-                </div>
-                <p className="text-2xl font-bold">4.9 / 5</p>
-                <p className="text-sm text-white/70">Average customer rating</p>
-              </div>
+
             </div>
+          </div>
+          
+          {/* Full-width Stats Grid */}
+          <div className="mt-16">
+            <StatsGrid stats={STATS} valueClassName="text-4xl mb-1" className="sm:grid-cols-2 lg:grid-cols-4" />
           </div>
         </div>
       </MotionSection>
