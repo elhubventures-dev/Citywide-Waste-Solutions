@@ -23,17 +23,22 @@ export const quoteFormSchema = z.object({
 
   phone: phoneSchema,
 
-  serviceType: z.enum(
-    [
-      "Residential Waste Collection",
-      "Commercial Waste Management",
-      "Recycling Services",
-      "Dumpster & Bin Rental",
-      "Junk Removal",
-      "Construction Waste Removal",
-    ],
-    { errorMap: () => ({ message: "Please select a service type" }) }
-  ),
+  serviceType: z
+    .string()
+    .min(1, "Please select a service type")
+    .refine(
+      (val) =>
+        [
+          "Residential Waste Collection",
+          "Commercial Waste Management",
+          "Recycling Services",
+          "Dumpster & Bin Rental",
+          "Junk Removal",
+          "Construction Waste Removal",
+          "Hazardous Materials",
+        ].includes(val),
+      { message: "Please select a service type" }
+    ),
 
   city: z.enum(["Durham", "Scarborough", "Vaughan", "Toronto", "Other"], {
     errorMap: () => ({ message: "Please select your city" }),

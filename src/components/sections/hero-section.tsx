@@ -10,6 +10,7 @@ import {
   Recycle,
   Leaf,
   Sparkles,
+  Biohazard,
   Phone,
   Mail,
   Globe,
@@ -29,6 +30,7 @@ const SERVICE_TILES = [
   { label: "Recycling Solutions", href: "/services/recycling-services", icon: Recycle },
   { label: "Organic Waste Management", href: "/recycling", icon: Leaf },
   { label: "Special Cleanup Services", href: "/services/junk-removal", icon: Sparkles },
+  { label: "Hazardous Materials", href: "/services/hazardous-materials", icon: Biohazard },
 ] as const;
 
 const FEATURE_STRIP = [
@@ -259,13 +261,13 @@ export function HeroSection() {
                   </Link>
                 ))}
                 <div className="col-span-3 grid grid-cols-6 gap-2.5 sm:gap-3">
-                  {SERVICE_TILES.slice(3).map(({ label, href, icon: Icon }, index) => (
+                  {SERVICE_TILES.slice(3).map(({ label, href, icon: Icon }, index, arr) => (
                     <Link
                       key={href}
                       href={href}
                       className={cn(
                         "group col-span-2 flex flex-col items-center gap-2 rounded-xl border border-green-100/80 bg-white/95 p-3 text-center shadow-md transition-all hover:-translate-y-0.5 hover:border-green-300 hover:shadow-lg",
-                        index === 0 && "col-start-2"
+                        arr.length === 2 && index === 0 && "col-start-2"
                       )}
                     >
                       <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-green-50 text-green-600 transition-colors group-hover:bg-green-100">

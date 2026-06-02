@@ -81,10 +81,6 @@ export default function ContactPage() {
                 <p className="mb-2 font-semibold text-foreground">Registered Business</p>
                 <dl className="space-y-1.5 text-muted-foreground">
                   <div>
-                    <dt className="text-xs uppercase tracking-wide">Owner</dt>
-                    <dd className="font-medium text-foreground">{BUSINESS.owner}</dd>
-                  </div>
-                  <div>
                     <dt className="text-xs uppercase tracking-wide">Legal Name</dt>
                     <dd className="font-medium text-foreground">{BUSINESS.legalName}</dd>
                   </div>

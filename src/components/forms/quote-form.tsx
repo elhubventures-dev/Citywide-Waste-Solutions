@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { Send, CheckCircle2, AlertCircle, Loader2, ChevronDown } from "lucide-react";
 import { quoteFormSchema, type QuoteFormValues } from "@/lib/validations";
+import { SERVICES } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 
@@ -187,13 +188,14 @@ export function QuoteForm({ defaultService, compact = false, className }: QuoteF
                 "cursor-pointer appearance-none pr-10"
               )}
             >
-              <option value="">Select a service…</option>
-              <option>Residential Waste Collection</option>
-              <option>Commercial Waste Management</option>
-              <option>Recycling Services</option>
-              <option>Dumpster &amp; Bin Rental</option>
-              <option>Junk Removal</option>
-              <option>Construction Waste Removal</option>
+              <option value="" disabled>
+                Select a service…
+              </option>
+              {SERVICES.map((s) => (
+                <option key={s.slug} value={s.title}>
+                  {s.title}
+                </option>
+              ))}
             </select>
             <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           </div>
