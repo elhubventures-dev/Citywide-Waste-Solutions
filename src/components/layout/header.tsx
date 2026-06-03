@@ -102,7 +102,7 @@ export function Header() {
       <div className="bg-brand-navy py-2 text-xs text-white/90">
         <div className="container flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <span className="text-center sm:text-left">
-            Serving Durham · Scarborough · Vaughan · Toronto
+            Serving Durham · Scarborough · Vaughan · Toronto · Clarington
           </span>
           <div className="flex flex-wrap items-center justify-center gap-3 sm:justify-end sm:gap-4">
             <a

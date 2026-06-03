@@ -20,7 +20,7 @@ const CONTACT_ICONS = {
 
 export const metadata: Metadata = {
   title: "Contact Us | Get a Free Quote",
-  description: `Get in touch with ${BUSINESS.name}. Request a free quote, schedule a pickup, or ask us anything. Serving Durham, Scarborough, Vaughan & Toronto.`,
+  description: `Get in touch with ${BUSINESS.name}. Request a free quote, schedule a pickup, or ask us anything. Serving Durham, Scarborough, Vaughan, Toronto & Clarington.`,
 };
 
 export default function ContactPage() {
