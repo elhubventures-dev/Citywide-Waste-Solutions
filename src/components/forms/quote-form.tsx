@@ -212,6 +212,7 @@ export function QuoteForm({ defaultService, compact = false, className }: QuoteF
               <option value="">Select your city…</option>
               <option>Vaughan</option>
               <option>Toronto</option>
+              <option>Clarington</option>
               <option>Durham</option>
               <option>Scarborough</option>
               <option>Other</option>

@@ -169,6 +169,13 @@ export const SERVICE_AREAS = [
     pop: "2.9 million+",
     coords: { lat: 43.6532, lng: -79.3832 },
   },
+  {
+    slug: "clarington",
+    name: "Clarington",
+    desc: "Providing prompt and professional waste management solutions for residents and businesses across Clarington.",
+    pop: "105,000+",
+    coords: { lat: 43.9351, lng: -78.6853 },
+  },
 ] as const;
 
 // ─── Pricing ──────────────────────────────────────────────────────────────────

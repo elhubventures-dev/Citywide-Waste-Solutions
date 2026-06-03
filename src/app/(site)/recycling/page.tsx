@@ -116,6 +116,7 @@ const SCHEDULE = [
   { area: "Scarborough", day: "Thursday", freq: "Weekly" },
   { area: "Vaughan", day: "Thursday", freq: "Weekly" },
   { area: "Toronto", day: "Friday", freq: "Weekly" },
+  { area: "Clarington", day: "Tuesday", freq: "Weekly" },
 ];
 
 export default function RecyclingPage() {

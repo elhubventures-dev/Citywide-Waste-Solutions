@@ -142,6 +142,7 @@ export function buildServiceSchema(
     areaServed: [
       { "@type": "City", name: "Vaughan", addressRegion: "ON" },
       { "@type": "City", name: "Toronto", addressRegion: "ON" },
+      { "@type": "City", name: "Clarington", addressRegion: "ON" },
       ],
     ...(price ? { offers: { "@type": "Offer", price, priceCurrency: "CAD" } } : {}),
   };

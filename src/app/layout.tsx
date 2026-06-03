@@ -31,6 +31,7 @@ export const metadata: Metadata = {
     "dumpster rental Vaughan",
     "recycling services Durham",
     "waste management Scarborough",
+    "waste management Clarington",
     "construction waste removal Ontario",
     "commercial waste management Ontario",
   ],
@@ -128,6 +129,7 @@ const organizationSchema = {
   areaServed: [
     { "@type": "City", name: "Vaughan" },
     { "@type": "City", name: "Toronto" },
+    { "@type": "City", name: "Clarington" },
     ],
   openingHoursSpecification: [
     {
