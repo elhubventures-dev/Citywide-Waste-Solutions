@@ -111,12 +111,12 @@ const TIPS = [
 ];
 
 const SCHEDULE = [
-    { area: "Oshawa", day: "Tuesday", freq: "Bi-Weekly" },
   { area: "Durham", day: "Wednesday", freq: "Weekly" },
+  { area: "Clarington", day: "Tuesday", freq: "Weekly" },
+  { area: "Toronto", day: "Friday", freq: "Weekly" },
   { area: "Scarborough", day: "Thursday", freq: "Weekly" },
   { area: "Vaughan", day: "Thursday", freq: "Weekly" },
-  { area: "Toronto", day: "Friday", freq: "Weekly" },
-  { area: "Clarington", day: "Tuesday", freq: "Weekly" },
+  { area: "Oshawa", day: "Tuesday", freq: "Bi-Weekly" },
 ];
 
 export default function RecyclingPage() {

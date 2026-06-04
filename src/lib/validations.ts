@@ -40,7 +40,7 @@ export const quoteFormSchema = z.object({
       { message: "Please select a service type" }
     ),
 
-  city: z.enum(["Durham", "Scarborough", "Vaughan", "Toronto", "Clarington", "Other"], {
+  city: z.enum(["Durham", "Clarington", "Toronto", "Scarborough", "Vaughan", "Other"], {
     errorMap: () => ({ message: "Please select your city" }),
   }),
 

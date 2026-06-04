@@ -149,6 +149,20 @@ export const SERVICE_AREAS = [
     coords: { lat: 43.8975, lng: -78.8658 },
   },
   {
+    slug: "clarington",
+    name: "Clarington",
+    desc: "Providing prompt and professional waste management solutions for residents and businesses across Clarington.",
+    pop: "105,000+",
+    coords: { lat: 43.9351, lng: -78.6853 },
+  },
+  {
+    slug: "toronto",
+    name: "Toronto",
+    desc: "Serving Toronto homes and businesses with prompt, eco-friendly waste management solutions.",
+    pop: "2.9 million+",
+    coords: { lat: 43.6532, lng: -79.3832 },
+  },
+  {
     slug: "scarborough",
     name: "Scarborough",
     desc: "Comprehensive waste and recycling solutions for Scarborough homes, businesses, and construction sites.",
@@ -161,20 +175,6 @@ export const SERVICE_AREAS = [
     desc: "Comprehensive waste collection, recycling, and junk removal across all Vaughan neighbourhoods.",
     pop: "350,000+",
     coords: { lat: 43.8361, lng: -79.4983 },
-  },
-  {
-    slug: "toronto",
-    name: "Toronto",
-    desc: "Serving Toronto homes and businesses with prompt, eco-friendly waste management solutions.",
-    pop: "2.9 million+",
-    coords: { lat: 43.6532, lng: -79.3832 },
-  },
-  {
-    slug: "clarington",
-    name: "Clarington",
-    desc: "Providing prompt and professional waste management solutions for residents and businesses across Clarington.",
-    pop: "105,000+",
-    coords: { lat: 43.9351, lng: -78.6853 },
   },
 ] as const;
 

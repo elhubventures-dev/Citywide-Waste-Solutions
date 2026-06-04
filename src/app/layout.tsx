@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     template: `%s | ${BUSINESS.name}`,
   },
   description:
-    "Professional waste collection, recycling, junk removal & dumpster rental across Ontario — Durham, Scarborough, Vaughan & Toronto. Get a free quote today.",
+    "Professional waste collection, recycling, junk removal & dumpster rental across Ontario — Durham, Clarington, Toronto, Scarborough & Vaughan. Get a free quote today.",
   keywords: [
     "waste collection Ontario",
     "junk removal Toronto",
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     siteName: BUSINESS.name,
     title: "Reliable Waste Collection & Recycling Services in Ontario",
     description:
-      "Professional waste collection, recycling, junk removal & dumpster rental across Ontario. Serving Durham, Scarborough, Vaughan & Toronto.",
+      "Professional waste collection, recycling, junk removal & dumpster rental across Ontario. Serving Durham, Clarington, Toronto, Scarborough & Vaughan.",
     images: [
       {
         url: "/og-image.png",
@@ -127,10 +127,12 @@ const organizationSchema = {
     longitude: -78.7667,
   },
   areaServed: [
-    { "@type": "City", name: "Vaughan" },
-    { "@type": "City", name: "Toronto" },
+    { "@type": "City", name: "Durham" },
     { "@type": "City", name: "Clarington" },
-    ],
+    { "@type": "City", name: "Toronto" },
+    { "@type": "City", name: "Scarborough" },
+    { "@type": "City", name: "Vaughan" },
+  ],
   openingHoursSpecification: [
     {
       "@type": "OpeningHoursSpecification",

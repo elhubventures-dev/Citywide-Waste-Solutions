@@ -13,7 +13,7 @@ import { BlogPreviewSection } from "@/components/sections/blog-preview-section";
 export const metadata: Metadata = {
   title: "Reliable Waste Collection & Recycling Services in Ontario",
   description:
-    "Citywide Waste Solutions provides professional residential and commercial waste collection, recycling, junk removal, and dumpster rental across Durham, Scarborough, Vaughan, Toronto & Clarington. Get your free quote today.",
+    "Citywide Waste Solutions provides professional residential and commercial waste collection, recycling, junk removal, and dumpster rental across Durham, Clarington, Toronto, Scarborough & Vaughan. Get your free quote today.",
   alternates: {
     canonical: SITE_URL,
   },

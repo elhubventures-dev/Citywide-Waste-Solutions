@@ -67,7 +67,7 @@ export function buildMetadata({
 export const homeMetadata: Metadata = buildMetadata({
   title: `${SITE_NAME} | Reliable Waste Collection in Ontario`,
   description:
-    "Professional waste collection, recycling, junk removal & dumpster rental across Ontario — Durham, Scarborough, Vaughan & Toronto. Get a free quote today.",
+    "Professional waste collection, recycling, junk removal & dumpster rental across Ontario — Durham, Clarington, Toronto, Scarborough & Vaughan. Get a free quote today.",
   path: "/",
 });
 
@@ -81,7 +81,7 @@ export const servicesMetadata: Metadata = buildMetadata({
 export const areasMetadata: Metadata = buildMetadata({
   title: "Service Areas | Ontario Waste Collection",
   description:
-    "We serve Durham, Scarborough, Vaughan, and Toronto. Local crews, on-time pickups, and eco-conscious disposal.",
+    "We serve Durham, Clarington, Toronto, Scarborough, and Vaughan. Local crews, on-time pickups, and eco-conscious disposal.",
   path: "/service-areas",
 });
 
@@ -140,10 +140,12 @@ export function buildServiceSchema(
       },
     },
     areaServed: [
-      { "@type": "City", name: "Vaughan", addressRegion: "ON" },
-      { "@type": "City", name: "Toronto", addressRegion: "ON" },
+      { "@type": "City", name: "Durham", addressRegion: "ON" },
       { "@type": "City", name: "Clarington", addressRegion: "ON" },
-      ],
+      { "@type": "City", name: "Toronto", addressRegion: "ON" },
+      { "@type": "City", name: "Scarborough", addressRegion: "ON" },
+      { "@type": "City", name: "Vaughan", addressRegion: "ON" },
+    ],
     ...(price ? { offers: { "@type": "Offer", price, priceCurrency: "CAD" } } : {}),
   };
 }
