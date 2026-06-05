@@ -19,6 +19,7 @@
     "sanity:build": "sanity build",
     "analyze": "node scripts/analyze.mjs",
     "images:sync": "powershell -ExecutionPolicy Bypass -File scripts/sync-images.ps1",
+    "images:gallery": "node scripts/convert-flyers-to-webp.mjs",
     "icons:generate": "node scripts/generate-icons.mjs"
   },
   "dependencies": {

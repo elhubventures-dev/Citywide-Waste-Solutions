@@ -1,0 +1,100 @@
+[
+  {
+    "slug": "before-and-after-cleanup-2",
+    "src": "/images/gallery/before-and-after-cleanup-2.webp",
+    "width": 1660,
+    "height": 947,
+    "sourceFile": "BEFORE & AFTER CLEANUP-2.png"
+  },
+  {
+    "slug": "before-and-after-cleanup",
+    "src": "/images/gallery/before-and-after-cleanup.webp",
+    "width": 1536,
+    "height": 1024,
+    "sourceFile": "BEFORE & AFTER CLEANUP.png"
+  },
+  {
+    "slug": "call-to-action-banners-2",
+    "src": "/images/gallery/call-to-action-banners-2.webp",
+    "width": 1536,
+    "height": 1024,
+    "sourceFile": "CALL-TO-ACTION BANNERS-2.png"
+  },
+  {
+    "slug": "call-to-action-banners",
+    "src": "/images/gallery/call-to-action-banners.webp",
+    "width": 1693,
+    "height": 929,
+    "sourceFile": "CALL-TO-ACTION BANNERS.png"
+  },
+  {
+    "slug": "cinematic-ad-campaign-version",
+    "src": "/images/gallery/cinematic-ad-campaign-version.webp",
+    "width": 1536,
+    "height": 1024,
+    "sourceFile": "CINEMATIC AD CAMPAIGN VERSION.png"
+  },
+  {
+    "slug": "commercial-services",
+    "src": "/images/gallery/commercial-services.webp",
+    "width": 1536,
+    "height": 1024,
+    "sourceFile": "COMMERCIAL SERVICES.png"
+  },
+  {
+    "slug": "construction-cleanup",
+    "src": "/images/gallery/construction-cleanup.webp",
+    "width": 1536,
+    "height": 1024,
+    "sourceFile": "CONSTRUCTION CLEANUP.png"
+  },
+  {
+    "slug": "corporate-flyer-variation",
+    "src": "/images/gallery/corporate-flyer-variation.webp",
+    "width": 1024,
+    "height": 1536,
+    "sourceFile": "CORPORATE FLYER VARIATION.png"
+  },
+  {
+    "slug": "master-brand",
+    "src": "/images/gallery/master-brand.webp",
+    "width": 1536,
+    "height": 1024,
+    "sourceFile": "MASTER BRAND.png"
+  },
+  {
+    "slug": "organic-waste-management",
+    "src": "/images/gallery/organic-waste-management.webp",
+    "width": 1536,
+    "height": 1024,
+    "sourceFile": "ORGANIC WASTE MANAGEMENT.png"
+  },
+  {
+    "slug": "recycling-services",
+    "src": "/images/gallery/recycling-services.webp",
+    "width": 1536,
+    "height": 1024,
+    "sourceFile": "RECYCLING SERVICES.png"
+  },
+  {
+    "slug": "residential-services",
+    "src": "/images/gallery/residential-services.webp",
+    "width": 1536,
+    "height": 1024,
+    "sourceFile": "RESIDENTIAL SERVICES.png"
+  },
+  {
+    "slug": "social-media-ad-variation",
+    "src": "/images/gallery/social-media-ad-variation.webp",
+    "width": 1254,
+    "height": 1254,
+    "sourceFile": "SOCIAL MEDIA AD VARIATION.png"
+  },
+  {
+    "slug": "website-hero-section-variation",
+    "src": "/images/gallery/website-hero-section-variation.webp",
+    "width": 1692,
+    "height": 930,
+    "sourceFile": "WEBSITE HERO SECTION VARIATION.png"
+  }
+]

@@ -20,6 +20,7 @@ export const NAV_LINKS = [
   { label: "Recycling Info", href: "/recycling" },
   { label: "Pricing", href: "/pricing" },
   { label: "About", href: "/about" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Blog", href: "/blog" },
 ] as const;
 

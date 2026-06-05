@@ -23,6 +23,7 @@ const COMPANY_LINKS = [
   { label: "Our Services", href: "/services" },
   { label: "Pricing", href: "/pricing" },
   { label: "Recycling Info", href: "/recycling" },
+  { label: "Gallery", href: "/gallery" },
   { label: "Blog", href: "/blog" },
   { label: "Contact", href: "/contact" },
 ];
