@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, Expand, Images } from "lucide-react";
 import {
   GALLERY_CATEGORIES,
@@ -10,9 +11,10 @@ import {
   type GalleryImage,
 } from "@/lib/gallery-images";
 import { cn } from "@/lib/utils";
-import { Stagger, StaggerItem } from "@/components/motion/reveal";
+import { fadeInUp, staggerContainer } from "@/lib/motion-presets";
 
 export function FlyerGallery() {
+  const reduceMotion = useReducedMotion();
   const [activeCategory, setActiveCategory] = useState<GalleryCategory>("all");
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
@@ -85,14 +87,20 @@ export function FlyerGallery() {
         })}
       </div>
 
-      {/* Masonry-style responsive grid */}
-      <Stagger className="columns-1 gap-5 sm:columns-2 lg:columns-3">
+      {/* Masonry-style responsive grid — re-animate when category changes */}
+      <motion.div
+        key={activeCategory}
+        initial={reduceMotion ? false : "hidden"}
+        animate={reduceMotion ? undefined : "visible"}
+        variants={reduceMotion ? undefined : staggerContainer}
+        className="columns-1 gap-5 sm:columns-2 lg:columns-3"
+      >
         {filtered.map((item, index) => (
-          <StaggerItem key={item.slug}>
+          <motion.div key={item.slug} variants={reduceMotion ? undefined : fadeInUp}>
             <GalleryCard item={item} onOpen={() => openLightbox(index)} />
-          </StaggerItem>
+          </motion.div>
         ))}
-      </Stagger>
+      </motion.div>
 
       {filtered.length === 0 && (
         <div className="py-20 text-center text-muted-foreground">
