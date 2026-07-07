@@ -1,4 +1,6 @@
 import { SITE_IMAGES } from "@/lib/site-images";
+import { RELOCATE_SITE_URL } from "@/lib/moving/business";
+import { MOVING_SERVICE_AREAS_LINE } from "@/lib/moving/constants";
 
 type Block = {
   _type: "block";
@@ -13,6 +15,17 @@ type Block = {
   }>;
 };
 
+type CtaBlock = {
+  _type: "cta";
+  _key: string;
+  title?: string;
+  description?: string;
+  primaryLabel: string;
+  primaryHref: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+};
+
 function block(_key: string, style: Block["style"], text: string): Block {
   return {
     _type: "block",
@@ -23,10 +36,18 @@ function block(_key: string, style: Block["style"], text: string): Block {
   };
 }
 
+function cta(
+  _key: string,
+  options: Omit<CtaBlock, "_type" | "_key">
+): CtaBlock {
+  return { _type: "cta", _key, ...options };
+}
+
 export const fallbackBlogCategories = [
   { _id: "fallback-category-recycling", slug: "recycling-tips", label: "Recycling Tips" },
   { _id: "fallback-category-waste", slug: "waste-reduction", label: "Waste Reduction" },
   { _id: "fallback-category-community", slug: "community-cleanup", label: "Community Cleanup" },
+  { _id: "fallback-category-moving", slug: "moving-services", label: "Moving Services" },
 ] as const;
 
 export const fallbackAuthor = {
@@ -36,6 +57,116 @@ export const fallbackAuthor = {
 };
 
 export const fallbackBlogPosts = [
+  {
+    _id: "fallback-moving-relocate",
+    title: "Introducing Citywide Moving Solutions — Your Trusted Team, Now for Relocations",
+    slug: "introducing-citywide-moving-solutions-relocate",
+    excerpt:
+      "Citywide Waste Solutions has launched Citywide Moving Solutions at relocate.citywidewastesolutions.com — professional residential and commercial moving across Durham, Clarington, Toronto, Scarborough, and Vaughan.",
+    localImage: SITE_IMAGES.fleet.van,
+    coverImage: {
+      alt: "Citywide Moving Solutions branded van serving the Greater Toronto Area",
+    },
+    publishedAt: "2026-07-07",
+    _updatedAt: "2026-07-07",
+    readingTime: 5,
+    author: fallbackAuthor,
+    categories: [fallbackBlogCategories[3]],
+    seo: {
+      metaTitle: "Introducing Citywide Moving Solutions | relocate.citywidewastesolutions.com",
+      metaDescription:
+        "Citywide Moving Solutions is now live on relocate.citywidewastesolutions.com. Learn about our residential, commercial, and long-distance moving services across the GTA and Durham Region.",
+    },
+    body: [
+      block(
+        "moving-intro",
+        "normal",
+        "If you already trust Citywide Waste Solutions for pickup, recycling, junk removal, and bin rental, we have good news: the same professional, reliable team now helps homes and businesses move across the Greater Toronto Area and Durham Region through Citywide Moving Solutions."
+      ),
+      block(
+        "moving-launch",
+        "normal",
+        `Our dedicated moving website is live at relocate.citywidewastesolutions.com. It is built for people who need clear quotes, straightforward service information, and the same accountability you expect from Citywide — whether you are moving across town or planning a larger relocation.`
+      ),
+      cta("moving-cta-top", {
+        title: "Explore Citywide Moving Solutions",
+        description:
+          "Visit our new moving site for services, pricing, FAQs, and a free quote form — all in one place.",
+        primaryLabel: "Visit Moving Website",
+        primaryHref: RELOCATE_SITE_URL,
+        secondaryLabel: "Get Free Moving Quote",
+        secondaryHref: `${RELOCATE_SITE_URL}/contact`,
+      }),
+      block("moving-why-title", "h2", "Why we launched a dedicated moving site"),
+      block(
+        "moving-why",
+        "normal",
+        "Waste collection and moving are different jobs with different planning needs. A move involves packing timelines, crew sizing, furniture protection, elevator access, and delivery windows — details that deserve their own space, forms, and service pages."
+      ),
+      block(
+        "moving-why-two",
+        "normal",
+        "The relocate subdomain keeps moving information organized while staying connected to Citywide Waste & Moving Solutions. You get a focused experience for relocations without losing the brand trust we have built since 2014."
+      ),
+      block("moving-services-title", "h2", "What you can book through relocate.citywidewastesolutions.com"),
+      block(
+        "moving-services",
+        "normal",
+        "Citywide Moving Solutions offers residential moves, commercial and office relocations, long-distance moving, packing and unpacking, loading and unloading, and furniture assembly. Whether you need a full-service move or help with the heavy lifting only, our crew can tailor the job to your timeline and budget."
+      ),
+      block("moving-areas-title", "h2", "Where we serve"),
+      block(
+        "moving-areas",
+        "normal",
+        `We provide moving services across ${MOVING_SERVICE_AREAS_LINE}, and surrounding Ontario communities. Long-distance moves are also available — request a quote and our team will confirm crew size, truck needs, and scheduling.`
+      ),
+      block("moving-trust-title", "h2", "The same standards you already know"),
+      block(
+        "moving-trust",
+        "normal",
+        "Citywide Moving Solutions is fully insured, on time, and built around clear communication from quote to delivery. That is the same approach we bring to waste collection: show up when expected, handle the job carefully, and leave the property in better shape than we found it."
+      ),
+      cta("moving-cta-mid", {
+        title: "Planning a move this season?",
+        description:
+          "Tell us about your move online or call our team for a written estimate — no obligation.",
+        primaryLabel: "Request a Free Quote",
+        primaryHref: `${RELOCATE_SITE_URL}/contact#quote`,
+        secondaryLabel: "View Moving Services",
+        secondaryHref: `${RELOCATE_SITE_URL}/services`,
+      }),
+      block("moving-how-title", "h2", "How to get started"),
+      block(
+        "moving-how-one",
+        "normal",
+        "1. Visit relocate.citywidewastesolutions.com and review the services that match your move."
+      ),
+      block(
+        "moving-how-two",
+        "normal",
+        "2. Submit the quote form with your move date, addresses, and property details — or call us directly for faster scheduling."
+      ),
+      block(
+        "moving-how-three",
+        "normal",
+        "3. We confirm pricing, crew size, and timing before moving day so there are no surprises."
+      ),
+      block("moving-wrap-title", "h2", "Waste and moving, one trusted local team"),
+      block(
+        "moving-wrap",
+        "normal",
+        "Need waste pickup for a cleanout before your move? You can still request waste services here on citywidewastesolutions.com. For relocations, packing, and delivery, head to our moving site — we are ready to help you get there."
+      ),
+      cta("moving-cta-bottom", {
+        title: "Ready when you are",
+        description: "Citywide Moving Solutions is live and taking quote requests today.",
+        primaryLabel: "Go to Citywide Moving Solutions",
+        primaryHref: RELOCATE_SITE_URL,
+        secondaryLabel: "Contact Moving Team",
+        secondaryHref: `${RELOCATE_SITE_URL}/contact`,
+      }),
+    ],
+  },
   {
     _id: "fallback-household-waste",
     title: "10 Practical Ways to Reduce Household Waste in Ontario",

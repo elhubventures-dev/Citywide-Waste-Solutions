@@ -14,11 +14,37 @@ export const MOVING_NAV_CTA = {
   href: "/contact#quote",
 } as const;
 
+export const MOVING_HEADER_CTA = {
+  label: "Moving Services",
+  href: MOVING_BUSINESS.siteUrl,
+} as const;
+
+export const MAIN_SITE_HEADER_CTA = {
+  label: "Waste Solutions",
+  href: MOVING_BUSINESS.mainSiteUrl,
+} as const;
+
 export const MOVING_PHONE_CTA = {
   label: "Call Today",
   href: `tel:${MOVING_BUSINESS.phoneRaw}`,
   display: MOVING_BUSINESS.phone,
 } as const;
+
+// ─── Service areas ─────────────────────────────────────────────────────────────
+
+export const MOVING_SERVICE_AREAS = [
+  "Durham",
+  "Clarington",
+  "Toronto",
+  "Scarborough",
+  "Vaughan",
+] as const;
+
+export const MOVING_SERVICE_AREAS_LINE = MOVING_SERVICE_AREAS.join(" · ");
+
+export const MOVING_SERVICE_AREAS_HEADLINE = `Serving ${MOVING_SERVICE_AREAS_LINE}`;
+
+export const MOVING_SERVICE_AREAS_SHORT = `${MOVING_SERVICE_AREAS.slice(0, -1).join(", ")} & ${MOVING_SERVICE_AREAS.at(-1)}`;
 
 // ─── Service highlights (homepage strip) ──────────────────────────────────────
 
@@ -189,7 +215,7 @@ export const MOVING_PRICING_TIERS = [
   {
     id: "local",
     name: "Local Move",
-    description: "Ideal for moves within the GTA and Durham Region.",
+    description: "Ideal for moves within Durham, Clarington, Toronto, Scarborough, and Vaughan.",
     priceNote: "Starting from custom quote",
     features: [
       "Hourly or flat-rate options",
@@ -264,7 +290,7 @@ export const MOVING_FAQS = [
   {
     question: "What areas do you serve?",
     answer:
-      "We serve the Greater Toronto Area, Durham Region, Clarington, Scarborough, Vaughan, and surrounding Ontario communities. Long-distance moves across Ontario and beyond are also available.",
+      "We serve Durham, Clarington, Toronto, Scarborough, Vaughan, and surrounding Ontario communities. Long-distance moves across Ontario and beyond are also available.",
   },
   {
     question: "Can you help with office relocations?",

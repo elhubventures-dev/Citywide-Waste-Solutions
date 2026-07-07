@@ -18,6 +18,13 @@ const SOCIAL = [
   { icon: Linkedin, label: "LinkedIn", href: MOVING_BUSINESS.social.linkedin },
 ] as const;
 
+const LEGAL_LINKS = [
+  { label: "Privacy Policy", href: "/privacy" },
+  { label: "Terms of Service", href: "/terms" },
+  { label: "Disclaimer", href: "/terms#disclaimer" },
+  { label: "Cookie Policy", href: "/cookies" },
+] as const;
+
 export function RelocateFooter() {
   const host = headers().get("host") ?? "";
   const href = (path: string) => relocateHref(path, host);
@@ -118,19 +125,32 @@ export function RelocateFooter() {
           <p>
             © {year} {MOVING_BUSINESS.parentName}. All rights reserved.
           </p>
-          <p className="flex items-center gap-1.5">
-            <span>{MOVING_BUSINESS.tagline}</span>
-            <span className="text-white/20">·</span>
-            <a
-              href={MOVING_BUSINESS.mainSiteUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 text-white/50 transition-colors hover:text-green-300"
-            >
-              Waste Solutions
-              <ExternalLink className="h-3 w-3" />
-            </a>
-          </p>
+          <div className="flex flex-col items-center gap-4 sm:items-end">
+            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+              {LEGAL_LINKS.map(({ label, href: legalHref }) => (
+                <Link
+                  key={legalHref}
+                  href={href(legalHref)}
+                  className="transition-colors hover:text-white/70"
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
+            <p className="flex items-center gap-1.5">
+              <span>{MOVING_BUSINESS.tagline}</span>
+              <span className="text-white/20">·</span>
+              <a
+                href={MOVING_BUSINESS.mainSiteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-white/50 transition-colors hover:text-green-300"
+              >
+                Waste Solutions
+                <ExternalLink className="h-3 w-3" />
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>

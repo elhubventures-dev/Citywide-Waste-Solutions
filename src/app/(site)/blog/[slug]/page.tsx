@@ -9,6 +9,7 @@ import { PortableText } from "@/components/blog/portable-text";
 import { PageHero } from "@/components/motion/page-hero";
 import { formatDate } from "@/lib/utils";
 import { BUSINESS, SITE_URL } from "@/lib/constants";
+import { RELOCATE_SITE_URL } from "@/lib/moving/business";
 import {
   fallbackBlogPosts,
   getFallbackBlogPost,
@@ -108,6 +109,8 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     : [];
   const related =
     sanityRelated.length > 0 ? sanityRelated : getFallbackRelatedPosts(params.slug, categorySlugs);
+
+  const isMovingPost = categorySlugs.includes("moving-services");
 
   const coverSrc =
     post.localImage ??
@@ -253,17 +256,48 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           <aside className="space-y-8">
             {/* CTA box */}
             <div className="rounded-2xl bg-hero-gradient p-6 text-white">
-              <h3 className="mb-2 text-lg font-bold">Need Waste Pickup?</h3>
-              <p className="mb-4 text-sm text-white/75">
-                Get a free quote tailored to your home or business.
-              </p>
-              <Link
-                href="/contact#quote"
-                className="flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-green-700 transition-colors hover:bg-green-50"
-              >
-                Get Free Quote
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+              {isMovingPost ? (
+                <>
+                  <h3 className="mb-2 text-lg font-bold">Planning a Move?</h3>
+                  <p className="mb-4 text-sm text-white/75">
+                    Visit Citywide Moving Solutions for services, pricing, and a free quote.
+                  </p>
+                  <div className="space-y-3">
+                    <a
+                      href={RELOCATE_SITE_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-green-700 transition-colors hover:bg-green-50"
+                    >
+                      Visit Moving Website
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                    <a
+                      href={`${RELOCATE_SITE_URL}/contact#quote`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center gap-2 rounded-lg border-2 border-white/80 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+                    >
+                      Get Free Moving Quote
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h3 className="mb-2 text-lg font-bold">Need Waste Pickup?</h3>
+                  <p className="mb-4 text-sm text-white/75">
+                    Get a free quote tailored to your home or business.
+                  </p>
+                  <Link
+                    href="/contact#quote"
+                    className="flex items-center justify-center gap-2 rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-green-700 transition-colors hover:bg-green-50"
+                  >
+                    Get Free Quote
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </>
+              )}
             </div>
 
             {/* Related posts */}

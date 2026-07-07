@@ -60,7 +60,7 @@ export function MovingLogo({ size = "md", className, priority = false, variant =
         <span
           className={cn(
             "text-[10px] font-bold uppercase tracking-[0.2em]",
-            variant === "dark" ? "text-green-600" : "text-green-200"
+            variant === "dark" ? "text-brand-green" : "text-green-200"
           )}
         >
           Moving Solutions

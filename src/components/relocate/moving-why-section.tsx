@@ -78,7 +78,7 @@ export function MovingProcessSection() {
           <StaggerItem key={step}>
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
               <span className="text-3xl font-extrabold text-green-300">{step}</span>
-              <h3 className="mt-3 text-lg font-bold">{title}</h3>
+              <h3 className="mt-3 text-lg font-bold text-white">{title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-white/75">{description}</p>
             </div>
           </StaggerItem>

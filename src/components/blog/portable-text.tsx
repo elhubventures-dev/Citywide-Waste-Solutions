@@ -1,8 +1,13 @@
+"use client";
+
 import { PortableText as SanityPortableText } from "@portabletext/react";
 import type { PortableTextBlock } from "@portabletext/types";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { urlFor } from "@/sanity/lib/client";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { Info, Lightbulb, AlertTriangle, CheckCircle2 } from "lucide-react";
 
 // ─── Callout block component ─────────────────────────────────────────────────
@@ -68,6 +73,55 @@ const components = {
         <div className={cn("my-6 flex gap-3 rounded-xl border p-4", style.bg)}>
           <Icon className={cn("mt-0.5 h-5 w-5 shrink-0", style.iconColor)} />
           <p className={cn("text-sm leading-relaxed", style.textColor)}>{value.text}</p>
+        </div>
+      );
+    },
+
+    // In-article CTA block (fallback blog posts)
+    cta: ({ value }: any) => {
+      const isExternal = (href: string) => href.startsWith("http");
+
+      const renderButton = (
+        href: string,
+        label: string,
+        variant: "primary" | "outline-invert" = "primary"
+      ) => {
+        if (isExternal(href)) {
+          return (
+            <Button asChild variant={variant} size="md">
+              <a href={href} target="_blank" rel="noopener noreferrer">
+                {label}
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            </Button>
+          );
+        }
+        return (
+          <Button asChild variant={variant} size="md">
+            <Link href={href}>
+              {label}
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </Button>
+        );
+      };
+
+      return (
+        <div className="my-10 rounded-2xl border border-green-200 bg-gradient-to-br from-green-50 to-white p-6 shadow-card dark:border-green-900/40 dark:from-green-950/20 dark:to-card md:p-8">
+          {value.title && (
+            <h3 className="text-xl font-bold tracking-tight text-foreground">{value.title}</h3>
+          )}
+          {value.description && (
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground md:text-base">
+              {value.description}
+            </p>
+          )}
+          <div className="mt-5 flex flex-wrap gap-3">
+            {value.primaryHref && value.primaryLabel &&
+              renderButton(value.primaryHref, value.primaryLabel, "primary")}
+            {value.secondaryHref && value.secondaryLabel &&
+              renderButton(value.secondaryHref, value.secondaryLabel, "outline-invert")}
+          </div>
         </div>
       );
     },

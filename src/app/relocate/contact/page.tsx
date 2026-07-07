@@ -1,6 +1,6 @@
 import { buildMovingMetadata } from "@/lib/moving/metadata";
 import { MOVING_BUSINESS } from "@/lib/moving/business";
-import { MOVING_CONTACT_INFO } from "@/lib/moving/constants";
+import { MOVING_CONTACT_INFO, MOVING_SERVICE_AREAS_SHORT } from "@/lib/moving/constants";
 import { PageHero } from "@/components/motion/page-hero";
 import { MovingQuoteForm, MovingBookingCard } from "@/components/relocate/moving-quote-form";
 import { MotionSection } from "@/components/motion/motion-section";
@@ -18,7 +18,7 @@ const CONTACT_ICONS = {
 export const metadata = buildMovingMetadata({
   title: `Contact & Book | ${MOVING_BUSINESS.name}`,
   description:
-    `Contact ${MOVING_BUSINESS.name} for a free moving quote or to book your move. Call ${MOVING_BUSINESS.phone} or submit the form online.`,
+    `Contact ${MOVING_BUSINESS.name} for a free moving quote or to book your move. Serving ${MOVING_SERVICE_AREAS_SHORT}. Call ${MOVING_BUSINESS.phone} or submit the form online.`,
   path: "/contact",
 });
 
@@ -28,7 +28,7 @@ export default function RelocateContactPage() {
       <PageHero
         eyebrow="Contact"
         title="Get Your Free Moving Quote"
-        description="Request a quote online or speak with our team directly. We respond within 2 business hours and can often accommodate same-day moves."
+        description={`Request a quote online or speak with our team directly. We respond within 2 business hours and can often accommodate same-day moves. Serving ${MOVING_SERVICE_AREAS_SHORT}.`}
         centered
       />
 

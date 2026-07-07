@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowRight, CheckCircle2, Truck } from "lucide-react";
 import { MOVING_BUSINESS } from "@/lib/moving/business";
 import { MOVING_HOMEPAGE_PROMO } from "@/lib/moving/constants";
@@ -52,10 +51,10 @@ export function MovingSolutionsPromoSection() {
                 </a>
               </Button>
               <Button asChild variant="outline-white" size="lg">
-                <Link href="/contact#quote">
+                <a href={`${MOVING_BUSINESS.siteUrl}/contact`}>
                   Get a Waste Quote
                   <ArrowRight className="h-4 w-4" />
-                </Link>
+                </a>
               </Button>
             </div>
           </Reveal>

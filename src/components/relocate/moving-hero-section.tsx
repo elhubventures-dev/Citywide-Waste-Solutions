@@ -11,11 +11,54 @@ import {
   MOVING_VALUE_STRIP,
   MOVING_NAV_CTA,
   MOVING_PHONE_CTA,
+  MOVING_SERVICE_AREAS_LINE,
 } from "@/lib/moving/constants";
 import { MOVING_IMAGES } from "@/lib/moving/images";
 import { relocateHref } from "@/lib/moving/paths";
 import { heroStagger, heroItem } from "@/lib/motion-presets";
 import { Button } from "@/components/ui/button";
+
+function MovingServicesTicker({ reduceMotion }: { reduceMotion: boolean | null }) {
+  if (reduceMotion) {
+    return (
+      <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 px-4 py-4 text-center text-xs font-semibold uppercase tracking-wide text-white/90 sm:text-sm">
+        {MOVING_SERVICE_STRIP.map((item, i) => (
+          <span key={item} className="flex items-center gap-2">
+            {i > 0 && <span className="text-white/30">•</span>}
+            {item}
+          </span>
+        ))}
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative overflow-hidden py-4">
+      <div
+        className="flex w-max animate-ticker-rtl items-center [animation-duration:55s] motion-reduce:animate-none"
+        aria-label="Moving services offered"
+      >
+        {[0, 1].map((copy) => (
+          <div
+            key={copy}
+            className="flex shrink-0 items-center gap-6 px-10"
+            aria-hidden={copy === 1}
+          >
+            {MOVING_SERVICE_STRIP.map((item, i) => (
+              <span
+                key={`${copy}-${item}`}
+                className="flex items-center gap-6 whitespace-nowrap text-xs font-semibold uppercase tracking-wide text-white/90 sm:text-sm"
+              >
+                {i > 0 && <span className="text-white/30">•</span>}
+                {item}
+              </span>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export function MovingHeroSection() {
   const reduceMotion = useReducedMotion();
@@ -38,19 +81,19 @@ export function MovingHeroSection() {
           className="space-y-6"
         >
           <motion.div variants={heroItem}>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-green-200">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-green-300">
               {MOVING_BUSINESS.name}
             </span>
           </motion.div>
 
           <motion.h1
             variants={heroItem}
-            className="text-balance text-4xl font-extrabold uppercase tracking-tight sm:text-5xl lg:text-6xl"
+            className="text-balance text-4xl font-extrabold uppercase tracking-tight text-white sm:text-5xl lg:text-6xl"
           >
             {MOVING_BUSINESS.headline}
           </motion.h1>
 
-          <motion.p variants={heroItem} className="text-lg font-semibold text-green-200">
+          <motion.p variants={heroItem} className="text-lg font-semibold text-brand-green">
             {MOVING_BUSINESS.tagline}
           </motion.p>
 
@@ -60,13 +103,13 @@ export function MovingHeroSection() {
           </motion.p>
 
           <motion.div variants={heroItem} className="flex flex-wrap gap-3 pt-2">
-            <Button asChild size="xl" className="bg-green-500 shadow-green hover:bg-green-600">
+            <Button asChild size="xl" variant="primary">
               <Link href={quoteHref}>
                 Get Free Quote
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </Button>
-            <Button asChild variant="outline-white" size="xl">
+            <Button asChild variant="outline-invert" size="xl">
               <a href={MOVING_PHONE_CTA.href}>
                 <Phone className="h-5 w-5" />
                 {MOVING_PHONE_CTA.display}
@@ -99,25 +142,20 @@ export function MovingHeroSection() {
               sizes="(max-width: 1024px) 100vw, 50vw"
               priority
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-blue-950/60 via-transparent to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/60 via-transparent to-transparent" />
           </div>
-          <div className="absolute -bottom-4 -left-4 rounded-xl bg-green-500 px-5 py-3 shadow-green sm:-bottom-6 sm:-left-6">
+          <div className="absolute -bottom-4 -left-4 max-w-[17rem] rounded-xl bg-brand-green px-5 py-3 shadow-green sm:-bottom-6 sm:-left-6 sm:max-w-xs">
             <p className="text-xs font-bold uppercase tracking-wider text-green-100">Serving</p>
-            <p className="text-sm font-bold text-white">GTA &amp; Durham Region</p>
+            <p className="text-xs font-bold leading-snug text-white sm:text-sm">
+              {MOVING_SERVICE_AREAS_LINE}
+            </p>
           </div>
         </motion.div>
       </div>
 
       {/* Service strip */}
-      <div className="relative border-t border-white/10 bg-blue-800/50 backdrop-blur-sm">
-        <div className="container flex flex-wrap items-center justify-center gap-x-2 gap-y-2 py-4 text-center text-xs font-semibold uppercase tracking-wide text-white/90 sm:text-sm">
-          {MOVING_SERVICE_STRIP.map((item, i) => (
-            <span key={item} className="flex items-center gap-2">
-              {i > 0 && <span className="text-white/30">•</span>}
-              {item}
-            </span>
-          ))}
-        </div>
+      <div className="relative border-t border-white/10 bg-brand-navy/50 backdrop-blur-sm">
+        <MovingServicesTicker reduceMotion={reduceMotion} />
       </div>
     </section>
   );
@@ -125,11 +163,8 @@ export function MovingHeroSection() {
 
 export function MovingPhoneBanner() {
   return (
-    <div className="relative overflow-hidden bg-green-500 py-5">
-      <div
-        className="absolute inset-0 -skew-y-1 bg-green-600"
-        aria-hidden
-      />
+    <div className="relative overflow-hidden bg-brand-green py-5">
+      <div className="absolute inset-0 -skew-y-1 bg-green-600" aria-hidden />
       <div className="container relative flex flex-col items-center justify-center gap-3 text-center sm:flex-row sm:gap-6">
         <Phone className="h-6 w-6 text-white" />
         <p className="text-lg font-bold uppercase tracking-wide text-white sm:text-xl">
@@ -137,7 +172,7 @@ export function MovingPhoneBanner() {
         </p>
         <a
           href={MOVING_PHONE_CTA.href}
-          className="rounded-lg bg-white px-6 py-2.5 text-lg font-bold text-green-700 shadow-md transition-transform hover:scale-105"
+          className="rounded-lg bg-white px-6 py-2.5 text-lg font-bold text-brand-green shadow-md transition-colors hover:bg-green-50"
         >
           {MOVING_PHONE_CTA.display}
         </a>
@@ -158,7 +193,7 @@ export function MovingStatsBar() {
       <div className="container grid gap-4 py-8 sm:grid-cols-3">
         {stats.map(({ icon: Icon, label }) => (
           <div key={label} className="flex items-center justify-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-500 text-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-brand-green text-white">
               <Icon className="h-5 w-5" />
             </div>
             <span className="text-sm font-bold text-foreground">{label}</span>

@@ -8,6 +8,7 @@ import { Menu, X, ChevronDown, ArrowRight, Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NAV_LINKS, NAV_CTA } from "@/lib/constants";
 import { BUSINESS } from "@/lib/business";
+import { MOVING_HEADER_CTA } from "@/lib/moving/constants";
 import { getServiceIconFromHref } from "@/lib/service-icons";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/layout/logo";
@@ -192,6 +193,12 @@ export function Header() {
 
           {/* Desktop CTAs */}
           <div className="ml-auto hidden items-center gap-3 lg:flex">
+            <Button asChild size="md" variant="outline-invert">
+              <a href={MOVING_HEADER_CTA.href}>
+                {MOVING_HEADER_CTA.label}
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            </Button>
             <Button asChild size="md" variant="primary">
               <Link href={NAV_CTA.href}>
                 {NAV_CTA.label}
@@ -285,7 +292,13 @@ export function Header() {
               </div>
 
               {/* Drawer footer */}
-              <div className="border-t border-border p-5">
+              <div className="space-y-3 border-t border-border p-5">
+                <Button asChild variant="outline-invert" size="lg" className="w-full">
+                  <a href={MOVING_HEADER_CTA.href}>
+                    {MOVING_HEADER_CTA.label}
+                    <ArrowRight className="h-4 w-4" />
+                  </a>
+                </Button>
                 <Button asChild variant="primary" size="lg" className="w-full">
                   <Link href="/contact#quote">Get Free Quote</Link>
                 </Button>
