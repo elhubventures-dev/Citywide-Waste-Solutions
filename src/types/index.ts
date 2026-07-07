@@ -144,6 +144,20 @@ export interface ContactFormData {
   recaptchaToken?: string;
 }
 
+export interface MovingQuoteFormData {
+  fullName: string;
+  email: string;
+  phone: string;
+  serviceType: string;
+  moveDate: string;
+  fromCity: string;
+  toCity: string;
+  homeSize: string;
+  message?: string;
+  smsOptIn: boolean;
+  recaptchaToken?: string;
+}
+
 export interface NewsletterFormData {
   email: string;
   name?: string;

@@ -1,6 +1,7 @@
 import { Resend } from "resend";
-import type { QuoteFormData, ContactFormData } from "@/types";
+import type { QuoteFormData, ContactFormData, MovingQuoteFormData } from "@/types";
 import { BUSINESS, SITE_URL } from "@/lib/business";
+import { MOVING_BUSINESS, RELOCATE_SITE_URL } from "@/lib/moving/business";
 import { BRAND_COLORS } from "@/lib/brand-colors";
 
 let resend: Resend | null = null;
@@ -26,6 +27,10 @@ function getSender() {
   return FROM.includes("<") ? FROM : `${BRAND} <${FROM}>`;
 }
 
+function getMovingSender() {
+  return FROM.includes("<") ? FROM : `${MOVING_BUSINESS.name} <${FROM}>`;
+}
+
 async function sendEmail(args: Parameters<Resend["emails"]["send"]>[0]) {
   const result = await getResendClient().emails.send(args);
 
@@ -37,7 +42,16 @@ async function sendEmail(args: Parameters<Resend["emails"]["send"]>[0]) {
 }
 
 // ─── Shared layout wrapper ─────────────────────────────────────────────────────
-function emailLayout(title: string, body: string): string {
+function brandedEmailLayout(options: {
+  title: string;
+  body: string;
+  brandName: string;
+  siteUrl: string;
+  icon: string;
+}): string {
+  const { title, body, brandName, siteUrl, icon } = options;
+  const siteLabel = siteUrl.replace(/^https?:\/\//, "");
+
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,24 +64,21 @@ function emailLayout(title: string, body: string): string {
     <tr><td align="center">
       <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 
-        <!-- Header -->
         <tr>
           <td style="background:linear-gradient(135deg,${GREEN} 0%,${NAVY} 100%);border-radius:12px 12px 0 0;padding:24px 32px;text-align:center;">
             <div style="display:inline-flex;align-items:center;gap:8px;">
-              <span style="font-size:24px;">♻️</span>
-              <span style="color:#fff;font-size:18px;font-weight:700;">${BRAND}</span>
+              <span style="font-size:24px;">${icon}</span>
+              <span style="color:#fff;font-size:18px;font-weight:700;">${brandName}</span>
             </div>
           </td>
         </tr>
 
-        <!-- Body -->
         <tr>
           <td style="background:#fff;padding:36px 32px;border-left:1px solid #e8edea;border-right:1px solid #e8edea;">
             ${body}
           </td>
         </tr>
 
-        <!-- Footer -->
         <tr>
           <td style="background:#f0f9f3;border:1px solid #e8edea;border-radius:0 0 12px 12px;padding:20px 32px;text-align:center;">
             <p style="margin:0 0 4px;font-size:12px;color:#637d73;">${BUSINESS.address.full}</p>
@@ -76,9 +87,9 @@ function emailLayout(title: string, body: string): string {
               &nbsp;·&nbsp;
               <a href="mailto:${BUSINESS.email}" style="color:${GREEN};text-decoration:none;">${BUSINESS.email}</a>
               &nbsp;·&nbsp;
-              <a href="${SITE_URL}" style="color:${GREEN};text-decoration:none;">${SITE_URL.replace("https://", "")}</a>
+              <a href="${siteUrl}" style="color:${GREEN};text-decoration:none;">${siteLabel}</a>
             </p>
-            <p style="margin:12px 0 0;font-size:11px;color:#adbdb5;">© ${new Date().getFullYear()} ${BRAND}. All rights reserved.</p>
+            <p style="margin:12px 0 0;font-size:11px;color:#adbdb5;">© ${new Date().getFullYear()} ${brandName}. All rights reserved.</p>
           </td>
         </tr>
 
@@ -87,6 +98,36 @@ function emailLayout(title: string, body: string): string {
   </table>
 </body>
 </html>`;
+}
+
+function emailLayout(title: string, body: string): string {
+  return brandedEmailLayout({
+    title,
+    body,
+    brandName: BRAND,
+    siteUrl: SITE_URL,
+    icon: "♻️",
+  });
+}
+
+function movingEmailLayout(title: string, body: string): string {
+  return brandedEmailLayout({
+    title,
+    body,
+    brandName: MOVING_BUSINESS.name,
+    siteUrl: RELOCATE_SITE_URL,
+    icon: "🚚",
+  });
+}
+
+function formatMoveDate(dateStr: string): string {
+  const parsed = new Date(dateStr);
+  if (Number.isNaN(parsed.getTime())) return dateStr;
+  return parsed.toLocaleDateString("en-CA", { dateStyle: "long" });
+}
+
+function detailRow(label: string, value: string): string {
+  return `<tr><td style="padding:6px 0;font-size:14px;color:#637d73;width:140px;">${label}</td><td style="font-size:14px;color:#141c18;font-weight:600;">${value}</td></tr>`;
 }
 
 // ─── Quote confirmation → Customer ────────────────────────────────────────────
@@ -242,5 +283,102 @@ export async function sendPaymentConfirmationEmail(
     to: email,
     subject: `✅ Payment confirmed — Invoice #${invoiceNumber}`,
     html: emailLayout("Payment Confirmed", body),
+  });
+}
+
+// ─── Moving quote confirmation → Customer ───────────────────────────────────────
+export async function sendMovingQuoteConfirmationEmail(data: MovingQuoteFormData) {
+  const firstName = data.fullName.split(" ")[0];
+
+  const body = `
+    <h1 style="margin:0 0 8px;font-size:24px;color:#141c18;">Thanks, ${firstName}! 🚚</h1>
+    <p style="margin:0 0 24px;color:#4e635b;font-size:15px;line-height:1.6;">
+      We've received your moving quote request and will respond within <strong>2 business hours</strong>.
+      Here's a summary of what you submitted:
+    </p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8faf9;border:1px solid #e8edea;border-radius:8px;padding:20px;margin-bottom:24px;">
+      ${detailRow("Service", data.serviceType)}
+      ${detailRow("Move Date", formatMoveDate(data.moveDate))}
+      ${detailRow("Moving From", data.fromCity)}
+      ${detailRow("Moving To", data.toCity)}
+      ${detailRow("Property Size", data.homeSize)}
+      ${detailRow("Phone", data.phone)}
+      ${detailRow("SMS Updates", data.smsOptIn ? "Yes" : "No")}
+    </table>
+
+    ${
+      data.message
+        ? `<div style="background:#f8faf9;border-left:4px solid ${GREEN};padding:16px;border-radius:0 8px 8px 0;margin-bottom:24px;">
+      <p style="margin:0 0 4px;font-size:13px;color:#637d73;text-transform:uppercase;letter-spacing:.05em;">Additional details</p>
+      <p style="margin:0;font-size:14px;color:#141c18;line-height:1.6;">${data.message}</p>
+    </div>`
+        : ""
+    }
+
+    <p style="margin:0 0 8px;color:#4e635b;font-size:14px;">While you wait, you can:</p>
+    <ul style="margin:0 0 28px;padding-left:20px;color:#4e635b;font-size:14px;line-height:2;">
+      <li>Review our <a href="${RELOCATE_SITE_URL}/services" style="color:${GREEN};">moving services</a></li>
+      <li>See <a href="${RELOCATE_SITE_URL}/pricing" style="color:${GREEN};">pricing packages</a></li>
+      <li>Read answers on our <a href="${RELOCATE_SITE_URL}/faq" style="color:${GREEN};">FAQ page</a></li>
+    </ul>
+
+    <p style="margin:0 0 20px;font-size:14px;color:#4e635b;">
+      Need faster help? Call us at <a href="tel:${BUSINESS.phoneRaw}" style="color:${GREEN};font-weight:600;">${BUSINESS.phone}</a>.
+    </p>
+
+    <a href="${RELOCATE_SITE_URL}/contact" style="display:inline-block;background:${GREEN};color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:12px 28px;border-radius:8px;">
+      Visit Moving Website →
+    </a>
+  `;
+
+  return sendEmail({
+    from: getMovingSender(),
+    to: data.email,
+    subject: `Moving quote request received — we'll be in touch shortly`,
+    html: movingEmailLayout("Moving Quote Request Received", body),
+  });
+}
+
+// ─── Moving quote notification → Admin ────────────────────────────────────────
+export async function sendMovingQuoteAdminNotification(data: MovingQuoteFormData) {
+  const firstName = data.fullName.split(" ")[0];
+
+  const body = `
+    <h1 style="margin:0 0 8px;font-size:22px;color:#141c18;">🚚 New Moving Quote Request</h1>
+    <p style="margin:0 0 24px;color:#4e635b;font-size:14px;">
+      A new moving quote was submitted on <strong>${RELOCATE_SITE_URL.replace("https://", "")}</strong>.
+      Review and respond within 2 business hours.
+    </p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8faf9;border:1px solid #e8edea;border-radius:8px;padding:20px;margin-bottom:24px;">
+      <tr><td style="padding:6px 0;font-size:14px;color:#637d73;width:140px;">Name</td><td style="font-size:14px;color:#141c18;font-weight:600;">${data.fullName}</td></tr>
+      <tr><td style="padding:6px 0;font-size:14px;color:#637d73;">Email</td><td style="font-size:14px;color:#141c18;"><a href="mailto:${data.email}" style="color:${GREEN};">${data.email}</a></td></tr>
+      <tr><td style="padding:6px 0;font-size:14px;color:#637d73;">Phone</td><td style="font-size:14px;color:#141c18;"><a href="tel:${data.phone}" style="color:${GREEN};">${data.phone}</a></td></tr>
+      ${detailRow("Service", data.serviceType)}
+      ${detailRow("Move Date", formatMoveDate(data.moveDate))}
+      ${detailRow("Moving From", data.fromCity)}
+      ${detailRow("Moving To", data.toCity)}
+      ${detailRow("Property Size", data.homeSize)}
+      <tr><td style="padding:6px 0;font-size:14px;color:#637d73;">SMS Opt-In</td><td style="font-size:14px;color:#141c18;">${data.smsOptIn ? "✅ Yes" : "No"}</td></tr>
+      ${
+        data.message
+          ? `<tr><td style="padding:6px 0;font-size:14px;color:#637d73;vertical-align:top;">Notes</td><td style="font-size:14px;color:#141c18;line-height:1.6;">${data.message}</td></tr>`
+          : ""
+      }
+    </table>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="mailto:${data.email}?subject=${encodeURIComponent(`Re: Your Moving Quote — ${data.serviceType}`)}" style="display:inline-block;background:${GREEN};color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:10px 20px;border-radius:8px;margin-right:8px;">Reply to ${firstName} →</a>
+      <a href="tel:${data.phone}" style="display:inline-block;border:2px solid ${GREEN};color:${GREEN};text-decoration:none;font-size:14px;font-weight:600;padding:10px 20px;border-radius:8px;margin-right:8px;">Call ${data.phone}</a>
+      <a href="${SITE_URL}/admin/dashboard" style="display:inline-block;border:2px solid ${GREEN};color:${GREEN};text-decoration:none;font-size:14px;font-weight:600;padding:10px 20px;border-radius:8px;">Open Admin Panel</a>
+    </div>
+  `;
+
+  return sendEmail({
+    from: getMovingSender(),
+    to: ADMIN,
+    subject: `🚚 New Moving Quote: ${data.serviceType} — ${data.fullName} (${data.fromCity} → ${data.toCity})`,
+    html: movingEmailLayout("New Moving Quote Request", body),
   });
 }

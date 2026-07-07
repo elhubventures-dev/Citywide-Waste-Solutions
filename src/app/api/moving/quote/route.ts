@@ -2,13 +2,13 @@ import { NextRequest, NextResponse } from "next/server";
 import { movingQuoteFormSchema } from "@/lib/validations";
 import { verifyRecaptcha } from "@/lib/recaptcha";
 import { formRatelimit, getClientIp, rateLimitResponse } from "@/lib/rate-limit";
-import { sendContactConfirmationEmail, sendContactAdminNotification } from "@/lib/email";
+import { sendMovingQuoteConfirmationEmail, sendMovingQuoteAdminNotification } from "@/lib/email";
 import { storeContactSubmission } from "@/lib/submission-store";
-import type { ContactFormData } from "@/types";
+import type { ContactFormData, MovingQuoteFormData } from "@/types";
 
 export const runtime = "nodejs";
 
-function toContactPayload(data: ReturnType<typeof movingQuoteFormSchema.parse>): ContactFormData {
+function toContactPayload(data: MovingQuoteFormData): ContactFormData {
   const details = [
     `Moving Service: ${data.serviceType}`,
     `Preferred Move Date: ${data.moveDate}`,
@@ -81,13 +81,21 @@ export async function POST(req: NextRequest) {
   }
 
   const [customerEmail, adminEmail] = await Promise.allSettled([
-    sendContactConfirmationEmail(contactData),
-    sendContactAdminNotification(contactData),
+    sendMovingQuoteConfirmationEmail(data),
+    sendMovingQuoteAdminNotification(data),
   ]);
 
   const failedEmail = [customerEmail, adminEmail].find((r) => r.status === "rejected");
   if (failedEmail?.status === "rejected") {
     console.error("Moving quote email failed:", failedEmail.reason);
+    return NextResponse.json(
+      {
+        success: false,
+        message:
+          "We couldn't send the quote emails. Please call or email us and we'll help right away.",
+      },
+      { status: 502 }
+    );
   }
 
   return NextResponse.json(
