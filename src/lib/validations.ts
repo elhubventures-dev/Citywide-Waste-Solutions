@@ -98,3 +98,53 @@ export const invoicePaymentSchema = z.object({
 });
 
 export type InvoicePaymentValues = z.infer<typeof invoicePaymentSchema>;
+
+// ─── Moving Quote Form ────────────────────────────────────────────────────────
+
+const movingServiceTypes = [
+  "Residential Move",
+  "Commercial / Office Move",
+  "Long-Distance Move",
+  "Packing & Unpacking",
+  "Loading & Unloading Only",
+  "Furniture Assembly",
+  "Full-Service Move",
+] as const;
+
+export const movingQuoteFormSchema = z.object({
+  fullName: z
+    .string()
+    .min(2, "Full name must be at least 2 characters")
+    .max(80, "Name too long")
+    .regex(/^[a-zA-Z\s'-]+$/, "Name can only contain letters, spaces, hyphens, and apostrophes"),
+
+  email: z.string().email("Please enter a valid email address").max(254, "Email too long"),
+
+  phone: phoneSchema,
+
+  serviceType: z.enum(movingServiceTypes, {
+    errorMap: () => ({ message: "Please select a moving service" }),
+  }),
+
+  moveDate: z
+    .string()
+    .min(1, "Please select your preferred move date")
+    .refine((val) => !Number.isNaN(Date.parse(val)), { message: "Please enter a valid date" }),
+
+  fromCity: z.string().min(2, "Please enter your current city").max(80, "City name too long"),
+
+  toCity: z.string().min(2, "Please enter your destination city").max(80, "City name too long"),
+
+  homeSize: z.enum(
+    ["Studio / 1 Bedroom", "2 Bedroom", "3 Bedroom", "4+ Bedroom", "Office / Commercial", "Other"],
+    { errorMap: () => ({ message: "Please select property size" }) }
+  ),
+
+  message: z.string().max(1000, "Message must be under 1000 characters").optional(),
+
+  smsOptIn: z.boolean().default(false),
+
+  recaptchaToken: z.string().optional(),
+});
+
+export type MovingQuoteFormValues = z.infer<typeof movingQuoteFormSchema>;

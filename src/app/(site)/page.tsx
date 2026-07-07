@@ -3,6 +3,7 @@ import { SITE_URL } from "@/lib/constants";
 import { HeroSection } from "@/components/sections/hero-section";
 import { WhoWeAreSection } from "@/components/sections/who-we-are-section";
 import { ServicesSection } from "@/components/sections/services-section";
+import { MovingSolutionsPromoSection } from "@/components/sections/moving-solutions-promo-section";
 import { SpecializedSolutionsSection } from "@/components/sections/specialized-solutions-section";
 import { TrustSection } from "@/components/sections/trust-section";
 import { TestimonialsSection } from "@/components/sections/testimonials-section";
@@ -25,6 +26,7 @@ export default function HomePage() {
       <HeroSection />
       <WhoWeAreSection />
       <ServicesSection />
+      <MovingSolutionsPromoSection />
       <SpecializedSolutionsSection />
       <TrustSection />
       <TestimonialsSection />
