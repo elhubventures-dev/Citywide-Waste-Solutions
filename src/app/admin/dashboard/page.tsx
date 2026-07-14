@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   FileText,
   Mail,
@@ -15,6 +16,7 @@ import {
   Save,
   Trash2,
   X,
+  Receipt,
 } from "lucide-react";
 import { AdminUserMenu } from "@/components/admin/admin-user-menu";
 import { cn, formatDate } from "@/lib/utils";
@@ -282,7 +284,14 @@ export default function AdminDashboard() {
             <p className="text-sm text-muted-foreground">Citywide Waste Solutions</p>
           </div>
           <div className="flex items-center gap-3">
-            <button
+              <Link
+                href="/admin/invoices"
+                className="flex items-center gap-1.5 rounded-lg border border-border bg-blue-500/10 px-3 py-1.5 text-sm font-semibold text-blue-600 transition-colors hover:bg-blue-500/20 dark:text-blue-400"
+              >
+                <Receipt className="h-4 w-4" />
+                Invoices
+              </Link>
+              <button
               onClick={fetchData}
               className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
