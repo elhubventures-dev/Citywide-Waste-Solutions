@@ -113,6 +113,7 @@ export function defaultMeta(): InvoiceMeta {
     deposit: 0,
     amountPaid: 0,
     brand: "waste",
+    type: "INVOICE",
   };
 }
 

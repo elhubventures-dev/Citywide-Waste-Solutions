@@ -56,11 +56,10 @@ export async function POST(req: NextRequest) {
 
         if (!invoiceId) break;
 
-        // Update invoice status
         const invoice = await prisma.invoice.update({
           where: { id: invoiceId },
           data: {
-            status: "COMPLETED",
+            status: "Paid",
             paidAt: new Date(),
           },
         });

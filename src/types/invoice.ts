@@ -49,6 +49,8 @@ export interface InvoiceMeta {
   amountPaid: number;
   /** Which brand this invoice is for */
   brand: "waste" | "moving";
+  /** Is this an invoice or a quote */
+  type: "INVOICE" | "QUOTE";
 }
 
 /** A single line item row on an invoice */

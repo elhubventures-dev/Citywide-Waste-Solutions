@@ -136,6 +136,20 @@ export function InvoiceDetailsForm({ meta, onChange }: InvoiceDetailsFormProps) 
           <InvoiceStatusBadge status={meta.status} />
         </div>
       </div>
+
+      <div>
+        <label className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+          Document Type
+        </label>
+        <select
+          value={meta.type || "INVOICE"}
+          onChange={(e) => onChange({ type: e.target.value as "INVOICE" | "QUOTE" })}
+          className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+        >
+          <option value="INVOICE">Invoice</option>
+          <option value="QUOTE">Quote</option>
+        </select>
+      </div>
     </InvoiceCard>
   );
 }

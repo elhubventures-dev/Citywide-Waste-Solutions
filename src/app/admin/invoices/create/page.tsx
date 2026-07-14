@@ -5,9 +5,9 @@
 // Supports loading an existing draft via ?draft=<id> query param.
 
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import Link from "next/link";
-import { Save, Send, FileDown, ArrowLeft, RotateCcw } from "lucide-react";
+import { Save, Send, FileDown, ArrowLeft, RotateCcw, Loader2, Printer } from "lucide-react";
 import { motion } from "framer-motion";
 import { useInvoice } from "@/hooks/use-invoice";
 import {
@@ -15,6 +15,8 @@ import {
   InvoiceDetailsForm,
   LineItemsTable,
   TotalsPanel,
+  PdfPreviewModal,
+  SendInvoiceModal,
 } from "@/components/admin/invoices";
 
 // ─── Inner component (needs useSearchParams inside Suspense) ─────────────────
@@ -22,13 +24,22 @@ import {
 function CreateInvoiceContent() {
   const searchParams = useSearchParams();
   const draftId = searchParams.get("draft") ?? undefined;
+  const [showPdfModal, setShowPdfModal] = useState(false);
+  const [showSendModal, setShowSendModal] = useState(false);
 
   const invoice = useInvoice({ draftId });
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
       <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Header */}
+        {invoice.isLoading ? (
+          <div className="flex min-h-[50vh] flex-col items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+            <p className="mt-4 text-sm text-gray-500">Loading invoice...</p>
+          </div>
+        ) : (
+          <>
+            {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -69,17 +80,26 @@ function CreateInvoiceContent() {
               <Save size={15} />
               Save Draft
             </button>
+            {invoice.meta.type === "QUOTE" && (
+              <button
+                onClick={() => {
+                  invoice.updateMeta({ type: "INVOICE", status: "Draft" });
+                  setTimeout(() => invoice.saveDraft(), 0);
+                }}
+                className="inline-flex items-center gap-1.5 rounded-lg bg-teal-500 px-4 py-2 text-sm font-semibold text-white shadow-teal transition-colors hover:bg-teal-600 disabled:opacity-50"
+                title="Convert to Invoice"
+              >
+                Convert to Invoice
+              </button>
+            )}
             <button
-              className="inline-flex items-center gap-1.5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-blue transition-colors hover:bg-blue-600"
-              title="Send Invoice (coming in Phase 4)"
-              onClick={() =>
-                alert(
-                  "Send Invoice is coming in Phase 4 (Integrations). For now, use Save Draft + Preview PDF."
-                )
-              }
+              className="inline-flex items-center gap-1.5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-blue transition-colors hover:bg-blue-600 disabled:opacity-50"
+              title={invoice.meta.type === "QUOTE" ? "Send Quote" : "Send Invoice"}
+              disabled={!invoice.currentDraftId}
+              onClick={() => setShowSendModal(true)}
             >
               <Send size={15} />
-              Send Invoice
+              {invoice.meta.type === "QUOTE" ? "Send Quote" : "Send Invoice"}
             </button>
           </div>
         </motion.div>
@@ -139,18 +159,65 @@ function CreateInvoiceContent() {
             formatCurrency={invoice.formatCurrency}
           />
 
-          <button
-            className="inline-flex items-center gap-1.5 rounded-lg border border-blue-500 bg-white px-4 py-2 text-sm font-semibold text-blue-500 transition-colors hover:bg-blue-50 dark:bg-gray-900 dark:hover:bg-blue-900/20"
-            title="Preview PDF (coming in Phase 2)"
-            onClick={() =>
-              alert("PDF Preview is coming in Phase 2. Draft your invoice and save it for now.")
-            }
-          >
-            <FileDown size={15} />
-            Preview PDF
-          </button>
+          <div className="flex gap-2">
+            <Link
+              href={`/admin/invoices/${invoice.currentDraftId}/print`}
+              target="_blank"
+              className={`inline-flex items-center gap-1.5 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 dark:hover:bg-gray-800 ${
+                !invoice.currentDraftId ? "pointer-events-none opacity-50" : ""
+              }`}
+              title="Print Invoice"
+            >
+              <Printer size={15} />
+              Print
+            </Link>
+
+            <button
+              className="inline-flex items-center gap-1.5 rounded-lg border border-blue-500 bg-white px-4 py-2 text-sm font-semibold text-blue-500 transition-colors hover:bg-blue-50 dark:bg-gray-900 dark:hover:bg-blue-900/20"
+              title="Preview PDF"
+              onClick={() => setShowPdfModal(true)}
+            >
+              <FileDown size={15} />
+              Preview PDF
+            </button>
+          </div>
         </motion.div>
+
+
+        {/* Activity Timeline */}
+        <ActivityTimeline activities={invoice.activities} />
+
+          </>
+        )}
       </div>
+
+      <PdfPreviewModal
+        isOpen={showPdfModal}
+        onClose={() => setShowPdfModal(false)}
+        draft={{
+          id: invoice.currentDraftId || `temp-${Date.now()}`,
+          client: invoice.client,
+          meta: invoice.meta,
+          rows: invoice.rows,
+          createdAt: invoice.savedAt || new Date().toISOString(),
+          updatedAt: invoice.savedAt || new Date().toISOString(),
+        }}
+        formatCurrency={invoice.formatCurrency}
+      />
+
+      <SendInvoiceModal
+        isOpen={showSendModal}
+        onClose={() => setShowSendModal(false)}
+        draft={{
+          id: invoice.currentDraftId || `temp-${Date.now()}`,
+          client: invoice.client,
+          meta: invoice.meta,
+          rows: invoice.rows,
+          createdAt: invoice.savedAt || new Date().toISOString(),
+          updatedAt: invoice.savedAt || new Date().toISOString(),
+        }}
+        formatCurrency={invoice.formatCurrency}
+      />
     </div>
   );
 }
@@ -170,3 +237,51 @@ export default function CreateInvoicePage() {
     </Suspense>
   );
 }
+
+// ─── Activity Timeline Component ─────────────────────────────────────────────
+
+function ActivityTimeline({ activities }: { activities: any[] }) {
+  if (!activities || activities.length === 0) return null;
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: 0.4 }}
+      className="mt-8 rounded-xl border border-gray-200 bg-white p-6 shadow-card dark:border-gray-800 dark:bg-gray-900"
+    >
+      <h3 className="mb-6 text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100">
+        Activity Timeline
+      </h3>
+      <div className="relative border-l border-gray-200 pl-6 dark:border-gray-700 ml-2">
+        {activities.map((act, idx) => {
+          let color = "bg-blue-500";
+          if (act.action === "CREATED") color = "bg-gray-400";
+          if (act.action === "SENT") color = "bg-blue-500";
+          if (act.action === "VIEWED") color = "bg-purple-500";
+          if (act.action === "PAID") color = "bg-green-500";
+
+          return (
+            <div key={act.id} className="mb-6 last:mb-0 relative">
+              <div className={`absolute -left-[31px] mt-1 h-3 w-3 rounded-full ring-4 ring-white dark:ring-gray-900 ${color}`} />
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
+                  {act.action}
+                </span>
+                {act.notes && (
+                  <span className="mt-0.5 text-sm text-gray-600 dark:text-gray-400">
+                    {act.notes}
+                  </span>
+                )}
+                <span className="mt-1 text-xs text-gray-500 dark:text-gray-500">
+                  {new Date(act.createdAt).toLocaleString()}
+                </span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+}
+

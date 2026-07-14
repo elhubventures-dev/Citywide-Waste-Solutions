@@ -8,7 +8,7 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 // ─── Enums ───────────────────────────────────────────────────────────────────
@@ -35,10 +35,15 @@ enum ServiceType {
   CONSTRUCTION_WASTE_REMOVAL
 }
 
-enum PaymentStatus {
+enum InvoiceStatus {
+  DRAFT
   PENDING
-  COMPLETED
-  FAILED
+  SENT
+  VIEWED
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  CANCELLED
   REFUNDED
 }
 
@@ -107,24 +112,96 @@ model NewsletterSubscriber {
   @@index([isActive])
 }
 
+model Client {
+  id              String    @id @default(cuid())
+  company         String?
+  name            String?
+  email           String?
+  phone           String?
+  serviceAddress  String?
+  billingAddress  String?
+  city            String?
+  province        String?
+  country         String?   @default("Canada")
+  zip             String?
+  taxNumber       String?
+  notes           String?   @db.Text
+  
+  invoices        Invoice[]
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@map("clients")
+}
+
 model Invoice {
   id            String        @id @default(cuid())
   invoiceNumber String        @unique
-  customerName  String
-  customerEmail String
-  amount        Int           // in cents
+  issueDate     String?
+  dueDate       String?
   currency      String        @default("CAD")
-  description   String?
-  status        PaymentStatus @default(PENDING)
+  terms         String?       @db.Text
+  status        String        @default("Draft")
+  brand         String        @default("waste")
+  type          String        @default("INVOICE") // "INVOICE" or "QUOTE"
+  
+  // Totals & Payments
+  subtotal      Float         @default(0)
+  discountTotal Float         @default(0)
+  taxTotal      Float         @default(0)
+  grandTotal    Float         @default(0)
+  deposit       Float         @default(0)
+  amountPaid    Float         @default(0)
+  balanceDue    Float         @default(0)
+
+  // Relations
+  clientId      String
+  client        Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  items         InvoiceItem[]
+  activities    InvoiceActivity[]
+
   stripePaymentIntentId String? @unique
   paidAt        DateTime?
+
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
 
   @@map("invoices")
   @@index([status])
   @@index([invoiceNumber])
-  @@index([customerEmail])
+  @@index([clientId])
+}
+
+model InvoiceItem {
+  id          String   @id @default(cuid())
+  service     String
+  description String?  @db.Text
+  qty         Float    @default(1)
+  unit        String   @default("unit")
+  price       Float    @default(0)
+  discount    Float    @default(0)
+  tax         Float    @default(13)
+
+  invoiceId   String
+  invoice     Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("invoice_items")
+  @@index([invoiceId])
+}
+
+model InvoiceActivity {
+  id        String   @id @default(cuid())
+  action    String   // "CREATED", "SENT", "VIEWED", "PAID", "UPDATED"
+  notes     String?  @db.Text
+  createdAt DateTime @default(now())
+
+  invoiceId String
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
+
+  @@map("invoice_activities")
+  @@index([invoiceId])
+  @@index([createdAt])
 }
 
 model AdminUser {

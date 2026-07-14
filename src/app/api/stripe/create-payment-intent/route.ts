@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
   try {
     invoice = await prisma.invoice.findUnique({
       where: { invoiceNumber: invoiceNumber.toUpperCase() },
+      include: { client: true },
     });
   } catch (err) {
     console.error("Invoice lookup error:", err);
@@ -63,14 +64,14 @@ export async function POST(req: NextRequest) {
   }
 
   // Verify email matches invoice
-  if (invoice.customerEmail.toLowerCase() !== email.toLowerCase()) {
+  if (!invoice.client || (invoice.client.email?.toLowerCase() !== email.toLowerCase())) {
     return NextResponse.json(
       { success: false, message: "Email address doesn't match this invoice." },
       { status: 403 }
     );
   }
 
-  if (invoice.status === "COMPLETED") {
+  if (invoice.status === "Paid") {
     return NextResponse.json(
       { success: false, message: "This invoice has already been paid." },
       { status: 409 }
@@ -79,16 +80,17 @@ export async function POST(req: NextRequest) {
 
   // ── Create Stripe Payment Intent ───────────────────────────────────────
   let paymentIntent;
+  const amountInCents = Math.round(invoice.balanceDue * 100);
   try {
     paymentIntent = await getStripeClient().paymentIntents.create({
-      amount: invoice.amount,
+      amount: amountInCents,
       currency: "cad",
       description: `Citywide Waste Solutions — Invoice #${invoiceNumber}`,
       metadata: {
         invoiceNumber,
         invoiceId: invoice.id,
         customerEmail: email,
-        customerName: invoice.customerName,
+        customerName: invoice.client.name || invoice.client.company || "",
       },
       receipt_email: email,
       automatic_payment_methods: { enabled: true },
@@ -105,24 +107,24 @@ export async function POST(req: NextRequest) {
   await prisma.invoice
     .update({
       where: { id: invoice.id },
-      data: { stripePaymentIntentId: paymentIntent.id, status: "PENDING" },
+      data: { stripePaymentIntentId: paymentIntent.id, status: "Pending" },
     })
     .catch(console.error);
 
   const amountFormatted = new Intl.NumberFormat("en-CA", {
     style: "currency",
     currency: "CAD",
-  }).format(invoice.amount / 100);
+  }).format(invoice.balanceDue);
 
   return NextResponse.json({
     success: true,
     clientSecret: paymentIntent.client_secret,
     invoice: {
       invoiceNumber,
-      customerName: invoice.customerName,
-      amount: invoice.amount,
+      customerName: invoice.client.name || invoice.client.company || "",
+      amount: amountInCents,
       amountFormatted,
-      description: invoice.description,
+      description: invoice.terms || "",
     },
   });
 }

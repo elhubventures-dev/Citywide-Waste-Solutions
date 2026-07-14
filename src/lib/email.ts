@@ -382,3 +382,57 @@ export async function sendMovingQuoteAdminNotification(data: MovingQuoteFormData
     html: movingEmailLayout("New Moving Quote Request", body),
   });
 }
+
+// ─── Invoice Emails ────────────────────────────────────────────────────────────
+
+export async function sendInvoiceEmail(options: {
+  to: string | string[];
+  cc?: string | string[];
+  bcc?: string | string[];
+  subject: string;
+  message: string;
+  invoiceNumber: string;
+  brand: string;
+  pdfBase64: string;
+}) {
+  const isMoving = options.brand === "moving";
+  const brandName = isMoving ? MOVING_BUSINESS.name : BRAND;
+  const siteUrl = isMoving ? RELOCATE_SITE_URL : SITE_URL;
+  const icon = isMoving ? "📦" : "♻️";
+  const sender = isMoving ? getMovingSender() : getSender();
+
+  const bodyHtml = `
+    <div style="font-family: sans-serif; color: #1f2937;">
+      <p style="white-space: pre-wrap; margin-bottom: 24px;">${options.message}</p>
+      <div style="margin-top: 32px; padding: 24px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; text-align: center;">
+        <h3 style="margin: 0 0 8px; font-size: 18px; color: #111827;">Invoice #${options.invoiceNumber}</h3>
+        <p style="margin: 0 0 24px; font-size: 14px; color: #4b5563;">Your invoice has been attached to this email as a PDF document.</p>
+        <a href="${siteUrl}/pay/${options.invoiceNumber}" style="display: inline-block; background-color: #1E3A5C; color: #ffffff; padding: 12px 24px; text-decoration: none; font-weight: 600; border-radius: 6px;">Pay Invoice Online</a>
+      </div>
+    </div>
+  `;
+
+  const html = brandedEmailLayout({
+    title: options.subject,
+    body: bodyHtml,
+    brandName,
+    siteUrl,
+    icon,
+  });
+
+  return sendEmail({
+    from: sender,
+    to: options.to,
+    cc: options.cc,
+    bcc: options.bcc,
+    subject: options.subject,
+    html,
+    attachments: [
+      {
+        filename: `Invoice_${options.invoiceNumber}.pdf`,
+        content: options.pdfBase64,
+        contentType: 'application/pdf',
+      }
+    ]
+  });
+}

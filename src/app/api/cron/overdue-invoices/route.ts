@@ -18,9 +18,10 @@ export async function GET(req: NextRequest) {
   // Find invoices pending for more than 30 days
   const overdueInvoices = await prisma.invoice.findMany({
     where: {
-      status: "PENDING",
+      status: { in: ["Pending", "Sent", "Partially Paid"] },
       createdAt: { lt: thirtyDaysAgo },
     },
+    include: { client: true },
   });
 
   if (overdueInvoices.length === 0) {
@@ -31,7 +32,7 @@ export async function GET(req: NextRequest) {
     overdueInvoices.map(async (invoice) => {
       // Try to find phone via matching quote request
       const quote = await prisma.quoteRequest.findFirst({
-        where: { email: invoice.customerEmail },
+        where: { email: invoice.client?.email || "" },
         orderBy: { createdAt: "desc" },
       });
 
@@ -44,7 +45,7 @@ export async function GET(req: NextRequest) {
       if (quote?.phone && quote.smsOptIn) {
         await sendPaymentReminderSms(
           quote.phone,
-          invoice.customerName.split(" ")[0],
+          (invoice.client?.name || invoice.client?.company || "Customer").split(" ")[0],
           invoice.invoiceNumber,
           dueDateStr
         );

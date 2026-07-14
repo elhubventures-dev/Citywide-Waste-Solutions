@@ -1,13 +1,8 @@
 "use client";
 
-// ─── useInvoice Hook ─────────────────────────────────────────────────────────
-// Citywide Waste Solutions — manages all invoice state, calculations, and
-// localStorage draft persistence for Phase 1.
-
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
 import type {
   InvoiceClient,
-  InvoiceDraft,
   InvoiceMeta,
   InvoiceRow,
   InvoiceTotals,
@@ -15,12 +10,9 @@ import type {
 } from "@/types/invoice";
 import {
   DEFAULT_TAX_RATE,
-  DRAFTS_STORAGE_KEY,
   defaultClient,
   defaultMeta,
 } from "@/lib/invoice-constants";
-
-// ─── Row ID counter ──────────────────────────────────────────────────────────
 
 let rowCounter = 0;
 
@@ -37,42 +29,20 @@ function createRow(svc?: ServiceLibraryItem): InvoiceRow {
   };
 }
 
-// ─── Draft helpers ───────────────────────────────────────────────────────────
-
-function loadAllDrafts(): InvoiceDraft[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(DRAFTS_STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as InvoiceDraft[]) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveAllDrafts(drafts: InvoiceDraft[]) {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(DRAFTS_STORAGE_KEY, JSON.stringify(drafts));
-}
-
-// ─── Hook ────────────────────────────────────────────────────────────────────
-
 interface UseInvoiceOptions {
-  /** Load an existing draft by ID */
   draftId?: string;
 }
 
 export function useInvoice(options: UseInvoiceOptions = {}) {
   const { draftId } = options;
 
-  // ─── State ───────────────────────────────────────────────────────
-
   const [client, setClient] = useState<InvoiceClient>(defaultClient);
   const [meta, setMeta] = useState<InvoiceMeta>(defaultMeta);
   const [rows, setRows] = useState<InvoiceRow[]>([createRow()]);
   const [savedAt, setSavedAt] = useState<string | null>(null);
   const [currentDraftId, setCurrentDraftId] = useState<string | null>(draftId ?? null);
-
-  // ─── Load draft on mount ─────────────────────────────────────────
+  const [activities, setActivities] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const hasLoaded = useRef(false);
 
@@ -80,17 +50,74 @@ export function useInvoice(options: UseInvoiceOptions = {}) {
     if (hasLoaded.current || !draftId) return;
     hasLoaded.current = true;
 
-    const drafts = loadAllDrafts();
-    const draft = drafts.find((d) => d.id === draftId);
-    if (draft) {
-      setClient(draft.client);
-      setMeta(draft.meta);
-      setRows(draft.rows.length > 0 ? draft.rows : [createRow()]);
-      setCurrentDraftId(draft.id);
-    }
-  }, [draftId]);
+    async function load() {
+      try {
+        setIsLoading(true);
+        const res = await fetch(`/api/admin/invoices/${draftId}`);
+        if (!res.ok) throw new Error("Failed to load invoice");
+        const { invoice } = await res.json();
+        
+        if (invoice) {
+          setMeta({
+            invoiceNo: invoice.invoiceNumber,
+            issueDate: invoice.issueDate || "",
+            dueDate: invoice.dueDate || "",
+            currency: invoice.currency,
+            terms: invoice.terms || "",
+            status: invoice.status as any,
+            brand: invoice.brand as any,
+            deposit: invoice.deposit,
+            amountPaid: invoice.amountPaid,
+            type: invoice.type as any || "INVOICE",
+          });
+          
+          if (invoice.client) {
+            setClient({
+              company: invoice.client.company || "",
+              name: invoice.client.name || "",
+              email: invoice.client.email || "",
+              phone: invoice.client.phone || "",
+              serviceAddress: invoice.client.serviceAddress || "",
+              billingAddress: invoice.client.billingAddress || "",
+              city: invoice.client.city || "",
+              province: invoice.client.province || "",
+              country: invoice.client.country || "",
+              zip: invoice.client.zip || "",
+              taxNumber: invoice.client.taxNumber || "",
+              notes: invoice.client.notes || "",
+            });
+          }
 
-  // ─── Line item calculations ──────────────────────────────────────
+          if (invoice.items && invoice.items.length > 0) {
+            setRows(invoice.items.map((i: any) => ({
+              id: i.id,
+              service: i.service,
+              description: i.description || "",
+              qty: i.qty,
+              unit: i.unit,
+              price: i.price,
+              discount: i.discount,
+              tax: i.tax,
+            })));
+          } else {
+            setRows([createRow()]);
+          }
+          
+          if (invoice.activities) {
+            setActivities(invoice.activities);
+          }
+          
+          setCurrentDraftId(invoice.id);
+          setSavedAt(new Date(invoice.updatedAt).toLocaleTimeString());
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    load();
+  }, [draftId]);
 
   const lineTotal = useCallback((r: InvoiceRow): number => {
     const base = r.qty * r.price;
@@ -113,8 +140,6 @@ export function useInvoice(options: UseInvoiceOptions = {}) {
     return { subtotal, discountTotal, taxTotal, grandTotal, balanceDue };
   }, [rows, meta.deposit, meta.amountPaid]);
 
-  // ─── Currency formatter ──────────────────────────────────────────
-
   const formatCurrency = useCallback(
     (n: number) =>
       new Intl.NumberFormat("en-CA", {
@@ -123,8 +148,6 @@ export function useInvoice(options: UseInvoiceOptions = {}) {
       }).format(n || 0),
     [meta.currency]
   );
-
-  // ─── Row mutations ──────────────────────────────────────────────
 
   const updateRow = useCallback(
     (id: string, patch: Partial<InvoiceRow>) =>
@@ -158,8 +181,6 @@ export function useInvoice(options: UseInvoiceOptions = {}) {
     []
   );
 
-  // ─── Client / Meta helpers ──────────────────────────────────────
-
   const updateClient = useCallback(
     (patch: Partial<InvoiceClient>) =>
       setClient((c) => ({ ...c, ...patch })),
@@ -172,104 +193,71 @@ export function useInvoice(options: UseInvoiceOptions = {}) {
     []
   );
 
-  // ─── Draft persistence ──────────────────────────────────────────
-
-  const saveDraft = useCallback(() => {
-    const now = new Date().toISOString();
-    const id = currentDraftId || `draft-${Date.now()}`;
-
-    const draft: InvoiceDraft = {
-      id,
-      client,
-      meta,
-      rows,
-      createdAt: currentDraftId
-        ? loadAllDrafts().find((d) => d.id === id)?.createdAt ?? now
-        : now,
-      updatedAt: now,
-    };
-
-    const existing = loadAllDrafts();
-    const idx = existing.findIndex((d) => d.id === id);
-    if (idx >= 0) {
-      existing[idx] = draft;
-    } else {
-      existing.unshift(draft);
-    }
-    saveAllDrafts(existing);
-
-    setCurrentDraftId(id);
-    setSavedAt(new Date().toLocaleTimeString("en-CA"));
-
-    return id;
-  }, [client, meta, rows, currentDraftId]);
-
-  const deleteDraft = useCallback(
-    (id: string) => {
-      const existing = loadAllDrafts().filter((d) => d.id !== id);
-      saveAllDrafts(existing);
-    },
-    []
-  );
-
-  // ─── Autosave every 30s ─────────────────────────────────────────
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      // Only autosave if there's meaningful content
-      if (client.name || client.company || rows.some((r) => r.service)) {
-        saveDraft();
+  const saveDraft = useCallback(async () => {
+    try {
+      const payload = { client, meta, rows, totals };
+      let res;
+      
+      if (currentDraftId) {
+        res = await fetch(`/api/admin/invoices/${currentDraftId}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
+      } else {
+        res = await fetch("/api/admin/invoices", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+        });
       }
-    }, 30_000);
-    return () => clearInterval(interval);
-  }, [saveDraft, client.name, client.company, rows]);
 
-  // ─── Reset ──────────────────────────────────────────────────────
+      if (!res.ok) throw new Error("Failed to save invoice");
+      
+      const { invoice } = await res.json();
+      setCurrentDraftId(invoice.id);
+      setSavedAt(new Date().toLocaleTimeString());
+      
+      // Update URL if this was a new draft
+      if (!currentDraftId) {
+        window.history.replaceState({}, "", `/admin/invoices/create?draft=${invoice.id}`);
+      }
+    } catch (error) {
+      console.error("Error saving draft:", error);
+      alert("Failed to save invoice to database.");
+    }
+  }, [client, meta, rows, totals, currentDraftId]);
 
   const resetInvoice = useCallback(() => {
-    setClient(defaultClient());
-    setMeta(defaultMeta());
-    setRows([createRow()]);
-    setCurrentDraftId(null);
-    setSavedAt(null);
+    if (confirm("Reset form? All unsaved changes will be lost.")) {
+      setClient(defaultClient);
+      setMeta(defaultMeta);
+      setRows([createRow()]);
+      setSavedAt(null);
+      setCurrentDraftId(null);
+      window.history.replaceState({}, "", "/admin/invoices/create");
+    }
   }, []);
 
-  // ─── Return ─────────────────────────────────────────────────────
-
   return {
-    // State
     client,
     meta,
     rows,
     totals,
     savedAt,
     currentDraftId,
-
-    // Setters
-    setClient,
-    setMeta,
+    isLoading,
+    activities,
     updateClient,
     updateMeta,
-
-    // Row operations
-    addRow,
     updateRow,
+    addRow,
     duplicateRow,
     deleteRow,
     addFromLibrary,
-
-    // Calculations
     lineTotal,
     formatCurrency,
-
-    // Draft operations
     saveDraft,
-    deleteDraft,
     resetInvoice,
-
-    // Static helpers
-    loadAllDrafts,
   };
 }
-
-export { loadAllDrafts };
