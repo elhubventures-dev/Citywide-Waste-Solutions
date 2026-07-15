@@ -203,6 +203,7 @@ export function SendInvoiceModal({
                 </button>
               </div>
             </form>
+            </motion.div>
           </div>
         </div>
       )}
