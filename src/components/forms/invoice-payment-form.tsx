@@ -378,10 +378,16 @@ function PaymentSuccess({ invoiceNumber }: { invoiceNumber: string }) {
 }
 
 // ─── Root component ───────────────────────────────────────────────────────────
-export function InvoicePaymentForm() {
-  const [step, setStep] = useState<"lookup" | "checkout" | "done">("lookup");
-  const [clientSecret, setClientSecret] = useState<string>("");
-  const [invoice, setInvoice] = useState<InvoiceData | null>(null);
+export function InvoicePaymentForm({
+  initialInvoice,
+  initialStep = "lookup"
+}: {
+  initialInvoice?: InvoiceData;
+  initialStep?: "lookup" | "checkout" | "done";
+} = {}) {
+  const [step, setStep] = useState<"lookup" | "checkout" | "done">(initialInvoice ? "checkout" : initialStep);
+  const [clientSecret, setClientSecret] = useState<string>("direct-link");
+  const [invoice, setInvoice] = useState<InvoiceData | null>(initialInvoice || null);
 
   const handleFound = (secret: string, inv: InvoiceData) => {
     setClientSecret(secret);
