@@ -222,9 +222,9 @@ export function useInvoice(options: UseInvoiceOptions = {}) {
       if (!currentDraftId) {
         window.history.replaceState({}, "", `/admin/invoices/create?draft=${invoice.id}`);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error saving draft:", error);
-      alert("Failed to save invoice to database.");
+      alert(error.message || "Failed to save invoice to database.");
     }
   }, [client, meta, rows, totals, currentDraftId]);
 

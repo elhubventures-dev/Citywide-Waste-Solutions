@@ -135,8 +135,11 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json({ invoice });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error creating invoice:", error);
-    return NextResponse.json({ error: "Failed to create invoice" }, { status: 500 });
+    if (error?.code === "P2002") {
+      return NextResponse.json({ error: "An invoice with this number already exists. Please use a unique invoice number." }, { status: 400 });
+    }
+    return NextResponse.json({ error: error?.message || "Failed to create invoice" }, { status: 500 });
   }
 }

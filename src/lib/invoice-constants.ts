@@ -76,10 +76,9 @@ export const DEFAULT_CURRENCY = "CAD";
 
 export const CURRENCY_OPTIONS = ["CAD", "USD"] as const;
 
-/** Generate the next invoice number */
 export function generateInvoiceNumber(): string {
   const year = new Date().getFullYear();
-  const random = Math.floor(1000 + Math.random() * 9000);
+  const random = Math.floor(100000 + Math.random() * 900000);
   return `CW-${year}-${random}`;
 }
 

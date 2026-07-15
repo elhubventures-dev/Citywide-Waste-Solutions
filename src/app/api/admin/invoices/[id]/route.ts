@@ -84,9 +84,12 @@ export async function PATCH(request: Request, { params }: { params: { id: string
     });
 
     return NextResponse.json({ invoice: updatedInvoice });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error updating invoice:", error);
-    return NextResponse.json({ error: "Failed to update invoice" }, { status: 500 });
+    if (error?.code === "P2002") {
+      return NextResponse.json({ error: "An invoice with this number already exists. Please use a unique invoice number." }, { status: 400 });
+    }
+    return NextResponse.json({ error: error?.message || "Failed to update invoice" }, { status: 500 });
   }
 }
 

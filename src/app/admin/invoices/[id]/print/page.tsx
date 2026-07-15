@@ -3,7 +3,8 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { COMPANY_INFO } from "@/lib/invoice-constants";
 import { AutoPrint } from "./auto-print";
-import { Printer, ArrowLeft } from "lucide-react";
+import { PrintButton } from "./print-button";
+import { ArrowLeft } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -45,13 +46,7 @@ export default async function PrintInvoicePage({ params }: { params: { id: strin
           <ArrowLeft size={16} />
           Back to Invoice
         </Link>
-        <button
-          onClick={() => window.print()}
-          className="flex items-center gap-2 rounded-lg bg-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-blue transition-colors hover:bg-blue-600"
-        >
-          <Printer size={16} />
-          Print Document
-        </button>
+        <PrintButton />
       </div>
 
       {/* Printable Area (A4 / Letter layout) */}
