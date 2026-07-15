@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import { Menu, Search, X, User } from "lucide-react";
+import { AdminUserMenu } from "../admin-user-menu";
 
 export default function AdminHeader() {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
@@ -98,13 +99,18 @@ export default function AdminHeader() {
           } items-center justify-between w-full gap-4 px-5 py-4 lg:flex shadow-sm lg:justify-end lg:px-0 lg:shadow-none`}
         >
           <div className="flex items-center gap-3 ml-auto">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
-                <User className="w-6 h-6 text-slate-500 dark:text-slate-400" />
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden">
+                  <User className="w-6 h-6 text-slate-500 dark:text-slate-400" />
+                </div>
+                <div className="hidden sm:block">
+                  <p className="text-sm font-medium text-slate-700 dark:text-white">Admin User</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Owner</p>
+                </div>
               </div>
-              <div className="hidden sm:block">
-                <p className="text-sm font-medium text-slate-700 dark:text-white">Admin User</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Owner</p>
+              <div className="pl-4 border-l border-slate-200 dark:border-slate-800">
+                <AdminUserMenu />
               </div>
             </div>
           </div>
