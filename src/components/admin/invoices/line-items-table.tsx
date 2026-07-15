@@ -23,7 +23,7 @@ interface LineItemsTableProps {
 }
 
 const cellInputClass =
-  "w-full rounded-md border border-gray-200 bg-white px-2.5 py-1.5 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100";
+  "h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-blue-500 dark:focus:ring-blue-500/20";
 
 export function LineItemsTable({
   rows,
@@ -69,12 +69,12 @@ export function LineItemsTable({
       <div className="-mx-1 overflow-x-auto">
         <table className="w-full border-collapse text-sm">
           <thead>
-            <tr className="border-b-2 border-gray-200 text-left dark:border-gray-700">
+            <tr className="border-b border-gray-100 text-left dark:border-white/[0.05]">
               {["Service", "Qty", "Unit", "Price", "Disc %", "Tax %", "Total", ""].map(
                 (h) => (
                   <th
                     key={h}
-                    className="px-2 py-2.5 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400"
+                    className="px-2 py-3 text-xs font-medium text-gray-500 dark:text-gray-400"
                   >
                     {h}
                   </th>
@@ -87,7 +87,7 @@ export function LineItemsTable({
               <tr
                 key={r.id}
                 className={cn(
-                  "border-b border-gray-100 transition-colors hover:bg-gray-50/50 dark:border-gray-800 dark:hover:bg-gray-800/30",
+                  "border-b border-gray-50 transition-colors hover:bg-gray-50 dark:border-white/[0.05] dark:hover:bg-gray-800",
                   idx % 2 === 0 ? "" : "bg-gray-50/30 dark:bg-gray-800/10"
                 )}
               >

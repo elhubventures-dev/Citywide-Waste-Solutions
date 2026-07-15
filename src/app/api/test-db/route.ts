@@ -7,7 +7,8 @@ export async function GET() {
   try {
     const quoteCount = await prisma.quoteRequest.count();
     const contactCount = await prisma.contactSubmission.count();
-    return NextResponse.json({ success: true, quoteCount, contactCount });
+    const invoiceCount = await prisma.invoice.count();
+    return NextResponse.json({ success: true, quoteCount, contactCount, invoiceCount });
   } catch (err: any) {
     return NextResponse.json({
       success: false,

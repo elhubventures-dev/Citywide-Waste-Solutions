@@ -275,35 +275,24 @@ export default function AdminDashboard() {
   const newContacts = contacts.filter((c) => c.status === "NEW").length;
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Top bar */}
-      <header className="border-b border-border bg-card px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-xl font-bold text-foreground">Admin Dashboard</h1>
-            <p className="text-sm text-muted-foreground">Citywide Waste Solutions</p>
-          </div>
-          <div className="flex items-center gap-3">
-              <Link
-                href="/admin/invoices"
-                className="flex items-center gap-1.5 rounded-lg border border-border bg-blue-500/10 px-3 py-1.5 text-sm font-semibold text-blue-600 transition-colors hover:bg-blue-500/20 dark:text-blue-400"
-              >
-                <Receipt className="h-4 w-4" />
-                Invoices
-              </Link>
-              <button
-              onClick={fetchData}
-              className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
-              Refresh
-            </button>
-            <AdminUserMenu />
-          </div>
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">Overview</h1>
         </div>
-      </header>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={fetchData}
+            className="flex items-center gap-1.5 rounded-lg border border-border px-3 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground bg-white dark:bg-card"
+          >
+            <RefreshCw className={cn("h-4 w-4", loading && "animate-spin")} />
+            Refresh
+          </button>
+        </div>
+      </div>
 
-      <main className="space-y-8 p-6">
+      <div className="space-y-8">
         {(loadError || actionError) && (
           <div className="flex items-start gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-800">
             <AlertCircle className="mt-0.5 h-5 w-5 shrink-0" />
@@ -340,9 +329,9 @@ export default function AdminDashboard() {
         </div>
 
         {/* Submissions table */}
-        <div className="overflow-hidden rounded-xl border border-border bg-card shadow-card">
+        <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
           {/* Tabs */}
-          <div className="flex border-b border-border">
+          <div className="flex border-b border-gray-100 dark:border-white/[0.05]">
             {(["quotes", "contacts"] as const).map((t) => (
               <button
                 key={t}
@@ -382,68 +371,68 @@ export default function AdminDashboard() {
             ) : (
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-border bg-muted/40">
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                  <tr className="border-b border-gray-100 dark:border-white/[0.05]">
+                    <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
                       Name
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
                       Email
                     </th>
                     {tab === "quotes" && (
                       <>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
                           Service
                         </th>
-                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                        <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
                           City
                         </th>
                       </>
                     )}
                     {tab === "contacts" && (
-                      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                      <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
                         Subject
                       </th>
                     )}
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
                       Date
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
                       Status
                     </th>
-                    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-muted-foreground">
+                    <th className="px-5 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-border">
+                <tbody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
                   {(tab === "quotes" ? quotes : contacts).map((item) => (
-                    <tr key={item.id} className="transition-colors hover:bg-muted/30">
-                      <td className="px-4 py-3 font-medium text-foreground">{item.fullName}</td>
-                      <td className="px-4 py-3">
+                    <tr key={item.id} className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800">
+                      <td className="px-5 py-4 text-sm font-medium text-gray-900 dark:text-white/90">{item.fullName}</td>
+                      <td className="px-5 py-4 text-sm">
                         <a href={`mailto:${item.email}`} className="text-green-600 hover:underline">
                           {item.email}
                         </a>
                       </td>
                       {tab === "quotes" && (
                         <>
-                          <td className="px-4 py-3 text-muted-foreground">
+                          <td className="px-5 py-4 text-sm text-gray-500 dark:text-gray-400">
                             {item.serviceType?.replace(/_/g, " ")}
                           </td>
-                          <td className="px-4 py-3 text-muted-foreground">{item.city}</td>
+                          <td className="px-5 py-4 text-sm text-gray-500 dark:text-gray-400">{item.city}</td>
                         </>
                       )}
                       {tab === "contacts" && (
-                        <td className="max-w-[200px] truncate px-4 py-3 text-muted-foreground">
+                        <td className="max-w-[200px] truncate px-5 py-4 text-sm text-gray-500 dark:text-gray-400">
                           {item.subject}
                         </td>
                       )}
-                      <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">
+                      <td className="whitespace-nowrap px-5 py-4 text-sm text-gray-500 dark:text-gray-400">
                         {formatDate(item.createdAt, { month: "short", day: "numeric" })}
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-5 py-4 text-sm">
                         <StatusBadge status={item.status} />
                       </td>
-                      <td className="px-4 py-3">
+                      <td className="px-5 py-4 text-sm">
                         <div className="flex items-center gap-1">
                           <button
                             onClick={() =>
@@ -531,8 +520,7 @@ export default function AdminDashboard() {
             )}
           </div>
         </div>
-
-      </main>
+      </div>
 
       {selected && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">

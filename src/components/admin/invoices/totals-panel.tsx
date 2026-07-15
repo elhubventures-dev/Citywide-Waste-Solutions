@@ -58,7 +58,7 @@ export function TotalsPanel({ totals, meta, onChangeMeta, formatCurrency }: Tota
 
       {/* Deposit */}
       <div className="mt-3">
-        <label className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+        <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
           Deposit
         </label>
         <input
@@ -67,13 +67,13 @@ export function TotalsPanel({ totals, meta, onChangeMeta, formatCurrency }: Tota
           step={0.01}
           value={meta.deposit}
           onChange={(e) => onChangeMeta({ deposit: +e.target.value })}
-          className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+          className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-blue-500 dark:focus:ring-blue-500/20"
         />
       </div>
 
       {/* Amount Paid */}
       <div className="mt-2">
-        <label className="mb-1 block text-[11px] font-semibold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+        <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
           Amount Paid
         </label>
         <input
@@ -82,7 +82,7 @@ export function TotalsPanel({ totals, meta, onChangeMeta, formatCurrency }: Tota
           step={0.01}
           value={meta.amountPaid}
           onChange={(e) => onChangeMeta({ amountPaid: +e.target.value })}
-          className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
+          className="h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 outline-none transition-colors focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:focus:border-blue-500 dark:focus:ring-blue-500/20"
         />
       </div>
 

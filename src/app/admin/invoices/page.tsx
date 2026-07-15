@@ -145,8 +145,7 @@ export default function InvoiceDashboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="space-y-6">
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
@@ -264,10 +263,9 @@ export default function InvoiceDashboardPage() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.5 }}
-          className="rounded-xl border border-gray-200 bg-white shadow-card dark:border-gray-800 dark:bg-gray-900"
+          className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]"
         >
-          {/* Filters Bar */}
-          <div className="flex flex-col gap-4 border-b border-gray-100 px-6 py-4 sm:flex-row sm:items-center sm:justify-between dark:border-gray-800">
+          <div className="flex flex-col gap-4 border-b border-gray-100 px-6 py-4 sm:flex-row sm:items-center sm:justify-between dark:border-white/[0.05]">
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100">
                 Recent Invoices
@@ -334,25 +332,25 @@ export default function InvoiceDashboardPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-100 text-left dark:border-gray-800">
-                    <th className="px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Invoice #</th>
-                    <th className="px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Client</th>
-                    <th className="px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Status</th>
-                    <th className="px-6 py-3 text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Date</th>
-                    <th className="px-6 py-3 text-right text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Amount</th>
-                    <th className="px-6 py-3 text-right text-[11px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">Actions</th>
+                  <tr className="border-b border-gray-100 text-left dark:border-white/[0.05]">
+                    <th className="px-5 py-3 text-xs font-medium text-gray-500 dark:text-gray-400">Invoice #</th>
+                    <th className="px-5 py-3 text-xs font-medium text-gray-500 dark:text-gray-400">Client</th>
+                    <th className="px-5 py-3 text-xs font-medium text-gray-500 dark:text-gray-400">Status</th>
+                    <th className="px-5 py-3 text-xs font-medium text-gray-500 dark:text-gray-400">Date</th>
+                    <th className="px-5 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400">Amount</th>
+                    <th className="px-5 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400">Actions</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
                   {invoices.map((inv) => (
                     <tr
                       key={inv.id}
-                      className="border-b border-gray-50 transition-colors hover:bg-gray-50/50 dark:border-gray-800/50 dark:hover:bg-gray-800/30"
+                      className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800"
                     >
-                      <td className="whitespace-nowrap px-6 py-3 font-semibold text-blue-500">
+                      <td className="whitespace-nowrap px-5 py-4 text-sm font-semibold text-brand-500 dark:text-brand-400">
                         {inv.invoiceNumber}
                       </td>
-                      <td className="px-6 py-3">
+                      <td className="px-5 py-4 text-sm">
                         <div className="font-medium text-gray-900 dark:text-gray-100">
                           {inv.client?.name || inv.client?.company || "—"}
                         </div>
@@ -362,16 +360,16 @@ export default function InvoiceDashboardPage() {
                           </div>
                         )}
                       </td>
-                      <td className="px-6 py-3">
+                      <td className="px-5 py-4 text-sm">
                         <InvoiceStatusBadge status={inv.status as any} />
                       </td>
-                      <td className="whitespace-nowrap px-6 py-3 text-gray-600 dark:text-gray-400">
+                      <td className="whitespace-nowrap px-5 py-4 text-sm text-gray-600 dark:text-gray-400">
                         {inv.issueDate || "—"}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-3 text-right font-semibold text-gray-900 dark:text-gray-100">
+                      <td className="whitespace-nowrap px-5 py-4 text-right text-sm font-semibold text-gray-900 dark:text-gray-100">
                         {fmt(inv.grandTotal)}
                       </td>
-                      <td className="px-6 py-3 text-right">
+                      <td className="px-5 py-4 text-right">
                         <div className="flex items-center justify-end gap-1">
                           <Link
                             href={`/admin/invoices/create?draft=${inv.id}`}
@@ -396,7 +394,6 @@ export default function InvoiceDashboardPage() {
             </div>
           )}
         </motion.div>
-      </div>
     </div>
   );
 }
