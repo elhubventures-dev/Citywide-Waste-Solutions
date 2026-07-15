@@ -6,15 +6,12 @@ import { BUSINESS } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Pay Invoice | Secure Online Payment",
-  description: `Pay your ${BUSINESS.name} invoice securely online. Accepts Visa, Mastercard, Apple Pay, and Google Pay.`,
+  description: `Pay your ${BUSINESS.name} invoice securely online via Interac e-Transfer.`,
   robots: { index: false }, // don't index payment page
 };
 
 const ACCEPTED = [
-  { label: "Visa / Mastercard" },
-  { label: "American Express" },
-  { label: "Apple Pay" },
-  { label: "Google Pay" },
+  { label: "Interac e-Transfer" },
 ];
 
 export default function PayPage() {
@@ -46,12 +43,12 @@ export default function PayPage() {
 
       <section className="section-sm min-h-[50vh] bg-background">
         <div className="container -mt-4 pb-16">
-          <div className="mx-auto max-w-lg">
-            <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-green-100 dark:bg-green-950/40">
+          <div className="mx-auto flex flex-col items-center">
+            <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-green-100 dark:bg-green-950/40">
               <CreditCard className="h-7 w-7 text-green-600" />
             </div>
 
-            <div className="rounded-2xl border border-border bg-card p-6 shadow-card sm:p-8">
+            <div className="w-full">
               <InvoicePaymentForm />
             </div>
 

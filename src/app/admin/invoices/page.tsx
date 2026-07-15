@@ -39,17 +39,24 @@ function StatCard({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, delay }}
-      className="flex items-start gap-4 rounded-xl border border-gray-200 bg-white p-5 shadow-card dark:border-gray-800 dark:bg-gray-900"
+      className="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6"
     >
       <div
-        className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg"
+        className="flex items-center justify-center w-12 h-12 rounded-xl"
         style={{ backgroundColor: `${color}15` }}
       >
-        <Icon size={20} style={{ color }} />
+        <Icon size={24} style={{ color }} />
       </div>
-      <div>
-        <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{value}</p>
-        <p className="text-xs font-medium text-gray-500 dark:text-gray-400">{label}</p>
+
+      <div className="flex items-end justify-between mt-5">
+        <div>
+          <span className="text-sm text-gray-500 dark:text-gray-400">
+            {label}
+          </span>
+          <h4 className="mt-2 font-bold text-gray-800 text-2xl dark:text-white/90">
+            {value}
+          </h4>
+        </div>
       </div>
     </motion.div>
   );
@@ -110,21 +117,33 @@ export default function InvoiceDashboardPage() {
     {} as Record<string, number>
   );
 
-  const totalRevenue = invoices
-    .filter((inv) => inv.status === "Paid")
-    .reduce((s, inv) => s + inv.grandTotal, 0);
+  const paidInvoices = invoices.filter(
+    (inv) => inv.status === "Paid" || inv.status === "Partially Paid" || inv.deposit > 0 || inv.amountPaid > 0
+  );
+  const paidCount = paidInvoices.length;
+
+  const totalRevenue = invoices.reduce((s, inv) => {
+    const paid = inv.status === "Paid" ? inv.grandTotal : (inv.deposit + inv.amountPaid);
+    return s + paid;
+  }, 0);
 
   const outstanding = invoices
     .filter((inv) => !["Paid", "Cancelled", "Refunded", "Draft"].includes(inv.status))
     .reduce((s, inv) => s + inv.balanceDue, 0);
 
   const wasteRevenue = invoices
-    .filter((inv) => inv.status === "Paid" && inv.brand === "waste")
-    .reduce((s, inv) => s + inv.grandTotal, 0);
+    .filter((inv) => inv.brand === "waste")
+    .reduce((s, inv) => {
+      const paid = inv.status === "Paid" ? inv.grandTotal : (inv.deposit + inv.amountPaid);
+      return s + paid;
+    }, 0);
 
   const movingRevenue = invoices
-    .filter((inv) => inv.status === "Paid" && inv.brand === "moving")
-    .reduce((s, inv) => s + inv.grandTotal, 0);
+    .filter((inv) => inv.brand === "moving")
+    .reduce((s, inv) => {
+      const paid = inv.status === "Paid" ? inv.grandTotal : (inv.deposit + inv.amountPaid);
+      return s + paid;
+    }, 0);
 
   const totalBrandRevenue = wasteRevenue + movingRevenue || 1;
   const wastePct = (wasteRevenue / totalBrandRevenue) * 100;
@@ -209,7 +228,7 @@ export default function InvoiceDashboardPage() {
           <StatCard label="Total Invoices" value={invoices.length} icon={FileText} color="#1E3A5C" delay={0.05} />
           <StatCard label="Draft" value={statusCounts["Draft"] || 0} icon={Clock} color="#6B7280" delay={0.1} />
           <StatCard label="Sent" value={statusCounts["Sent"] || 0} icon={Send} color="#3B82F6" delay={0.15} />
-          <StatCard label="Paid" value={statusCounts["Paid"] || 0} icon={CheckCircle} color="#2E9B4A" delay={0.2} />
+          <StatCard label="Paid" value={paidCount} icon={CheckCircle} color="#2E9B4A" delay={0.2} />
           <StatCard label="Overdue" value={statusCounts["Overdue"] || 0} icon={AlertCircle} color="#DC2626" delay={0.25} />
           <StatCard label="Pending" value={statusCounts["Pending"] || 0} icon={Clock} color="#D97706" delay={0.3} />
           <StatCard label="Revenue" value={fmt(totalRevenue)} icon={DollarSign} color="#2E9B4A" delay={0.35} />
@@ -263,9 +282,9 @@ export default function InvoiceDashboardPage() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.5 }}
-          className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]"
+          className="overflow-hidden rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
         >
-          <div className="flex flex-col gap-4 border-b border-gray-100 px-6 py-4 sm:flex-row sm:items-center sm:justify-between dark:border-white/[0.05]">
+          <div className="flex flex-col gap-4 border-b border-gray-100 px-6 py-4 sm:flex-row sm:items-center sm:justify-between dark:border-gray-800">
             <div className="flex items-center gap-2">
               <h2 className="text-sm font-bold uppercase tracking-wider text-gray-900 dark:text-gray-100">
                 Recent Invoices
@@ -332,16 +351,16 @@ export default function InvoiceDashboardPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-100 text-left dark:border-white/[0.05]">
-                    <th className="px-5 py-3 text-xs font-medium text-gray-500 dark:text-gray-400">Invoice #</th>
-                    <th className="px-5 py-3 text-xs font-medium text-gray-500 dark:text-gray-400">Client</th>
-                    <th className="px-5 py-3 text-xs font-medium text-gray-500 dark:text-gray-400">Status</th>
-                    <th className="px-5 py-3 text-xs font-medium text-gray-500 dark:text-gray-400">Date</th>
-                    <th className="px-5 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400">Amount</th>
-                    <th className="px-5 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400">Actions</th>
+                  <tr className="border-b border-gray-100 text-left dark:border-gray-800">
+                    <th className="px-5 py-4 text-xs font-medium text-gray-500 dark:text-gray-400">Invoice #</th>
+                    <th className="px-5 py-4 text-xs font-medium text-gray-500 dark:text-gray-400">Client</th>
+                    <th className="px-5 py-4 text-xs font-medium text-gray-500 dark:text-gray-400">Status</th>
+                    <th className="px-5 py-4 text-xs font-medium text-gray-500 dark:text-gray-400">Date</th>
+                    <th className="px-5 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400">Amount</th>
+                    <th className="px-5 py-4 text-right text-xs font-medium text-gray-500 dark:text-gray-400">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
+                <tbody className="divide-y divide-gray-100 dark:divide-gray-800">
                   {invoices.map((inv) => (
                     <tr
                       key={inv.id}

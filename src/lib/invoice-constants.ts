@@ -125,6 +125,7 @@ export const COMPANY_INFO = {
   address: "Prestonvale Road, Courtice, Ontario L1E 3H8, Canada",
   phone: "437-580-6054",
   email: "wastesolutions80@gmail.com",
+  website: "www.citywidewastesolutions.com",
   whatsapp: "https://wa.me/14375806054",
   businessNumbers: {
     bn: "716988035TZ0002",

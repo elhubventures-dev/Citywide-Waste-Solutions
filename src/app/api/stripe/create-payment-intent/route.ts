@@ -6,20 +6,7 @@ import { formRatelimit, getClientIp, rateLimitResponse } from "@/lib/rate-limit"
 
 export const runtime = "nodejs";
 
-let stripe: Stripe | null = null;
 
-function getStripeClient() {
-  const secretKey = process.env.STRIPE_SECRET_KEY;
-  if (!secretKey) {
-    throw new Error("STRIPE_SECRET_KEY is required to create payment intents.");
-  }
-
-  stripe ??= new Stripe(secretKey, {
-    apiVersion: "2024-06-20",
-    typescript: true,
-  });
-  return stripe;
-}
 
 export async function POST(req: NextRequest) {
   // Rate limit
@@ -49,7 +36,7 @@ export async function POST(req: NextRequest) {
   try {
     invoice = await prisma.invoice.findUnique({
       where: { invoiceNumber: invoiceNumber.toUpperCase() },
-      include: { client: true },
+      include: { client: true, items: true },
     });
   } catch (err) {
     console.error("Invoice lookup error:", err);
@@ -78,38 +65,10 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  // ── Create Stripe Payment Intent ───────────────────────────────────────
-  let paymentIntent;
-  const amountInCents = Math.round(invoice.balanceDue * 100);
-  try {
-    paymentIntent = await getStripeClient().paymentIntents.create({
-      amount: amountInCents,
-      currency: "cad",
-      description: `Citywide Waste Solutions — Invoice #${invoiceNumber}`,
-      metadata: {
-        invoiceNumber,
-        invoiceId: invoice.id,
-        customerEmail: email,
-        customerName: invoice.client.name || invoice.client.company || "",
-      },
-      receipt_email: email,
-      automatic_payment_methods: { enabled: true },
-    });
-  } catch (err) {
-    console.error("Stripe PaymentIntent error:", err);
-    return NextResponse.json(
-      { success: false, message: "Payment processing error. Please try again." },
-      { status: 500 }
-    );
-  }
-
-  // Update invoice with payment intent ID
-  await prisma.invoice
-    .update({
-      where: { id: invoice.id },
-      data: { stripePaymentIntentId: paymentIntent.id, status: "Pending" },
-    })
-    .catch(console.error);
+  // Stripe is bypassed because only Interac e-Transfer is supported.
+  // We just return success and the invoice details.
+  
+  // Update invoice status to pending if we want, or leave it. We'll leave it as is for e-Transfer.
 
   const amountFormatted = new Intl.NumberFormat("en-CA", {
     style: "currency",
@@ -118,13 +77,14 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({
     success: true,
-    clientSecret: paymentIntent.client_secret,
+    clientSecret: "dummy-secret-not-used", // To keep TS happy if expected
     invoice: {
       invoiceNumber,
       customerName: invoice.client.name || invoice.client.company || "",
-      amount: amountInCents,
+      amount: Math.round(invoice.balanceDue * 100),
       amountFormatted,
       description: invoice.terms || "",
+      fullInvoice: invoice,
     },
   });
 }

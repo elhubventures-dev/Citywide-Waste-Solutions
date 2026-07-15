@@ -87,7 +87,7 @@ export default async function PayInvoicePage({ params }: { params: { invoiceNumb
                 </p>
                 <div className="mt-3 flex items-center gap-3 rounded-lg bg-white px-4 py-3 shadow-sm dark:bg-gray-800">
                   <code className="text-sm font-bold text-gray-900 dark:text-white">
-                    payments@citywidewastesolutions.com
+                    wastesolutions80@gmail.com
                   </code>
                 </div>
                 <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">

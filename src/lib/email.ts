@@ -286,6 +286,42 @@ export async function sendPaymentConfirmationEmail(
   });
 }
 
+// ─── Payment Notification → Admin ─────────────────────────────────────────────
+export async function sendPaymentNotificationAdmin(
+  email: string,
+  name: string,
+  invoiceNumber: string,
+  amount: number
+) {
+  const formatted = new Intl.NumberFormat("en-CA", { style: "currency", currency: "CAD" }).format(
+    amount / 100
+  );
+
+  const body = `
+    <h1 style="margin:0 0 8px;font-size:22px;color:#141c18;">💰 Payment Marked as Paid</h1>
+    <p style="margin:0 0 24px;color:#4e635b;font-size:14px;">
+      A client has marked their invoice as paid via Interac e-Transfer. Please verify the funds in your bank account.
+    </p>
+
+    <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8faf9;border:1px solid #e8edea;border-radius:8px;padding:20px;margin-bottom:24px;">
+      <tr><td style="padding:6px 0;font-size:14px;color:#637d73;width:140px;">Client Name</td><td style="font-size:14px;color:#141c18;font-weight:600;">${name}</td></tr>
+      <tr><td style="padding:6px 0;font-size:14px;color:#637d73;">Email</td><td style="font-size:14px;color:#141c18;"><a href="mailto:${email}" style="color:${GREEN};">${email}</a></td></tr>
+      <tr><td style="padding:6px 0;font-size:14px;color:#637d73;">Invoice #</td><td style="font-size:14px;color:#141c18;font-weight:600;">${invoiceNumber}</td></tr>
+      <tr><td style="padding:6px 0;font-size:14px;color:#637d73;">Amount</td><td style="font-size:18px;color:${GREEN};font-weight:700;">${formatted}</td></tr>
+      <tr><td style="padding:6px 0;font-size:14px;color:#637d73;">Date</td><td style="font-size:14px;color:#141c18;">${new Date().toLocaleDateString("en-CA", { dateStyle: "long" })}</td></tr>
+    </table>
+
+    <a href="${SITE_URL}/admin/dashboard" style="display:inline-block;border:2px solid ${GREEN};color:${GREEN};text-decoration:none;font-size:14px;font-weight:600;padding:10px 20px;border-radius:8px;">Open Admin Panel</a>
+  `;
+
+  return sendEmail({
+    from: getSender(),
+    to: ADMIN,
+    subject: `💰 Payment Notification: ${name} marked Invoice #${invoiceNumber} as paid`,
+    html: emailLayout("Payment Notification", body),
+  });
+}
+
 // ─── Moving quote confirmation → Customer ───────────────────────────────────────
 export async function sendMovingQuoteConfirmationEmail(data: MovingQuoteFormData) {
   const firstName = data.fullName.split(" ")[0];
