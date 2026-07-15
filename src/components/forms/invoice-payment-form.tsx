@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { Search, CreditCard, CheckCircle2, AlertCircle, Loader2, Lock, FileText, User, Wallet, Mail, Download, ShieldCheck, Copy, Check } from "lucide-react";
@@ -385,14 +386,13 @@ export function InvoicePaymentForm({
   initialInvoice?: InvoiceData;
   initialStep?: "lookup" | "checkout" | "done";
 } = {}) {
+  const router = useRouter();
   const [step, setStep] = useState<"lookup" | "checkout" | "done">(initialInvoice ? "checkout" : initialStep);
   const [clientSecret, setClientSecret] = useState<string>("direct-link");
   const [invoice, setInvoice] = useState<InvoiceData | null>(initialInvoice || null);
 
   const handleFound = (secret: string, inv: InvoiceData) => {
-    setClientSecret(secret);
-    setInvoice(inv);
-    setStep("checkout");
+    router.push(`/pay/${inv.invoiceNumber}`);
   };
 
   const handleSuccess = async () => {
