@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import {
   FileText,
@@ -65,7 +65,7 @@ export default function InvoiceDashboardPage() {
   const [dateFilter, setDateFilter] = useState("All Time");
   const [typeFilter, setTypeFilter] = useState<"INVOICE" | "QUOTE">("INVOICE");
 
-  const fetchInvoices = async () => {
+  const fetchInvoices = useCallback(async () => {
     try {
       setIsLoading(true);
       const params = new URLSearchParams();
@@ -82,7 +82,7 @@ export default function InvoiceDashboardPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [searchQuery, statusFilter, dateFilter, typeFilter]);
 
   // Debounced search
   useEffect(() => {
@@ -90,7 +90,7 @@ export default function InvoiceDashboardPage() {
       fetchInvoices();
     }, 400);
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, statusFilter, dateFilter, typeFilter]);
+  }, [fetchInvoices]);
 
   const handleExportCSV = () => {
     const params = new URLSearchParams();

@@ -25,7 +25,7 @@ export async function GET(request: Request) {
 
     if (dateRange && dateRange !== "All Time") {
       const now = new Date();
-      let startDate = new Date();
+      const startDate = new Date();
       
       if (dateRange === "Today") {
         startDate.setHours(0, 0, 0, 0);
