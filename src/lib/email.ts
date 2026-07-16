@@ -443,7 +443,7 @@ export async function sendInvoiceEmail(options: {
       <div style="margin-top: 32px; padding: 24px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; text-align: center;">
         <h3 style="margin: 0 0 8px; font-size: 18px; color: #111827;">Invoice #${options.invoiceNumber}</h3>
         <p style="margin: 0 0 24px; font-size: 14px; color: #4b5563;">Your invoice has been attached to this email as a PDF document.</p>
-        <a href="${siteUrl}/pay/${options.invoiceNumber}" style="display: inline-block; background-color: #1E3A5C; color: #ffffff; padding: 12px 24px; text-decoration: none; font-weight: 600; border-radius: 6px;">Pay Invoice Online</a>
+        <a href="${SITE_URL}/pay/${options.invoiceNumber}" style="display: inline-block; background-color: #1E3A5C; color: #ffffff; padding: 12px 24px; text-decoration: none; font-weight: 600; border-radius: 6px;">Pay Invoice Online</a>
       </div>
     </div>
   `;
