@@ -1,16 +1,15 @@
 import { AdminSignInForm } from "@/components/admin/admin-sign-in-form";
-import { isSupabaseAuthConfigured } from "@/lib/auth";
+import { isAuthConfigured } from "@/lib/auth";
 
 export default function SignInPage() {
-  if (!isSupabaseAuthConfigured()) {
+  if (!isAuthConfigured()) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-background px-4 py-12">
         <div className="max-w-md rounded-2xl border border-border bg-card p-6 text-center shadow-card">
-          <h1 className="text-xl font-bold text-foreground">
-            Supabase admin sign-in is not configured
-          </h1>
+          <h1 className="text-xl font-bold text-foreground">Admin sign-in is not configured</h1>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            Add valid Supabase URL and anon key environment variables to enable secure admin access.
+            Add a valid <code className="text-foreground">AUTH_SECRET</code> environment variable
+            (at least 16 characters) to enable secure admin access.
           </p>
         </div>
       </main>

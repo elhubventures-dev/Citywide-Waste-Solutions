@@ -9,8 +9,9 @@
   - [ ] `NEXT_PUBLIC_SITE_URL`
   - [ ] `NEXT_PUBLIC_SANITY_PROJECT_ID` + `NEXT_PUBLIC_SANITY_DATASET`
   - [ ] `SANITY_API_TOKEN` + `SANITY_WEBHOOK_SECRET`
-  - [ ] `DATABASE_URL` (Supabase connection string)
-  - [ ] `NEXT_PUBLIC_SUPABASE_URL` + `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+  - [ ] `DATABASE_URL` + `DIRECT_URL` (Neon pooled + direct connection strings)
+  - [ ] `AUTH_SECRET` (random 32+ char secret for Auth.js)
+  - [ ] `ADMIN_EMAILS` (comma-separated allowlist)
   - [ ] `STRIPE_SECRET_KEY` + `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` + `STRIPE_WEBHOOK_SECRET`
   - [ ] `TWILIO_ACCOUNT_SID` + `TWILIO_AUTH_TOKEN` + `TWILIO_PHONE_NUMBER`
   - [ ] `RESEND_API_KEY` + `EMAIL_FROM` + `EMAIL_ADMIN`
@@ -21,12 +22,14 @@
   - [ ] `GHL_API_KEY` + `GHL_LOCATION_ID`
   - [ ] `CRON_SECRET` (random 32-char string for cron auth)
 
-### 2. Database (Supabase)
+### 2. Database (Neon) + Auth.js
 
-- [ ] Create Supabase project in `ca-central-1` region (Canada)
+- [ ] Create Neon project (prefer a Canadian or nearby US East region)
+- [ ] Copy pooled → `DATABASE_URL` and direct → `DIRECT_URL` (both with `sslmode=require`)
 - [ ] Run `npm run db:push` to apply Prisma schema
-- [ ] Enable Row Level Security on all tables
-- [ ] Set up Supabase backups (daily, 30-day retention)
+- [ ] If migrating from Supabase: set `SOURCE_DATABASE_URL`, then `npm run db:copy-from-source`
+- [ ] Set admin password: `npm run db:admin-password -- wastesolutions80@gmail.com 'secure-password'`
+- [ ] Enable Neon backups / point-in-time recovery
 - [ ] Test connection string from local env
 
 ### 3. Sanity CMS

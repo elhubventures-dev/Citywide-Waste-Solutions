@@ -1,10 +1,14 @@
-import { NextRequest, NextResponse } from "next/server";
-import { updateSupabaseSession } from "@/lib/supabase/middleware";
+import NextAuth from "next-auth";
+import { NextResponse, type NextRequest } from "next/server";
+import { authConfig } from "@/auth.config";
 import { isRelocateHost } from "@/lib/moving/paths";
 
-export default async function middleware(req: NextRequest) {
-  const host = req.headers.get("host") ?? "";
-  const { pathname } = req.nextUrl;
+const { auth } = NextAuth(authConfig);
+
+export default auth((req) => {
+  const request = req as NextRequest;
+  const host = request.headers.get("host") ?? "";
+  const { pathname } = request.nextUrl;
   const onRelocateSubdomain = isRelocateHost(host);
 
   // Subdomain: serve /relocate/* routes at clean paths (e.g. /services → /relocate/services)
@@ -17,14 +21,14 @@ export default async function middleware(req: NextRequest) {
       pathname.startsWith("/admin");
 
     if (!isInternal) {
-      const url = req.nextUrl.clone();
+      const url = request.nextUrl.clone();
       url.pathname = `/relocate${pathname === "/" ? "" : pathname}`;
       const response = NextResponse.rewrite(url);
       response.headers.set("x-relocate-site", "1");
       return response;
     }
 
-    const response = await updateSupabaseSession(req);
+    const response = NextResponse.next();
     response.headers.set("x-relocate-site", "1");
     return response;
   }
@@ -35,11 +39,11 @@ export default async function middleware(req: NextRequest) {
     process.env.NODE_ENV === "production" &&
     process.env.RELOCATE_PREVIEW !== "true"
   ) {
-    return NextResponse.redirect(new URL("/", req.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
-  return updateSupabaseSession(req);
-}
+  return NextResponse.next();
+});
 
 export const config = {
   matcher: [

@@ -1,7 +1,5 @@
 import "server-only";
 
-import { randomUUID } from "crypto";
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import type { ContactFormData, QuoteFormData } from "@/types";
 import { prisma } from "@/lib/prisma";
 
@@ -25,7 +23,7 @@ type ListResult = {
   total: number;
   page: number;
   pages: number;
-  source: "prisma" | "supabase";
+  source: "prisma";
 };
 
 export class SubmissionStoreError extends Error {
@@ -47,26 +45,9 @@ const SERVICE_ENUM_MAP: Record<string, string> = {
 
 const SERVICE_ENUM_VALUES = new Set(Object.values(SERVICE_ENUM_MAP));
 
-let supabaseAdmin: SupabaseClient | null = null;
-
-function getSupabaseAdmin() {
-  if (supabaseAdmin) return supabaseAdmin;
-
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-  if (!url || !key) return null;
-
-  supabaseAdmin = createClient(url, key, {
-    auth: { persistSession: false, autoRefreshToken: false },
-  });
-
-  return supabaseAdmin;
-}
-
 function toStoreError(cause: unknown) {
   return new SubmissionStoreError(
-    "Submission storage is unavailable. Confirm the Supabase database tables exist and the production database connection is configured.",
+    "Submission storage is unavailable. Confirm Neon/Prisma database tables exist and DATABASE_URL is configured.",
     { cause }
   );
 }
@@ -103,7 +84,6 @@ function requiredString(value: unknown) {
 
 export async function storeQuoteSubmission(data: QuoteFormData, meta: RequestMeta) {
   const serviceType = SERVICE_ENUM_MAP[data.serviceType];
-  const now = new Date().toISOString();
 
   if (!serviceType) {
     throw new SubmissionStoreError("Unsupported quote service type.");
@@ -127,38 +107,11 @@ export async function storeQuoteSubmission(data: QuoteFormData, meta: RequestMet
 
     return { id: submission.id, source: "prisma" as const };
   } catch (prismaError) {
-    const supabase = getSupabaseAdmin();
-    if (!supabase) throw toStoreError(prismaError);
-
-    const { data: inserted, error } = await supabase
-      .from("quote_requests")
-      .insert({
-        id: randomUUID(),
-        fullName: data.fullName,
-        email: data.email,
-        phone: data.phone,
-        serviceType,
-        city: data.city,
-        pickupFrequency: data.pickupFrequency ?? null,
-        message: data.message ?? null,
-        smsOptIn: data.smsOptIn,
-        ipAddress: meta.ipAddress ?? null,
-        userAgent: meta.userAgent ?? null,
-        createdAt: now,
-        updatedAt: now,
-      })
-      .select("id")
-      .single();
-
-    if (error) throw toStoreError(error);
-
-    return { id: inserted.id as string, source: "supabase" as const };
+    throw toStoreError(prismaError);
   }
 }
 
 export async function storeContactSubmission(data: ContactFormData, meta: RequestMeta) {
-  const now = new Date().toISOString();
-
   try {
     const submission = await prisma.contactSubmission.create({
       data: {
@@ -174,29 +127,7 @@ export async function storeContactSubmission(data: ContactFormData, meta: Reques
 
     return { id: submission.id, source: "prisma" as const };
   } catch (prismaError) {
-    const supabase = getSupabaseAdmin();
-    if (!supabase) throw toStoreError(prismaError);
-
-    const { data: inserted, error } = await supabase
-      .from("contact_submissions")
-      .insert({
-        id: randomUUID(),
-        fullName: data.fullName,
-        email: data.email,
-        phone: data.phone || null,
-        subject: data.subject,
-        message: data.message,
-        ipAddress: meta.ipAddress ?? null,
-        userAgent: meta.userAgent ?? null,
-        createdAt: now,
-        updatedAt: now,
-      })
-      .select("id")
-      .single();
-
-    if (error) throw toStoreError(error);
-
-    return { id: inserted.id as string, source: "supabase" as const };
+    throw toStoreError(prismaError);
   }
 }
 
@@ -245,30 +176,7 @@ export async function listSubmissions(options: ListOptions): Promise<ListResult>
       source: "prisma",
     };
   } catch (prismaError) {
-    const supabase = getSupabaseAdmin();
-    if (!supabase) throw toStoreError(prismaError);
-
-    const table = options.type === "quote" ? "quote_requests" : "contact_submissions";
-    let query = supabase
-      .from(table)
-      .select("*", { count: "exact" })
-      .order("createdAt", { ascending: false })
-      .range(skip, skip + options.limit - 1);
-
-    if (status) query = query.eq("status", status);
-
-    const { data, count, error } = await query;
-    if (error) throw toStoreError(error);
-
-    const total = count ?? data?.length ?? 0;
-
-    return {
-      items: data ?? [],
-      total,
-      page: options.page,
-      pages: Math.ceil(total / options.limit),
-      source: "supabase",
-    };
+    throw toStoreError(prismaError);
   }
 }
 
@@ -332,18 +240,7 @@ export async function updateSubmission({
 
     return { source: "prisma" as const };
   } catch (prismaError) {
-    const supabase = getSupabaseAdmin();
-    if (!supabase) throw toStoreError(prismaError);
-
-    const table = type === "quote" ? "quote_requests" : "contact_submissions";
-    const { error } = await supabase
-      .from(table)
-      .update({ ...updateData, updatedAt: new Date().toISOString() })
-      .eq("id", id);
-
-    if (error) throw toStoreError(error);
-
-    return { source: "supabase" as const };
+    throw toStoreError(prismaError);
   }
 }
 
@@ -369,14 +266,6 @@ export async function deleteSubmission({ id, type }: { id: string; type: Submiss
 
     return { source: "prisma" as const };
   } catch (prismaError) {
-    const supabase = getSupabaseAdmin();
-    if (!supabase) throw toStoreError(prismaError);
-
-    const table = type === "quote" ? "quote_requests" : "contact_submissions";
-    const { error } = await supabase.from(table).delete().eq("id", id);
-
-    if (error) throw toStoreError(error);
-
-    return { source: "supabase" as const };
+    throw toStoreError(prismaError);
   }
 }

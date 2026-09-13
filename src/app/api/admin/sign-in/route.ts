@@ -1,12 +1,13 @@
+import { AuthError } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import { isAdminEmail, isSupabaseAuthConfigured } from "@/lib/auth";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { signIn } from "@/auth";
+import { isAdminEmail, isAuthConfigured } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
-  if (!isSupabaseAuthConfigured()) {
-    return NextResponse.json({ error: "Supabase admin auth is not configured." }, { status: 503 });
+  if (!isAuthConfigured()) {
+    return NextResponse.json({ error: "Admin authentication is not configured." }, { status: 503 });
   }
 
   let body: { email?: string; password?: string };
@@ -31,18 +32,21 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const supabase = createSupabaseServerClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-
-    if (error) {
-      return NextResponse.json({ error: error.message }, { status: 401 });
-    }
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
+    }
+
     return NextResponse.json(
       {
-        error: "Unable to reach Supabase Auth. Check the deployed Supabase environment variables.",
+        error: "Unable to complete sign-in. Check AUTH_SECRET and database connectivity.",
       },
       { status: 502 }
     );

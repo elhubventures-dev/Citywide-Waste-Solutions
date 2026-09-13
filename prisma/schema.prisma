@@ -1,5 +1,5 @@
 // ─── Prisma Schema ─────────────────────────────────────────────────────────────
-// Citywide Waste Solutions — PostgreSQL via Supabase
+// Citywide Waste Solutions — PostgreSQL via Neon
 
 generator client {
   provider = "prisma-client-js"
@@ -205,15 +205,15 @@ model InvoiceActivity {
 }
 
 model AdminUser {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  name      String
-  role      UserRole  @default(EDITOR)
-  clerkId   String?   @unique
-  isActive  Boolean   @default(true)
-  lastLogin DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  role         UserRole  @default(EDITOR)
+  passwordHash String?
+  isActive     Boolean   @default(true)
+  lastLogin    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 
   @@map("admin_users")
 }

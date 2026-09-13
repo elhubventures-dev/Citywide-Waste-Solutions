@@ -6,8 +6,8 @@ export default function SignUpPage() {
       <div className="max-w-md rounded-2xl border border-border bg-card p-6 text-center shadow-card">
         <h1 className="text-xl font-bold text-foreground">Admin sign-up is disabled</h1>
         <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-          Create or invite admin users from the Supabase dashboard, then sign in with the approved
-          admin email.
+          Create admin users with the set-admin-password script, then sign in with an email listed
+          in <code className="text-foreground">ADMIN_EMAILS</code>.
         </p>
         <Link
           href="/sign-in"

@@ -62,7 +62,7 @@ Admin marks quote as "Scheduled" in admin panel
 ```
 [Zapier Schedule: Daily 6:00 PM]
   │
-  ├─ Supabase → Query pickups scheduled for tomorrow
+  ├─ Postgres (Neon) → Query pickups scheduled for tomorrow
   │     SELECT * FROM pickup_schedules
   │     WHERE scheduled_date = CURRENT_DATE + 1
   │     AND is_completed = false
@@ -121,7 +121,7 @@ Customer visits /pay
 ```
 [Zapier Schedule: Weekly Monday 9:00 AM]
   │
-  ├─ Supabase → Query overdue invoices
+  ├─ Postgres (Neon) → Query overdue invoices
   │     SELECT * FROM invoices
   │     WHERE status = 'PENDING'
   │     AND created_at < NOW() - INTERVAL '30 days'
@@ -159,7 +159,7 @@ Subscriber signs up (footer or blog widget)
 ```
 [Schedule: 1st of every month]
   │
-  ├─ Supabase → Pull last 30 days:
+  ├─ Postgres (Neon) → Pull last 30 days:
   │     - Total quote requests
   │     - Conversion rate (quoted → scheduled)
   │     - Revenue collected (invoices paid)

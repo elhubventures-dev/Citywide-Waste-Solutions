@@ -8,12 +8,12 @@ Production-grade website for a professional Ontario waste collection and recycli
 | --------- | ---------------------------------------- |
 | Framework | Next.js 14 (App Router) + TypeScript     |
 | Styling   | Tailwind CSS + shadcn/ui + Framer Motion |
-| Database  | PostgreSQL via Supabase + Prisma ORM     |
+| Database  | PostgreSQL via Neon + Prisma ORM         |
 | CMS       | Sanity v3                                |
 | Payments  | Stripe                                   |
 | SMS       | Twilio                                   |
 | Email     | Resend                                   |
-| Auth      | Supabase Auth                            |
+| Auth      | Auth.js (credentials)                    |
 | Hosting   | Vercel + Cloudflare CDN                  |
 | CRM       | GoHighLevel                              |
 
@@ -36,8 +36,11 @@ cp .env.example .env.local
 
 ```bash
 npm run db:generate    # Generate Prisma client
-npm run db:push        # Push schema to Supabase
+npm run db:push        # Push schema to Neon
+npm run db:admin-password -- email@example.com 'your-password'  # Seed admin login
 ```
+
+Migration from Supabase: see [docs/neon-migration.md](docs/neon-migration.md). Set `SOURCE_DATABASE_URL` to the old DB, point `DATABASE_URL` / `DIRECT_URL` at Neon, run `npm run db:push`, then `npm run db:copy-from-source`.
 
 ### 4. Run development server
 
