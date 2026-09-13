@@ -1,13 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 import { LogOut } from "lucide-react";
 
 export function AdminUserMenu() {
   const router = useRouter();
 
   async function handleSignOut() {
-    await fetch("/api/admin/sign-out", { method: "POST" }).catch(() => undefined);
+    await signOut({ redirect: false }).catch(() => undefined);
     router.replace("/sign-in");
     router.refresh();
   }

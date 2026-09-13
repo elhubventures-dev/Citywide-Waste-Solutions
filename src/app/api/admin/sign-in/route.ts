@@ -5,6 +5,10 @@ import { isAdminEmail, isAuthConfigured } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
+/**
+ * Kept for compatibility. Prefer client-side `signIn` from `next-auth/react`
+ * (see AdminSignInForm), which correctly sets Auth.js session cookies.
+ */
 export async function POST(req: NextRequest) {
   if (!isAuthConfigured()) {
     return NextResponse.json({ error: "Admin authentication is not configured." }, { status: 503 });
@@ -44,6 +48,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid email or password." }, { status: 401 });
     }
 
+    // Successful Auth.js flows may throw a redirect/digest error in some runtimes.
+    const digest = typeof error === "object" && error && "digest" in error ? String((error as any).digest) : "";
+    if (digest.startsWith("NEXT_REDIRECT")) {
+      return NextResponse.json({ success: true });
+    }
+
+    console.error("[admin/sign-in]", error);
     return NextResponse.json(
       {
         error: "Unable to complete sign-in. Check AUTH_SECRET and database connectivity.",

@@ -11,8 +11,13 @@ function hasUsableValue(value: string | undefined): value is string {
   );
 }
 
+export function getAuthSecret() {
+  const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+  return hasUsableValue(secret) && secret.length >= 16 ? secret : null;
+}
+
 export function isAuthConfigured() {
-  return hasUsableValue(process.env.AUTH_SECRET) && process.env.AUTH_SECRET!.length >= 16;
+  return Boolean(getAuthSecret());
 }
 
 export function getAdminEmails() {

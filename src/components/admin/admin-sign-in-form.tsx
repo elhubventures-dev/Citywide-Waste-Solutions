@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import { AlertCircle, Loader2, LogIn } from "lucide-react";
 
 export function AdminSignInForm() {
@@ -17,15 +18,14 @@ export function AdminSignInForm() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/admin/sign-in", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+      const result = await signIn("credentials", {
+        email: email.trim().toLowerCase(),
+        password,
+        redirect: false,
       });
-      const data = await res.json().catch(() => ({}));
 
-      if (!res.ok) {
-        setError(data.error ?? "Unable to sign in.");
+      if (!result || result.error) {
+        setError("Invalid email or password.");
         return;
       }
 
